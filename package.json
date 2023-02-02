@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "description": "react infinite booking calendar",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/demark-pro"
+    "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
     "rollup": "rollup -c"
@@ -41,5 +41,9 @@
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/demark-pro/react-booking-calendar.git"
+  }
 }
