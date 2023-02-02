@@ -2,6 +2,10 @@
   "name": "@demark-pro/react-booking-calendar",
   "version": "1.0.3",
   "description": "react infinite booking calendar",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
   "scripts": {
     "rollup": "rollup -c",
     "test": "jest"
