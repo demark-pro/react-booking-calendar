@@ -16,7 +16,7 @@ import {
   getDay,
 } from "date-fns";
 
-import { Reserved, DayInfo, getReservedInfoOfDate } from "./BookingCalendar";
+import { Reserved, DayInfo, getReservedInfoOfDate } from "./BookingCalendar/BookingCalendar";
 
 export const isBetween = (
   date: Date | number,

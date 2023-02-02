@@ -18,7 +18,7 @@ import { FixedSizeGrid, GridChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 import styles from "./BookingCalendar.module.css";
-import { createDays, isBetween, isBetweenInterval } from "./helpers";
+import { createDays, isBetween, isBetweenInterval } from "../helpers";
 import { CSSProperties, useEffect, useMemo, useRef } from "react";
 
 export interface Reserved {
