@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "react infinite booking calendar",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
+    "registry": "https://npm.pkg.github.com/",
     "access": "public"
   },
   "scripts": {
