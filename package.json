@@ -24,6 +24,7 @@
     "@babel/preset-typescript": "^7.18.6",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "^11.0.0",
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.4.0",
@@ -38,7 +39,6 @@
     "rollup-plugin-dts": "^5.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-terser": "^7.0.2",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
