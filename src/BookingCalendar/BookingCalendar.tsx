@@ -12,8 +12,8 @@ import {
   isSameDay,
   addWeeks,
   formatRelative,
+  setDefaultOptions,
 } from "date-fns";
-import { ru } from "date-fns/locale";
 import { FixedSizeGrid, GridChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 
@@ -51,6 +51,12 @@ export interface GetReservedInfoOfDate {
   endDate: Date | number;
 }
 
+export interface DateFnsOptions {
+  locale?: Locale;
+  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  firstWeekContainsDate?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+}
+
 export type BookingCalendarProps = {
   selectedStart: Date | number | null;
   selectedEnd: Date | number | null;
@@ -63,6 +69,7 @@ export type BookingCalendarProps = {
   titles?: Titles;
   disabled?: boolean;
   scrollToDate?: Date | number | null;
+  dateFnsOptions?: DateFnsOptions;
   onChange?: (e: Date | number) => void;
 };
 
@@ -89,9 +96,15 @@ export type RenderDayProps = {
   style: CSSProperties;
 };
 
-const titlesInit = {
+const titlesInit: Titles = {
   dayFooterStart: "check-in",
   dayFooterEnd: "exit",
+};
+
+const dateFnsOptionsInit: DateFnsOptions = {
+  locale: undefined,
+  weekStartsOn: 1,
+  firstWeekContainsDate: undefined,
 };
 
 const renderDay = ({
@@ -151,10 +164,8 @@ const renderDay = ({
     dayHeader = (
       <span className={styles.day_col_header}>
         {isSelectedStart || isSelectedEnd
-          ? format(day, "MMM", { locale: ru })
-          : formatRelative(new Date(), new Date(), { locale: ru }).split(
-              " "
-            )[0]}
+          ? format(day, "MMM")
+          : formatRelative(new Date(), new Date()).split(" ")[0]}
       </span>
     );
   }
@@ -186,7 +197,7 @@ const renderDay = ({
           style={{ top: isCurrentYear ? "-30px" : "-50px" }}
         >
           <span style={{ fontWeight: 600, color: "#000!important" }}>
-            {format(monthStart, "LLL", { locale: ru })}
+            {format(monthStart, "LLL")}
           </span>
           <small>{!isCurrentYear && format(monthStart, "yyyy")}</small>
         </div>
@@ -306,9 +317,12 @@ const BookingCalendar = ({
   titles = titlesInit,
   disabled = false,
   scrollToDate,
+  dateFnsOptions = dateFnsOptionsInit,
   onChange,
   ...props
 }: BookingCalendarProps) => {
+  useEffect(() => setDefaultOptions(dateFnsOptions), [dateFnsOptions]);
+
   const renderWeeks = () => {
     const dateFormat = "EEEEEE";
     const weeks = [];
@@ -320,7 +334,7 @@ const BookingCalendar = ({
           className={styles.week_col}
           style={{ color: i > 4 ? "red" : "#424242" }}
         >
-          {format(addDays(startDate, i), dateFormat, { locale: ru })}
+          {format(addDays(startDate, i), dateFormat, dateFnsOptions)}
         </div>
       );
     }
