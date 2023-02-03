@@ -10,9 +10,6 @@ import {
   isBefore,
   startOfDay,
   isSameDay,
-  isAfter,
-  endOfDay,
-  differenceInMinutes,
   addWeeks,
 } from "date-fns";
 import { ru } from "date-fns/locale";
@@ -22,6 +19,7 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import styles from "./BookingCalendar.module.css";
 import { createDays, isBetween, isBetweenInterval } from "../helpers";
 import { CSSProperties, useEffect, useMemo, useRef } from "react";
+import { getSelectedTime } from "../utils/getSelectedTime";
 
 export interface Reserved {
   startDate: Date | number;
@@ -94,74 +92,6 @@ const titlesInit = {
   afterDayStart: "Заезд",
   afterDayEnd: "Выезд",
 };
-
-export function getReservedInfoOfDate(
-  date: Date | number,
-  reserved: Reserved[],
-  isStart: boolean = false
-): GetReservedInfoOfDate {
-  const reservedInfo = {
-    reserved: false,
-    startDate: startOfDay(date),
-    endDate: endOfDay(date),
-  };
-  if (!reserved.length) return reservedInfo;
-
-  const day = isStart ? endOfDay(date) : startOfDay(date);
-  if (isStart) {
-    const reservedDay = reserved.find((d) => isSameDay(d.endDate, day));
-    if (!reservedDay) return reservedInfo;
-
-    return differenceInMinutes(day, reservedDay.endDate) > 0
-      ? {
-          reserved: true,
-          startDate: new Date(reservedDay.endDate),
-          endDate: day,
-        }
-      : reservedInfo;
-  }
-
-  const reservedDay = reserved.find((d) => isSameDay(d.startDate, day));
-  if (!reservedDay) return reservedInfo;
-
-  return differenceInMinutes(reservedDay.startDate, day) > 0
-    ? {
-        reserved: true,
-        startDate: day,
-        endDate: new Date(reservedDay.startDate),
-      }
-    : reservedInfo;
-}
-
-export function getSelectedTime(
-  date: Date | number,
-  reservedDates: Reserved[],
-  selectedStart: Date | number | null
-): Date | number {
-  if (selectedStart && isAfter(date, selectedStart) && reservedDates) {
-    const { reserved, endDate } = getReservedInfoOfDate(date, reservedDates);
-    if (reserved) return endDate;
-
-    const reservedBetween = reservedDates.find((d) =>
-      isBetweenInterval(
-        d.startDate,
-        d.endDate,
-        selectedStart,
-        endOfDay(date),
-        "()"
-      )
-    );
-
-    if (!reservedBetween) return endOfDay(date);
-  }
-
-  const { reserved, startDate } = getReservedInfoOfDate(
-    date,
-    reservedDates,
-    true
-  );
-  return reserved ? startDate : startOfDay(date);
-}
 
 const renderDay = ({
   dayInfo,
