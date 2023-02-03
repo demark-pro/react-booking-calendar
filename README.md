@@ -41,7 +41,7 @@ const MyBookingCalendar = () => (
     isStart={isStart}
     reserved={reserved}
     onChange={handleChange}
-    scrollToDate={scrollToDate}
+    scrollToDate={new Date(2023, 3, 20)}
   />
 );
 ```
