@@ -1,6 +1,10 @@
 dist
 node_modules
 
+# Cache and IDE-related files
+.cache
+.idea
+
 # Other
 **/.DS_Store
 **/.env
