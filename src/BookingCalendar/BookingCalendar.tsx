@@ -421,24 +421,22 @@ const BookingCalendar = ({
 
   return (
     <div className={styles.calendar} {...props}>
+      {renderWeeks()}
       <AutoSizer>
         {({ height, width }) => (
-          <>
-            {renderWeeks()}
-            <Grid
-              dateOfStartMonth={dateOfStartMonth}
-              overscanWeekCount={overscanWeekCount}
-              height={height}
-              width={width}
-              items={createDays(dateOfStartMonth, numOfMonth, reserved)}
-              colHeight={colHeight}
-              selectedStart={selectedStart}
-              selectedEnd={selectedEnd}
-              titles={titles}
-              scrollToDate={scrollToDate}
-              handleClickDay={handleClickDay}
-            />
-          </>
+          <Grid
+            dateOfStartMonth={dateOfStartMonth}
+            overscanWeekCount={overscanWeekCount}
+            height={height}
+            width={width}
+            items={createDays(dateOfStartMonth, numOfMonth, reserved)}
+            colHeight={colHeight}
+            selectedStart={selectedStart}
+            selectedEnd={selectedEnd}
+            titles={titles}
+            scrollToDate={scrollToDate}
+            handleClickDay={handleClickDay}
+          />
         )}
       </AutoSizer>
     </div>
