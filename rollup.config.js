@@ -4,20 +4,22 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 
-import terser from '@rollup/plugin-terser';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import terser from "@rollup/plugin-terser";
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
+
+import pkg from "./package.json";
 
 export default [
   {
     input: "src/index.ts",
     output: [
       {
-        file: "dist/cjs/index.js",
+        file: pkg.main,
         format: "cjs",
         sourcemap: true,
       },
       {
-        file: "dist/esm/index.js",
+        file: pkg.module,
         format: "esm",
         sourcemap: true,
       },
@@ -27,7 +29,7 @@ export default [
       resolve(),
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
-      postcss({ modules: true }),
+      postcss({ extract: false, modules: true }),
 
       terser(),
     ],
