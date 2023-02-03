@@ -11,6 +11,7 @@ import {
   startOfDay,
   isSameDay,
   addWeeks,
+  formatRelative,
 } from "date-fns";
 import { ru } from "date-fns/locale";
 import { FixedSizeGrid, GridChildComponentProps } from "react-window";
@@ -40,8 +41,8 @@ export interface DayInfo {
 }
 
 export interface Titles {
-  afterDayStart: string;
-  afterDayEnd: string;
+  dayFooterStart: string;
+  dayFooterEnd: string;
 }
 
 export interface GetReservedInfoOfDate {
@@ -89,8 +90,8 @@ export type RenderDayProps = {
 };
 
 const titlesInit = {
-  afterDayStart: "Заезд",
-  afterDayEnd: "Выезд",
+  dayFooterStart: "check-in",
+  dayFooterEnd: "exit",
 };
 
 const renderDay = ({
@@ -151,7 +152,9 @@ const renderDay = ({
       <span className={styles.day_col_header}>
         {isSelectedStart || isSelectedEnd
           ? format(day, "MMM", { locale: ru })
-          : "сегодня"}
+          : formatRelative(new Date(), new Date(), { locale: ru }).split(
+              " "
+            )[0]}
       </span>
     );
   }
@@ -162,8 +165,7 @@ const renderDay = ({
   if (isReserved) footerText = "бронь";
 
   if (isSelectedStart || isSelectedEnd) {
-    if (isSelectedStart) footerText = titles?.afterDayStart || "";
-    else footerText = titles?.afterDayEnd || "";
+    footerText = isSelectedStart ? titles.dayFooterStart : titles.dayFooterEnd;
   }
 
   if (reservedDate) {
@@ -186,9 +188,7 @@ const renderDay = ({
           <span style={{ fontWeight: 600, color: "#000!important" }}>
             {format(monthStart, "LLL", { locale: ru })}
           </span>
-          <small className="text-muted">
-            {!isCurrentYear && format(monthStart, "yyyy")}
-          </small>
+          <small>{!isCurrentYear && format(monthStart, "yyyy")}</small>
         </div>
       )}
       {dayHeader && dayHeader}
