@@ -7,19 +7,17 @@ import postcss from "rollup-plugin-postcss";
 import terser from "@rollup/plugin-terser";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 
-import pkg from "./package.json";
-
 export default [
   {
     input: "src/index.ts",
     output: [
       {
-        file: pkg.main,
+        file: "dist/cjs/index.js",
         format: "cjs",
         sourcemap: true,
       },
       {
-        file: pkg.module,
+        file: "dist/esm/index.js",
         format: "esm",
         sourcemap: true,
       },
@@ -29,7 +27,7 @@ export default [
       resolve(),
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
-      postcss({ extract: false, modules: true }),
+      postcss({ extract: false, modules: true, minimize: true }),
 
       terser(),
     ],
