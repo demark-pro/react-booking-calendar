@@ -46,10 +46,6 @@ const MyBookingCalendar = () => (
 );
 ```
 
-Result:
-
-<img src="https://github.com/kristijanbambir/react-booking-calendar/blob/master/preview.png?raw=true" width="292">
-
 ## Options
 
 | Prop               | Type                  | Default        | Description                                               |
