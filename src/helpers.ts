@@ -62,11 +62,11 @@ export const isBetweenInterval = (
 
 export const createDays = (
   startMonth: Date | number,
-  numOfMonth: number,
+  numOfMonths: number,
   reserved: Array<Reserved>
 ): DayInfo[] => {
   let days: DayInfo[] = [];
-  for (let i in Array.from({ length: numOfMonth })) {
+  for (let i in Array.from({ length: numOfMonths })) {
     const currentMonth = addMonths(startMonth, +i);
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(currentMonth);

@@ -61,7 +61,7 @@ export type BookingCalendarProps = {
   selectedEnd: Date | number | null;
   isStart?: boolean;
   dateOfStartMonth?: Date | number;
-  numOfMonth?: number;
+  numOfMonths?: number;
   overscanWeekCount?: number;
   colHeight?: number;
   reserved?: Array<Reserved>;
@@ -317,7 +317,7 @@ const BookingCalendar = ({
   selectedEnd,
   isStart = true,
   dateOfStartMonth = new Date(),
-  numOfMonth = 12,
+  numOfMonths = 12,
   overscanWeekCount = 4,
   colHeight = 55,
   reserved = [],
@@ -386,7 +386,7 @@ const BookingCalendar = ({
             overscanWeekCount={overscanWeekCount}
             height={height - weekHeight}
             width={width}
-            items={createDays(dateOfStartMonth, numOfMonth, reserved)}
+            items={createDays(dateOfStartMonth, numOfMonths, reserved)}
             colHeight={colHeight}
             selectedStart={selectedStart}
             selectedEnd={selectedEnd}
