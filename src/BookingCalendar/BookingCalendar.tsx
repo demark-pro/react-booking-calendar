@@ -70,10 +70,11 @@ export type BookingCalendarProps = {
   disabled?: boolean;
   scrollToDate?: Date | number | null;
   dateFnsOptions?: DateFnsOptions;
+  renderDay?: (e: RenderColProps) => JSX.Element;
   onChange?: (e: Date | number) => void;
 };
 
-export type BookingCalendarGrid = {
+export type BookingCalendarGridProps = {
   dateOfStartMonth: Date | number;
   overscanWeekCount: number;
   width: number;
@@ -84,10 +85,11 @@ export type BookingCalendarGrid = {
   selectedStart: Date | number | null;
   selectedEnd: Date | number | null;
   titles: Titles;
+  renderDay?: (e: RenderColProps) => JSX.Element;
   handleClickDay: (e: DayInfo) => void;
 };
 
-export type RenderDayProps = {
+export type RenderColProps = {
   dayInfo: DayInfo;
   selectedStart: Date | number | null;
   selectedEnd: Date | number | null;
@@ -108,14 +110,14 @@ const dateFnsOptionsInit: DateFnsOptions = {
   firstWeekContainsDate: undefined,
 };
 
-const renderDay = ({
+const renderCol = ({
   dayInfo,
   selectedStart,
   selectedEnd,
   titles,
   handleClickDay,
   style,
-}: RenderDayProps): JSX.Element => {
+}: RenderColProps): JSX.Element => {
   const {
     day,
     isCurrentMonth,
@@ -233,8 +235,9 @@ const Grid = ({
   items,
   colHeight,
   scrollToDate,
+  renderDay,
   handleClickDay,
-}: BookingCalendarGrid) => {
+}: BookingCalendarGridProps) => {
   const listRef = useRef<FixedSizeGrid>(null);
 
   const calculateScroll = useMemo(() => {
@@ -254,7 +257,7 @@ const Grid = ({
     });
   }, [scrollToDate]);
 
-  const createDay = ({
+  const Col = ({
     columnIndex,
     rowIndex,
     data,
@@ -263,14 +266,16 @@ const Grid = ({
     const index = 7 * rowIndex + columnIndex;
     const dayInfo = data[index];
 
-    return renderDay({
+    const colProps = {
       dayInfo,
       selectedStart,
       selectedEnd,
       titles,
       handleClickDay,
       style,
-    });
+    };
+
+    return renderDay ? renderDay(colProps) : renderCol(colProps);
   };
 
   const calcWeekWithMonths = useMemo(
@@ -296,12 +301,8 @@ const Grid = ({
       width={width}
       className={styles.grid}
       overscanRowCount={calcWeekWithMonths}
-      // onItemsRendered={(e) =>
-      //   console.log(addWeeks(dateOfStartMonth, e.overscanRowStartIndex))
-      // }
-      // onScroll={(e) => console.log(e)}
     >
-      {createDay}
+      {Col}
     </FixedSizeGrid>
   );
 };
@@ -319,6 +320,7 @@ const BookingCalendar = ({
   disabled = false,
   scrollToDate,
   dateFnsOptions = dateFnsOptionsInit,
+  renderDay,
   onChange,
   ...props
 }: BookingCalendarProps) => {
@@ -380,6 +382,7 @@ const BookingCalendar = ({
             selectedEnd={selectedEnd}
             titles={titles}
             scrollToDate={scrollToDate}
+            renderDay={renderDay}
             handleClickDay={handleClickDay}
           />
         )}
