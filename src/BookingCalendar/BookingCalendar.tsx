@@ -106,11 +106,7 @@ const titlesInit: Titles = {
   reservedFooter: "booked",
 };
 
-const dateFnsOptionsInit: DateFnsOptions = {
-  weekStartsOn: 1,
-};
-
-const renderCol = ({
+function renderCol({
   dayInfo,
   selectedStart,
   selectedEnd,
@@ -118,7 +114,7 @@ const renderCol = ({
   dateFnsOptions,
   handleClickDay,
   style,
-}: RenderColProps): JSX.Element => {
+}: RenderColProps): JSX.Element {
   const {
     day,
     isCurrentMonth,
@@ -225,9 +221,9 @@ const renderCol = ({
       )}
     </div>
   );
-};
+}
 
-const Grid = ({
+function Grid({
   dateOfStartMonth,
   overscanWeekCount,
   selectedStart,
@@ -241,7 +237,7 @@ const Grid = ({
   dateFnsOptions,
   renderDay,
   handleClickDay,
-}: BookingCalendarGridProps) => {
+}: BookingCalendarGridProps) {
   const listRef = useRef<FixedSizeGrid>(null);
 
   const calculateScroll = useMemo(() => {
@@ -310,9 +306,9 @@ const Grid = ({
       {Row}
     </FixedSizeGrid>
   );
-};
+}
 
-const BookingCalendar = ({
+function BookingCalendar({
   selectedStart,
   selectedEnd,
   isStart = true,
@@ -324,12 +320,12 @@ const BookingCalendar = ({
   titles = titlesInit,
   disabled = false,
   scrollToDate,
-  dateFnsOptions = dateFnsOptionsInit,
+  dateFnsOptions = {},
   renderDay,
   onChange,
   className = "",
   ...props
-}: BookingCalendarProps) => {
+}: BookingCalendarProps) {
   const weekHeight = colHeight / 2;
 
   const renderWeeks = () => {
@@ -400,6 +396,6 @@ const BookingCalendar = ({
       </AutoSizer>
     </div>
   );
-};
+}
 
 export default BookingCalendar;
