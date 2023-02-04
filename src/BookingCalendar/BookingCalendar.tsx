@@ -72,6 +72,7 @@ export type BookingCalendarProps = {
   dateFnsOptions?: DateFnsOptions;
   renderDay?: (e: RenderColProps) => JSX.Element;
   onChange?: (e: Date | number) => void;
+  className?: string;
 };
 
 export type BookingCalendarGridProps = {
@@ -322,6 +323,7 @@ const BookingCalendar = ({
   dateFnsOptions = dateFnsOptionsInit,
   renderDay,
   onChange,
+  className = "",
   ...props
 }: BookingCalendarProps) => {
   useEffect(() => setDefaultOptions(dateFnsOptions), [dateFnsOptions]);
@@ -329,7 +331,7 @@ const BookingCalendar = ({
   const renderWeeks = () => {
     const dateFormat = "EEEEEE";
     const weeks = [];
-    let startDate = startOfWeek(new Date(), { weekStartsOn: 1 });
+    let startDate = startOfWeek(new Date());
     for (let i = 0; i < 7; i++) {
       weeks.push(
         <div
@@ -337,7 +339,7 @@ const BookingCalendar = ({
           className={styles.week_col}
           style={{ color: i > 4 ? "red" : "#424242" }}
         >
-          {format(addDays(startDate, i), dateFormat, dateFnsOptions)}
+          {format(addDays(startDate, i), dateFormat)}
         </div>
       );
     }
@@ -367,7 +369,7 @@ const BookingCalendar = ({
   };
 
   return (
-    <div className={styles.calendar} {...props}>
+    <div className={styles.calendar + " " + className} {...props}>
       {renderWeeks()}
       <AutoSizer>
         {({ height, width }) => (

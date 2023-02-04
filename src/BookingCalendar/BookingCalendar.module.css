@@ -7,6 +7,11 @@
   width: 100%;
 }
 
+.grid {
+  position: absolute;
+  inset: 0;
+}
+
 .grid::-webkit-scrollbar {
   display: none;
 }
