@@ -261,7 +261,7 @@ const Grid = ({
     });
   }, [scrollToDate]);
 
-  const Col = ({
+  const Row = ({
     columnIndex,
     rowIndex,
     data,
@@ -307,7 +307,7 @@ const Grid = ({
       className={styles.grid}
       overscanRowCount={calcWeekWithMonths}
     >
-      {Col}
+      {Row}
     </FixedSizeGrid>
   );
 };
