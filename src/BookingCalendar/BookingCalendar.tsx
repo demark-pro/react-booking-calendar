@@ -106,6 +106,10 @@ const titlesInit: Titles = {
   reservedFooter: "booked",
 };
 
+const dateFnsOptionsInit: DateFnsOptions = {
+  weekStartsOn: 1,
+};
+
 function renderCol({
   dayInfo,
   selectedStart,
@@ -320,7 +324,7 @@ function BookingCalendar({
   titles = titlesInit,
   disabled = false,
   scrollToDate,
-  dateFnsOptions = {},
+  dateFnsOptions = dateFnsOptionsInit,
   renderDay,
   onChange,
   className = "",
