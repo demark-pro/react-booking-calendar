@@ -328,6 +328,8 @@ const BookingCalendar = ({
 }: BookingCalendarProps) => {
   useEffect(() => setDefaultOptions(dateFnsOptions), [dateFnsOptions]);
 
+  const weekHeight = colHeight / 2;
+
   const renderWeeks = () => {
     const dateFormat = "EEEEEE";
     const weeks = [];
@@ -344,7 +346,11 @@ const BookingCalendar = ({
       );
     }
 
-    return <div className={styles.week_row}>{weeks}</div>;
+    return (
+      <div className={styles.week_row} style={{ height: weekHeight }}>
+        {weeks}
+      </div>
+    );
   };
 
   const handleClickDay = (dayInfo: DayInfo) => {
@@ -376,7 +382,7 @@ const BookingCalendar = ({
           <Grid
             dateOfStartMonth={dateOfStartMonth}
             overscanWeekCount={overscanWeekCount}
-            height={height}
+            height={height - weekHeight}
             width={width}
             items={createDays(dateOfStartMonth, numOfMonth, reserved)}
             colHeight={colHeight}
