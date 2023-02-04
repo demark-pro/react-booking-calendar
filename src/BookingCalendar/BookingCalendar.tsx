@@ -42,6 +42,7 @@ export interface DayInfo {
 export interface Titles {
   dayFooterStart: string;
   dayFooterEnd: string;
+  reservedFooter: string;
 }
 
 export interface GetReservedInfoOfDate {
@@ -98,6 +99,7 @@ export type RenderDayProps = {
 const titlesInit: Titles = {
   dayFooterStart: "check-in",
   dayFooterEnd: "exit",
+  reservedFooter: "booked",
 };
 
 const dateFnsOptionsInit: DateFnsOptions = {
@@ -172,7 +174,7 @@ const renderDay = ({
   const reservedDate = reservedStart || reservedEnd;
   let footerText: string = "";
 
-  if (isReserved) footerText = "бронь";
+  if (isReserved) footerText = titles.reservedFooter;
 
   if (isSelectedStart || isSelectedEnd) {
     footerText = isSelectedStart ? titles.dayFooterStart : titles.dayFooterEnd;
