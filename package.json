@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "author": "@demarkpro",
-  "license": "ISC",
+  "license": "MIT",
   "keywords": [
     "react",
     "calendar",
