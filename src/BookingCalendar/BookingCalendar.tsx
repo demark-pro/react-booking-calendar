@@ -9,7 +9,6 @@ import startOfDay from "date-fns/startOfDay";
 import addWeeks from "date-fns/addWeeks";
 import formatRelative from "date-fns/formatRelative";
 import startOfMonth from "date-fns/startOfMonth";
-import setDefaultOptions from "date-fns/setDefaultOptions";
 import startOfWeek from "date-fns/startOfWeek";
 import addDays from "date-fns/addDays";
 
@@ -86,6 +85,7 @@ export type BookingCalendarGridProps = {
   selectedStart: Date | number | null;
   selectedEnd: Date | number | null;
   titles: Titles;
+  dateFnsOptions?: DateFnsOptions;
   renderDay?: (e: RenderColProps) => JSX.Element;
   handleClickDay: (e: DayInfo) => void;
 };
@@ -95,6 +95,7 @@ export type RenderColProps = {
   selectedStart: Date | number | null;
   selectedEnd: Date | number | null;
   titles: Titles;
+  dateFnsOptions?: DateFnsOptions;
   handleClickDay: (e: DayInfo) => void;
   style: CSSProperties;
 };
@@ -106,9 +107,7 @@ const titlesInit: Titles = {
 };
 
 const dateFnsOptionsInit: DateFnsOptions = {
-  locale: undefined,
   weekStartsOn: 1,
-  firstWeekContainsDate: undefined,
 };
 
 const renderCol = ({
@@ -116,6 +115,7 @@ const renderCol = ({
   selectedStart,
   selectedEnd,
   titles,
+  dateFnsOptions,
   handleClickDay,
   style,
 }: RenderColProps): JSX.Element => {
@@ -168,8 +168,10 @@ const renderCol = ({
     dayHeader = (
       <span className={styles.day_col_header}>
         {isSelectedStart || isSelectedEnd
-          ? format(day, "MMM")
-          : formatRelative(new Date(), new Date()).split(" ")[0]}
+          ? format(day, "MMM", dateFnsOptions)
+          : formatRelative(new Date(), new Date(), dateFnsOptions).split(
+              " "
+            )[0]}
       </span>
     );
   }
@@ -185,7 +187,7 @@ const renderCol = ({
 
   if (reservedDate) {
     footerClassNames.push(styles.text_normal);
-    footerText = `c ${format(reservedDate, "HH:mm")}`;
+    footerText = format(reservedDate, "HH:mm");
   }
 
   return (
@@ -201,7 +203,7 @@ const renderCol = ({
           style={{ top: isCurrentYear ? "-30px" : "-50px" }}
         >
           <span style={{ fontWeight: 600, color: "#000!important" }}>
-            {format(monthStart, "LLL")}
+            {format(monthStart, "LLL", dateFnsOptions)}
           </span>
           <small>{!isCurrentYear && format(monthStart, "yyyy")}</small>
         </div>
@@ -236,6 +238,7 @@ const Grid = ({
   items,
   colHeight,
   scrollToDate,
+  dateFnsOptions,
   renderDay,
   handleClickDay,
 }: BookingCalendarGridProps) => {
@@ -272,6 +275,7 @@ const Grid = ({
       selectedStart,
       selectedEnd,
       titles,
+      dateFnsOptions,
       handleClickDay,
       style,
     };
@@ -326,14 +330,12 @@ const BookingCalendar = ({
   className = "",
   ...props
 }: BookingCalendarProps) => {
-  useEffect(() => setDefaultOptions(dateFnsOptions), [dateFnsOptions]);
-
   const weekHeight = colHeight / 2;
 
   const renderWeeks = () => {
     const dateFormat = "EEEEEE";
     const weeks = [];
-    let startDate = startOfWeek(new Date());
+    let startDate = startOfWeek(new Date(), dateFnsOptions);
     for (let i = 0; i < 7; i++) {
       weeks.push(
         <div
@@ -341,7 +343,7 @@ const BookingCalendar = ({
           className={styles.week_col}
           style={{ color: i > 4 ? "red" : "#424242" }}
         >
-          {format(addDays(startDate, i), dateFormat)}
+          {format(addDays(startDate, i), dateFormat, dateFnsOptions)}
         </div>
       );
     }
@@ -390,6 +392,7 @@ const BookingCalendar = ({
             selectedEnd={selectedEnd}
             titles={titles}
             scrollToDate={scrollToDate}
+            dateFnsOptions={dateFnsOptions}
             renderDay={renderDay}
             handleClickDay={handleClickDay}
           />
