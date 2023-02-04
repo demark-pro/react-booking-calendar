@@ -13,7 +13,7 @@ import {
   addWeeks,
   formatRelative,
   setDefaultOptions,
-} from "date-fns";
+} from "date-fns/esm";
 import { FixedSizeGrid, GridChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 

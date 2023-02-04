@@ -1,4 +1,4 @@
-import { differenceInMinutes, endOfDay, isSameDay, startOfDay } from "date-fns";
+import { differenceInMinutes, endOfDay, isSameDay, startOfDay } from "date-fns/esm";
 import {
   GetReservedInfoOfDate,
   Reserved,
