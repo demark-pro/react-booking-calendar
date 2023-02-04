@@ -1,19 +1,18 @@
 import React from "react";
 
-import {
-  addDays,
-  startOfWeek,
-  format,
-  startOfMonth,
-  differenceInCalendarWeeks,
-  differenceInCalendarMonths,
-  isBefore,
-  startOfDay,
-  isSameDay,
-  addWeeks,
-  formatRelative,
-  setDefaultOptions,
-} from "date-fns/esm";
+import isSameDay from "date-fns/isSameDay";
+import isBefore from "date-fns/isBefore";
+import format from "date-fns/format";
+import differenceInCalendarWeeks from "date-fns/differenceInCalendarWeeks";
+import differenceInCalendarMonths from "date-fns/differenceInCalendarMonths";
+import startOfDay from "date-fns/startOfDay";
+import addWeeks from "date-fns/addWeeks";
+import formatRelative from "date-fns/formatRelative";
+import startOfMonth from "date-fns/startOfMonth";
+import setDefaultOptions from "date-fns/setDefaultOptions";
+import startOfWeek from "date-fns/startOfWeek";
+import addDays from "date-fns/addDays";
+
 import { FixedSizeGrid, GridChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 

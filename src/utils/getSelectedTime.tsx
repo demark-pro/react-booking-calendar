@@ -1,4 +1,6 @@
-import { endOfDay, isAfter, startOfDay } from "date-fns";
+import startOfDay from "date-fns/startOfDay";
+import isAfter from "date-fns/isAfter";
+import endOfDay from "date-fns/endOfDay";
 import { Reserved } from "../BookingCalendar/BookingCalendar";
 import { isBetweenInterval } from "../helpers";
 import { getReservedInfoOfDate } from "./getReservedInfoOfDate";

@@ -1,20 +1,18 @@
-import {
-  isSameDay,
-  isBefore,
-  isAfter,
-  isEqual,
-  isSameMonth,
-  startOfDay,
-  endOfDay,
-  isSameYear,
-  addMonths,
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
-  addDays,
-  getDay,
-} from "date-fns";
+import isSameDay from "date-fns/isSameDay";
+import isBefore from "date-fns/isBefore";
+import isAfter from "date-fns/isAfter";
+import isEqual from "date-fns/isEqual";
+import isSameMonth from "date-fns/isSameMonth";
+import startOfDay from "date-fns/startOfDay";
+import endOfDay from "date-fns/endOfDay";
+import addMonths from "date-fns/addMonths";
+import startOfMonth from "date-fns/startOfMonth";
+import isSameYear from "date-fns/isSameYear";
+import endOfMonth from "date-fns/endOfMonth";
+import startOfWeek from "date-fns/startOfWeek";
+import endOfWeek from "date-fns/endOfWeek";
+import addDays from "date-fns/addDays";
+import getDay from "date-fns/getDay";
 
 import { Reserved, DayInfo } from "./BookingCalendar/BookingCalendar";
 import { getReservedInfoOfDate } from "./utils/getReservedInfoOfDate";
