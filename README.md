@@ -10,8 +10,6 @@ A responsive customizable React infinite booking calendar and overbooking protec
 npm i @demark-pro/react-booking-calendar
 ```
 
-![](https://media.giphy.com/media/GbZsTiqONHQ65ZcUNv/giphy.gif)
-
 ## Usage
 
 ```js
@@ -44,6 +42,9 @@ const MyBookingCalendar = () => {
   );
 };
 ```
+
+![](https://media.giphy.com/media/GbZsTiqONHQ65ZcUNv/giphy.gif)
+
 
 ## Options
 
