@@ -46,8 +46,8 @@ export interface Titles {
 
 export interface GetReservedInfoOfDate {
   reserved: boolean;
-  startDate: Date | number;
-  endDate: Date | number;
+  startDate: Date;
+  endDate: Date;
 }
 
 export interface DateFnsOptions {
@@ -70,7 +70,8 @@ export type BookingCalendarProps = {
   scrollToDate?: Date | number | null;
   dateFnsOptions?: DateFnsOptions;
   renderDay?: (e: RenderColProps) => JSX.Element;
-  onChange?: (e: Date | number) => void;
+  onOverbook?: (e: Date, errorType: string) => void;
+  onChange?: (e: Date) => void;
   className?: string;
 };
 
@@ -326,6 +327,7 @@ function BookingCalendar({
   scrollToDate,
   dateFnsOptions = dateFnsOptionsInit,
   renderDay,
+  onOverbook,
   onChange,
   className = "",
   ...props
@@ -356,10 +358,24 @@ function BookingCalendar({
   };
 
   const handleClickDay = (dayInfo: DayInfo) => {
-    const { day, isReserved, isPast } = dayInfo;
-    if (isReserved || isPast || disabled) return;
+    if (disabled) return;
 
-    if (!isStart && selectedStart && isBefore(day, selectedStart)) return;
+    const { day, isReserved, isPast } = dayInfo;
+
+    if (isPast) {
+      if (onOverbook) onOverbook(day, "PAST");
+      return;
+    }
+    if (isReserved) {
+      if (onOverbook) onOverbook(day, "BOOKED");
+      return;
+    }
+
+    if (!isStart && selectedStart && isBefore(day, selectedStart)) {
+      if (onOverbook) onOverbook(day, "BEFORE_START");
+      return;
+    }
+
     const isReservedBetween =
       selectedStart &&
       !!reserved.find((r) =>
@@ -370,7 +386,10 @@ function BookingCalendar({
           startOfDay(day)
         )
       );
-    if (isReservedBetween) return;
+    if (isReservedBetween) {
+      if (onOverbook) onOverbook(day, "BOOKED_BETWEEN");
+      return;
+    }
 
     const newSelected = getSelectedTime(day, reserved, selectedStart);
     if (onChange && newSelected) onChange(newSelected);

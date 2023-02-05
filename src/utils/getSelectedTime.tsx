@@ -1,6 +1,4 @@
-import startOfDay from "date-fns/startOfDay";
-import isAfter from "date-fns/isAfter";
-import endOfDay from "date-fns/endOfDay";
+import { endOfDay, isAfter, startOfDay } from "date-fns";
 import { Reserved } from "../BookingCalendar/BookingCalendar";
 import { isBetweenInterval } from "../helpers";
 import { getReservedInfoOfDate } from "./getReservedInfoOfDate";
@@ -9,7 +7,7 @@ export function getSelectedTime(
   date: Date | number,
   reservedDates: Reserved[],
   selectedStart: Date | number | null
-): Date | number {
+): Date {
   if (selectedStart && isAfter(date, selectedStart) && reservedDates) {
     const { reserved, endDate } = getReservedInfoOfDate(date, reservedDates);
     if (reserved) return endDate;

@@ -1,6 +1,6 @@
 # React Booking Calendar
 
-A responsive customizable React infinite booking calendar.
+A responsive customizable React infinite booking calendar and overbooking protection
 
 [Try it on CodeSandbox](https://codesandbox.io/s/react-booking-calendar-example-t9sdt0)
 
@@ -59,11 +59,12 @@ const MyBookingCalendar = () => (
 | colHeight          | number                | 55                  | The number of height col                                  |
 | reserved           | Array                 | `[]`                | Array of objects `{ startDate: Date, endDate: Date }`     |
 | titles             | Object                | Titles              | Object of titles                                          |
-| disabled           | boolean               | false               | ignore `onChange`                                         |
+| disabled           | boolean               | false               | Ignore `onChange`                                         |
 | scrollToDate       | Date / number / null  |                     | Scroll to desired week                                    |
 | dateFnsOptions     | Object                | `{weekStartsOn: 1}` | Read more date-fns documentation                          |
 | renderDay          | Func                  |                     | Must return JSX.Element                                   |
+| onOverbook         | Func                  |                     | Returns date and type of overbooking error                |
 | className          | string                |                     | Class name(s) main Calendar `<div>` element               |
-| onChange           | Func                  |                     | callback after date selection                             |
+| onChange           | Func                  |                     | Callback after date selection                             |
 
 
