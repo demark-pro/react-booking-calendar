@@ -63,3 +63,21 @@ const MyBookingCalendar = () => {
 | onOverbook        | Func                 |                     | Returns date and type of overbooking error                |
 | className         | string               |                     | Class name(s) main Calendar `<div>` element               |
 | onChange          | Func                 |                     | Callback after date selection                             |
+
+## Utils
+
+### getReservedInfoOfDate
+
+```ts
+(date: Date | number, reserved: Reserved[], isStart: boolean = false)
+```
+
+Returns information about whether there is a reservation on this date and the beginning and end of free time of the day.
+
+### getSelectedTime
+
+```ts
+(date: Date | number, reserved: Reserved[], selectedStart?: Date | number | null)`
+```
+
+Returns the available booking time for that day

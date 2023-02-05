@@ -6,7 +6,7 @@ import { getReservedInfoOfDate } from "./getReservedInfoOfDate";
 export function getSelectedTime(
   date: Date | number,
   reservedDates: Reserved[],
-  selectedStart: Date | number | null
+  selectedStart?: Date | number | null
 ): Date {
   if (selectedStart && isAfter(date, selectedStart) && reservedDates) {
     const { reserved, endDate } = getReservedInfoOfDate(date, reservedDates);
