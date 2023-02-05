@@ -37,14 +37,14 @@ const MyBookingCalendar = () => {
       isStart={isStart}
       reserved={reserved}
       onChange={handleChange}
-      scrollToDate={new Date(2023, 3, 20)}
+      onOverbook={(e, err) => alert(err)}
+      numOfMonths={1000}
     />
   );
 };
 ```
 
 ![](https://media.giphy.com/media/GbZsTiqONHQ65ZcUNv/giphy.gif)
-
 
 ## Options
 
