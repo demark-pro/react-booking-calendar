@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ComponentType, memo, useCallback, useState } from "react";
 
 import isSameDay from "date-fns/isSameDay";
 import isBefore from "date-fns/isBefore";
@@ -12,12 +12,12 @@ import startOfMonth from "date-fns/startOfMonth";
 import startOfWeek from "date-fns/startOfWeek";
 import addDays from "date-fns/addDays";
 
-import { FixedSizeGrid, GridChildComponentProps } from "react-window";
+import { areEqual, FixedSizeGrid, GridChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 import styles from "./BookingCalendar.module.css";
 import { createDays, isBetween, isBetweenInterval } from "../helpers";
-import { CSSProperties, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { getSelectedTime } from "../utils/getSelectedTime";
 
 export interface Reserved {
@@ -91,14 +91,21 @@ export type BookingCalendarGridProps = {
   handleClickDay: (e: DayInfo) => void;
 };
 
+export type RowProps = {
+  selectedStart: Date | number | null;
+  selectedEnd: Date | number | null;
+  titles: Titles;
+  dateFnsOptions?: DateFnsOptions;
+  renderDay?: (e: RenderColProps) => JSX.Element;
+  handleClickDay: (e: DayInfo) => void;
+};
+
 export type RenderColProps = {
-  dayInfo: DayInfo;
   selectedStart: Date | number | null;
   selectedEnd: Date | number | null;
   titles: Titles;
   dateFnsOptions?: DateFnsOptions;
   handleClickDay: (e: DayInfo) => void;
-  style: CSSProperties;
 };
 
 const titlesInit: Titles = {
@@ -111,122 +118,139 @@ const dateFnsOptionsInit: DateFnsOptions = {
   weekStartsOn: 1,
 };
 
-function renderCol({
-  dayInfo,
-  selectedStart,
-  selectedEnd,
-  titles,
-  dateFnsOptions,
-  handleClickDay,
-  style,
-}: RenderColProps): JSX.Element {
-  const {
-    day,
-    isCurrentMonth,
-    isReserved,
-    isToday,
-    isPast,
-    monthStart,
-    isCurrentYear,
-    reservedStart,
-    reservedEnd,
-  } = dayInfo;
+const Row = memo(
+  ({ renderDay, ...props }: GridChildComponentProps & RowProps) => {
+    const renderCol = (): JSX.Element => {
+      const {
+        selectedStart,
+        selectedEnd,
+        titles,
+        dateFnsOptions,
+        handleClickDay,
+        columnIndex,
+        rowIndex,
+        data,
+        style,
+      } = props;
 
-  // empty col
-  if (!isCurrentMonth) {
-    return (
-      <div
-        key={format(day, "dd-MM-yyyy-empty")}
-        className={styles.empty_day}
-        style={style}
-      />
-    );
-  }
+      const index = 7 * rowIndex + columnIndex;
+      const dayInfo = data[index];
+      const {
+        day,
+        isCurrentMonth,
+        isReserved,
+        isToday,
+        isPast,
+        monthStart,
+        isCurrentYear,
+        reservedStart,
+        reservedEnd,
+      } = dayInfo;
 
-  const isSelectedStart = selectedStart
-    ? isSameDay(day, selectedStart)
-    : undefined;
-  const isSelectedEnd = selectedEnd ? isSameDay(day, selectedEnd) : undefined;
-  const isSelected =
-    selectedStart &&
-    selectedEnd &&
-    isBetween(day, selectedStart, selectedEnd, "{}");
+      // empty col
+      if (!isCurrentMonth) {
+        return (
+          <div
+            key={format(day, "dd-MM-yyyy-empty")}
+            className={styles.empty_day}
+            style={style}
+          />
+        );
+      }
 
-  const onClickDay = () => handleClickDay(dayInfo);
+      const isSelectedStart = selectedStart
+        ? isSameDay(day, selectedStart)
+        : undefined;
+      const isSelectedEnd = selectedEnd
+        ? isSameDay(day, selectedEnd)
+        : undefined;
+      const isSelected =
+        selectedStart &&
+        selectedEnd &&
+        isBetween(day, selectedStart, selectedEnd, "{}");
 
-  const dayClassNames: string[] = [styles.day_col];
-  if (isReserved) dayClassNames.push(styles.reserved);
-  if (isToday) dayClassNames.push(styles.today);
-  if (isPast) dayClassNames.push(styles.past);
-  if (isSelected) dayClassNames.push(styles.selected);
-  if (isSelectedStart) dayClassNames.push(styles.selected_start);
-  if (isSelectedEnd) dayClassNames.push(styles.selected_end);
+      const onClickDay = () => handleClickDay(dayInfo);
 
-  let dayHeader;
-  const footerClassNames = [styles.day_col_footer];
+      const dayClassNames: string[] = [styles.day_col];
+      if (isReserved) dayClassNames.push(styles.reserved);
+      if (isToday) dayClassNames.push(styles.today);
+      if (isPast) dayClassNames.push(styles.past);
+      if (isSelected) dayClassNames.push(styles.selected);
+      if (isSelectedStart) dayClassNames.push(styles.selected_start);
+      if (isSelectedEnd) dayClassNames.push(styles.selected_end);
 
-  if (isToday || isSelectedStart || isSelectedEnd) {
-    dayHeader = (
-      <span className={styles.day_col_header}>
-        {isSelectedStart || isSelectedEnd
-          ? format(day, "MMM", dateFnsOptions)
-          : formatRelative(new Date(), new Date(), dateFnsOptions).split(
-              " "
-            )[0]}
-      </span>
-    );
-  }
+      let dayHeader;
+      const footerClassNames = [styles.day_col_footer];
 
-  const reservedDate = reservedStart || reservedEnd;
-  let footerText: string = "";
-
-  if (isReserved) footerText = titles.reservedFooter;
-
-  if (isSelectedStart || isSelectedEnd) {
-    footerText = isSelectedStart ? titles.dayFooterStart : titles.dayFooterEnd;
-  }
-
-  if (reservedDate) {
-    footerClassNames.push(styles.text_normal);
-    footerText = format(reservedDate, "HH:mm");
-  }
-
-  return (
-    <div
-      key={format(day, "dd-MM-yyyy")}
-      className={dayClassNames.join(" ")}
-      style={style}
-      onClick={onClickDay}
-    >
-      {isSameDay(day, monthStart) && (
-        <div
-          className={styles.month}
-          style={{ top: isCurrentYear ? "-30px" : "-50px" }}
-        >
-          <span style={{ fontWeight: 600, color: "#000!important" }}>
-            {format(monthStart, "LLL", dateFnsOptions)}
+      if (isToday || isSelectedStart || isSelectedEnd) {
+        dayHeader = (
+          <span className={styles.day_col_header}>
+            {isSelectedStart || isSelectedEnd
+              ? format(day, "MMM", dateFnsOptions)
+              : formatRelative(new Date(), new Date(), dateFnsOptions).split(
+                  " "
+                )[0]}
           </span>
-          <small>{!isCurrentYear && format(monthStart, "yyyy")}</small>
-        </div>
-      )}
-      {dayHeader && dayHeader}
-      <span className={styles.day_col_date}>{format(day, "d")}</span>
-      <span className={footerClassNames.join(" ")}>{footerText}</span>
-      {(isSelectedStart || isSelectedEnd) && (
-        <div className={styles.selected_event} />
-      )}
-      {isSelected && (
+        );
+      }
+
+      const reservedDate = reservedStart || reservedEnd;
+      let footerText: string = "";
+
+      if (isReserved) footerText = titles.reservedFooter;
+
+      if (isSelectedStart || isSelectedEnd) {
+        footerText = isSelectedStart
+          ? titles.dayFooterStart
+          : titles.dayFooterEnd;
+      }
+
+      if (reservedDate) {
+        footerClassNames.push(styles.text_normal);
+        footerText = format(reservedDate, "HH:mm");
+      }
+
+      return (
         <div
-          className={styles.selected_between}
-          style={{
-            left: isSelectedStart ? "50%" : 0,
-            right: isSelectedEnd ? "50%" : 0,
-          }}
-        />
-      )}
-    </div>
-  );
-}
+          key={format(day, "dd-MM-yyyy")}
+          className={dayClassNames.join(" ")}
+          style={style}
+          onClick={onClickDay}
+        >
+          {isSameDay(day, monthStart) && (
+            <div
+              className={styles.month}
+              style={{ top: isCurrentYear ? "-30px" : "-50px" }}
+            >
+              <span style={{ fontWeight: 600, color: "#000!important" }}>
+                {format(monthStart, "LLL", dateFnsOptions)}
+              </span>
+              <small>{!isCurrentYear && format(monthStart, "yyyy")}</small>
+            </div>
+          )}
+          {dayHeader && dayHeader}
+          <span className={styles.day_col_date}>{format(day, "d")}</span>
+          <span className={footerClassNames.join(" ")}>{footerText}</span>
+          {(isSelectedStart || isSelectedEnd) && (
+            <div className={styles.selected_event} />
+          )}
+          {isSelected && (
+            <div
+              className={styles.selected_between}
+              style={{
+                left: isSelectedStart ? "50%" : 0,
+                right: isSelectedEnd ? "50%" : 0,
+              }}
+            />
+          )}
+        </div>
+      );
+    };
+
+    return renderDay ? renderDay(props) : renderCol();
+  },
+  areEqual
+);
 
 function Grid({
   dateOfStartMonth,
@@ -262,28 +286,6 @@ function Grid({
     });
   }, [scrollToDate]);
 
-  const Row = ({
-    columnIndex,
-    rowIndex,
-    data,
-    style,
-  }: GridChildComponentProps) => {
-    const index = 7 * rowIndex + columnIndex;
-    const dayInfo = data[index];
-
-    const colProps = {
-      dayInfo,
-      selectedStart,
-      selectedEnd,
-      titles,
-      dateFnsOptions,
-      handleClickDay,
-      style,
-    };
-
-    return renderDay ? renderDay(colProps) : renderCol(colProps);
-  };
-
   const calcWeekWithMonths = useMemo(
     () =>
       overscanWeekCount +
@@ -308,7 +310,17 @@ function Grid({
       className={styles.grid}
       overscanRowCount={calcWeekWithMonths}
     >
-      {Row}
+      {(props) => (
+        <Row
+          selectedStart={selectedStart}
+          selectedEnd={selectedEnd}
+          titles={titles}
+          dateFnsOptions={dateFnsOptions}
+          renderDay={renderDay}
+          handleClickDay={handleClickDay}
+          {...props}
+        />
+      )}
     </FixedSizeGrid>
   );
 }
@@ -395,6 +407,13 @@ function BookingCalendar({
     if (onChange && newSelected) onChange(newSelected);
   };
 
+  const dayOfStartMonth = format(dateOfStartMonth, "yyyy-MM-dd");
+
+  const items = useMemo(
+    () => createDays(dateOfStartMonth, numOfMonths, reserved),
+    [dayOfStartMonth, numOfMonths, reserved]
+  );
+
   return (
     <div className={styles.calendar + " " + className} {...props}>
       {renderWeeks()}
@@ -405,7 +424,7 @@ function BookingCalendar({
             overscanWeekCount={overscanWeekCount}
             height={height - weekHeight}
             width={width}
-            items={createDays(dateOfStartMonth, numOfMonths, reserved)}
+            items={items}
             colHeight={colHeight}
             selectedStart={selectedStart}
             selectedEnd={selectedEnd}
