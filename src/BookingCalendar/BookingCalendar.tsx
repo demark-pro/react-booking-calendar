@@ -1,4 +1,4 @@
-import React, { ComponentType, memo, useCallback, useState } from "react";
+import React, { memo, useState } from "react";
 
 import isSameDay from "date-fns/isSameDay";
 import isBefore from "date-fns/isBefore";
@@ -69,7 +69,7 @@ export type BookingCalendarProps = {
   disabled?: boolean;
   scrollToDate?: Date | number | null;
   dateFnsOptions?: DateFnsOptions;
-  renderDay?: (e: RenderColProps) => JSX.Element;
+  renderDay?: (e: ColProps) => JSX.Element;
   onOverbook?: (e: Date, errorType: string) => void;
   onChange?: (e: Date) => void;
   className?: string;
@@ -87,7 +87,7 @@ export type BookingCalendarGridProps = {
   selectedEnd: Date | number | null;
   titles: Titles;
   dateFnsOptions?: DateFnsOptions;
-  renderDay?: (e: RenderColProps) => JSX.Element;
+  renderDay?: (e: ColProps) => JSX.Element;
   handleClickDay: (e: DayInfo) => void;
 };
 
@@ -96,11 +96,11 @@ export type RowProps = {
   selectedEnd: Date | number | null;
   titles: Titles;
   dateFnsOptions?: DateFnsOptions;
-  renderDay?: (e: RenderColProps) => JSX.Element;
+  renderDay?: (e: ColProps) => JSX.Element;
   handleClickDay: (e: DayInfo) => void;
 };
 
-export type RenderColProps = {
+export type ColProps = {
   selectedStart: Date | number | null;
   selectedEnd: Date | number | null;
   titles: Titles;
@@ -135,6 +135,7 @@ const Row = memo(
 
       const index = 7 * rowIndex + columnIndex;
       const dayInfo = data[index];
+
       const {
         day,
         isCurrentMonth,
@@ -325,6 +326,37 @@ function Grid({
   );
 }
 
+function checkOberbooking(
+  dayInfo: DayInfo,
+  selectedDays: Array<Date | number | null>,
+  isStart: boolean,
+  reserved: Reserved[]
+): string | null {
+  const [selectedStart, selectedEnd] = selectedDays;
+  const { day, isReserved, isPast } = dayInfo;
+
+  if (isPast) return "PAST";
+
+  if (isReserved) return "BOOKED";
+
+  if (!isStart && selectedStart && isBefore(day, selectedStart))
+    return "BEFORE_START";
+
+  if (isStart && !selectedStart && selectedEnd && isBefore(selectedEnd, day))
+    return "AFTER_END";
+
+  const isReservedBetween =
+    selectedStart &&
+    !!reserved.find((r) =>
+      isBetweenInterval(r.startDate, r.endDate, selectedStart, startOfDay(day))
+    );
+  if (isReservedBetween) {
+    return "BOOKED_BETWEEN";
+  }
+
+  return null;
+}
+
 function BookingCalendar({
   selectedStart,
   selectedEnd,
@@ -345,6 +377,17 @@ function BookingCalendar({
   ...props
 }: BookingCalendarProps) {
   const weekHeight = colHeight / 2;
+  const startMonth = format(dateOfStartMonth, "yyyy-MM");
+  const rangeMode = true;
+
+  const [selectedDays, setSelectedDays] = useState<Array<Date | number | null>>(
+    [null, null]
+  );
+
+  useEffect(() => {
+    if (!rangeMode) return;
+    setSelectedDays([selectedStart, selectedEnd]);
+  }, [rangeMode, selectedStart, selectedEnd]);
 
   const renderWeeks = () => {
     const dateFormat = "EEEEEE";
@@ -372,34 +415,16 @@ function BookingCalendar({
   const handleClickDay = (dayInfo: DayInfo) => {
     if (disabled) return;
 
-    const { day, isReserved, isPast } = dayInfo;
+    const { day } = dayInfo;
+    const overbookError = checkOberbooking(
+      dayInfo,
+      [selectedStart, selectedEnd],
+      isStart,
+      reserved
+    );
 
-    if (isPast) {
-      if (onOverbook) onOverbook(day, "PAST");
-      return;
-    }
-    if (isReserved) {
-      if (onOverbook) onOverbook(day, "BOOKED");
-      return;
-    }
-
-    if (!isStart && selectedStart && isBefore(day, selectedStart)) {
-      if (onOverbook) onOverbook(day, "BEFORE_START");
-      return;
-    }
-
-    const isReservedBetween =
-      selectedStart &&
-      !!reserved.find((r) =>
-        isBetweenInterval(
-          r.startDate,
-          r.endDate,
-          selectedStart,
-          startOfDay(day)
-        )
-      );
-    if (isReservedBetween) {
-      if (onOverbook) onOverbook(day, "BOOKED_BETWEEN");
+    if (overbookError) {
+      if (onOverbook) onOverbook(day, overbookError);
       return;
     }
 
@@ -407,11 +432,9 @@ function BookingCalendar({
     if (onChange && newSelected) onChange(newSelected);
   };
 
-  const dayOfStartMonth = format(dateOfStartMonth, "yyyy-MM-dd");
-
   const items = useMemo(
     () => createDays(dateOfStartMonth, numOfMonths, reserved),
-    [dayOfStartMonth, numOfMonths, reserved]
+    [startMonth, numOfMonths, reserved]
   );
 
   return (
@@ -426,8 +449,8 @@ function BookingCalendar({
             width={width}
             items={items}
             colHeight={colHeight}
-            selectedStart={selectedStart}
-            selectedEnd={selectedEnd}
+            selectedStart={selectedDays[0]}
+            selectedEnd={selectedDays[1]}
             titles={titles}
             scrollToDate={scrollToDate}
             dateFnsOptions={dateFnsOptions}
