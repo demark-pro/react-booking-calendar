@@ -125,6 +125,37 @@ const dateFnsOptionsInit: DateFnsOptions = {
   weekStartsOn: 1,
 };
 
+function checkOberbooking(
+  dayInfo: DayInfo,
+  selectedDates: Array<Date | number | null>,
+  isStart: boolean,
+  reserved: Reserved[]
+): string | null {
+  const [selectedStart, selectedEnd] = selectedDates;
+  const { day, isReserved, isPast } = dayInfo;
+
+  if (isPast) return PAST;
+
+  if (isReserved) return BOOKED;
+
+  if (!isStart && selectedStart && isBefore(day, selectedStart))
+    return BEFORE_START;
+
+  if (isStart && !selectedStart && selectedEnd && isBefore(selectedEnd, day))
+    return AFTER_END;
+
+  const isReservedBetween =
+    selectedStart &&
+    !!reserved.find((r) =>
+      isBetweenInterval(r.startDate, r.endDate, selectedStart, startOfDay(day))
+    );
+  if (isReservedBetween) {
+    return "BOOKED_BETWEEN";
+  }
+
+  return null;
+}
+
 const Row = memo(
   ({ renderDay, ...props }: GridChildComponentProps & RowProps) => {
     const renderCol = (): JSX.Element => {
@@ -331,37 +362,6 @@ function Grid({
       )}
     </FixedSizeGrid>
   );
-}
-
-function checkOberbooking(
-  dayInfo: DayInfo,
-  selectedDates: Array<Date | number | null>,
-  isStart: boolean,
-  reserved: Reserved[]
-): string | null {
-  const [selectedStart, selectedEnd] = selectedDates;
-  const { day, isReserved, isPast } = dayInfo;
-
-  if (isPast) return PAST;
-
-  if (isReserved) return BOOKED;
-
-  if (!isStart && selectedStart && isBefore(day, selectedStart))
-    return BEFORE_START;
-
-  if (isStart && !selectedStart && selectedEnd && isBefore(selectedEnd, day))
-    return AFTER_END;
-
-  const isReservedBetween =
-    selectedStart &&
-    !!reserved.find((r) =>
-      isBetweenInterval(r.startDate, r.endDate, selectedStart, startOfDay(day))
-    );
-  if (isReservedBetween) {
-    return "BOOKED_BETWEEN";
-  }
-
-  return null;
 }
 
 function BookingCalendar({
