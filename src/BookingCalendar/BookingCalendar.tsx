@@ -446,12 +446,16 @@ function BookingCalendar({
       return;
     }
 
-    const newSelected = getSelectedTime(day, reserved, startDate);
-    if (onChange && newSelected) onChange(newSelected);
+    const dayWithTime = getSelectedTime(day, reserved, startDate);
 
-    if (rangeMode && onChangeRange) {
-      onChangeRange([startDate || day, endDate || day]);
+    if (rangeMode) {
+      if (onChangeRange) {
+        onChangeRange([startDate || dayWithTime, endDate || dayWithTime]);
+      }
+      return;
     }
+
+    if (onChange && dayWithTime) onChange(dayWithTime);
   };
 
   const items = useMemo(
