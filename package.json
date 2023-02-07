@@ -1,6 +1,6 @@
 {
   "name": "@demark-pro/react-booking-calendar",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "react infinite booking calendar",
   "scripts": {
     "rollup": "rollup -c",
