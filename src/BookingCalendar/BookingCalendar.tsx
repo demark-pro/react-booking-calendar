@@ -73,7 +73,7 @@ export type BookingCalendarProps = {
   renderDay?: (e: ColProps) => JSX.Element;
   onOverbook?: (e: Date, errorType: string) => void;
   onChange?: (e: Date) => void;
-  onChangeRange?: (e: (number | Date | null)[]) => void;
+  onChangeRange?: (e: [Date | number, Date | number]) => void;
   className?: string;
 };
 
