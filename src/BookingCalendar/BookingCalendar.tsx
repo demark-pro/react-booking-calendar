@@ -424,7 +424,7 @@ function BookingCalendar({
     if (disabled) return;
     const { day } = dayInfo;
 
-    if (rangeMode && (!startDate || endDate)) {
+    if (rangeMode && ((!startDate && !endDate) || (startDate && endDate))) {
       setSelectedDates([day, null]);
       return;
     }
@@ -447,11 +447,10 @@ function BookingCalendar({
     }
 
     const newSelected = getSelectedTime(day, reserved, startDate);
-    console.log(newSelected, isStart);
     if (onChange && newSelected) onChange(newSelected);
 
     if (rangeMode && onChangeRange) {
-      onChangeRange([startDate, day]);
+      onChangeRange([startDate || day, endDate || day]);
     }
   };
 
