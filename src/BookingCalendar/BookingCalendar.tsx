@@ -57,8 +57,8 @@ export interface DateFnsOptions {
 }
 
 export type BookingCalendarProps = {
-  selectedStart: Date | number | null;
-  selectedEnd: Date | number | null;
+  selectedStart?: Date | number | null;
+  selectedEnd?: Date | number | null;
   isStart?: boolean;
   dateOfStartMonth?: Date | number;
   numOfMonths?: number;
@@ -69,9 +69,11 @@ export type BookingCalendarProps = {
   disabled?: boolean;
   scrollToDate?: Date | number | null;
   dateFnsOptions?: DateFnsOptions;
+  rangeMode?: boolean;
   renderDay?: (e: ColProps) => JSX.Element;
   onOverbook?: (e: Date, errorType: string) => void;
   onChange?: (e: Date) => void;
+  onChangeRange?: (e: (number | Date | null)[]) => void;
   className?: string;
 };
 
@@ -107,6 +109,11 @@ export type ColProps = {
   dateFnsOptions?: DateFnsOptions;
   handleClickDay: (e: DayInfo) => void;
 };
+
+const PAST = "PAST";
+const BOOKED = "BOOKED";
+const BEFORE_START = "BEFORE_START";
+const AFTER_END = "AFTER_END";
 
 const titlesInit: Titles = {
   dayFooterStart: "check-in",
@@ -328,22 +335,22 @@ function Grid({
 
 function checkOberbooking(
   dayInfo: DayInfo,
-  selectedDays: Array<Date | number | null>,
+  selectedDates: Array<Date | number | null>,
   isStart: boolean,
   reserved: Reserved[]
 ): string | null {
-  const [selectedStart, selectedEnd] = selectedDays;
+  const [selectedStart, selectedEnd] = selectedDates;
   const { day, isReserved, isPast } = dayInfo;
 
-  if (isPast) return "PAST";
+  if (isPast) return PAST;
 
-  if (isReserved) return "BOOKED";
+  if (isReserved) return BOOKED;
 
   if (!isStart && selectedStart && isBefore(day, selectedStart))
-    return "BEFORE_START";
+    return BEFORE_START;
 
   if (isStart && !selectedStart && selectedEnd && isBefore(selectedEnd, day))
-    return "AFTER_END";
+    return AFTER_END;
 
   const isReservedBetween =
     selectedStart &&
@@ -358,8 +365,8 @@ function checkOberbooking(
 }
 
 function BookingCalendar({
-  selectedStart,
-  selectedEnd,
+  selectedStart = null,
+  selectedEnd = null,
   isStart = true,
   dateOfStartMonth = new Date(),
   numOfMonths = 12,
@@ -368,26 +375,27 @@ function BookingCalendar({
   reserved = [],
   titles = titlesInit,
   disabled = false,
-  scrollToDate,
+  scrollToDate = null,
   dateFnsOptions = dateFnsOptionsInit,
+  rangeMode = false,
   renderDay,
   onOverbook,
   onChange,
+  onChangeRange,
   className = "",
   ...props
 }: BookingCalendarProps) {
   const weekHeight = colHeight / 2;
   const startMonth = format(dateOfStartMonth, "yyyy-MM");
-  const rangeMode = true;
 
-  const [selectedDays, setSelectedDays] = useState<Array<Date | number | null>>(
-    [null, null]
-  );
+  const [selectedDates, setSelectedDates] = useState<
+    Array<Date | number | null>
+  >([null, null]);
+  const [startDate, endDate] = selectedDates;
 
   useEffect(() => {
-    if (!rangeMode) return;
-    setSelectedDays([selectedStart, selectedEnd]);
-  }, [rangeMode, selectedStart, selectedEnd]);
+    setSelectedDates([selectedStart, selectedEnd]);
+  }, [selectedStart, selectedEnd]);
 
   const renderWeeks = () => {
     const dateFormat = "EEEEEE";
@@ -414,22 +422,37 @@ function BookingCalendar({
 
   const handleClickDay = (dayInfo: DayInfo) => {
     if (disabled) return;
-
     const { day } = dayInfo;
+
+    if (rangeMode && (!startDate || endDate)) {
+      setSelectedDates([day, null]);
+      return;
+    }
+
     const overbookError = checkOberbooking(
       dayInfo,
-      [selectedStart, selectedEnd],
-      isStart,
+      selectedDates,
+      rangeMode ? !startDate : isStart,
       reserved
     );
 
     if (overbookError) {
+      if (rangeMode && overbookError === BEFORE_START) {
+        setSelectedDates([day, null]);
+        return;
+      }
+
       if (onOverbook) onOverbook(day, overbookError);
       return;
     }
 
-    const newSelected = getSelectedTime(day, reserved, selectedStart);
+    const newSelected = getSelectedTime(day, reserved, startDate);
+    console.log(newSelected, isStart);
     if (onChange && newSelected) onChange(newSelected);
+
+    if (rangeMode && onChangeRange) {
+      onChangeRange([startDate, day]);
+    }
   };
 
   const items = useMemo(
@@ -449,8 +472,8 @@ function BookingCalendar({
             width={width}
             items={items}
             colHeight={colHeight}
-            selectedStart={selectedDays[0]}
-            selectedEnd={selectedDays[1]}
+            selectedStart={startDate}
+            selectedEnd={endDate}
             titles={titles}
             scrollToDate={scrollToDate}
             dateFnsOptions={dateFnsOptions}
