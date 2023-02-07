@@ -62,7 +62,6 @@ const MyBookingCalendar = () => {
 | scrollToDate      | Date / number / null |                     | Scroll to desired week                                              |
 | dateFnsOptions    | Object               | `{weekStartsOn: 1}` | Read more date-fns documentation                                    |
 | rangeMode         | boolean              | false               | With range mode use onChangeRange                                   |
-| rangeMode         | boolean              | false               | With range mode use onChangeRange                                   |
 | renderDay         | Func                 |                     | Must return JSX.Element                                             |
 | className         | string               |                     | Class name(s) main Calendar `<div>` element                         |
 | disabled          | boolean              | false               | Ignore `onChange`                                                   |
