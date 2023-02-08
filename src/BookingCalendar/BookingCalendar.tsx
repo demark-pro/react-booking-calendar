@@ -423,11 +423,6 @@ function BookingCalendar({
     if (disabled) return;
     const { day } = dayInfo;
 
-    if (rangeMode && ((!startDate && !endDate) || (startDate && endDate))) {
-      setSelectedDates([day, null]);
-      return;
-    }
-
     const overbookError = checkOberbooking(
       dayInfo,
       selectedDates,
@@ -435,13 +430,24 @@ function BookingCalendar({
       reserved
     );
 
+    if (rangeMode) {
+      if ((!startDate && !endDate) || (startDate && endDate)) {
+        if (overbookError !== BOOKED) {
+          setSelectedDates([day, null]);
+          return;
+        }
+      }
+    }
+
     if (overbookError) {
-      if (
-        rangeMode &&
-        (overbookError === BOOKED_BETWEEN || overbookError === BEFORE_START)
-      ) {
-        setSelectedDates([day, null]);
-        return;
+      if (rangeMode) {
+        if (
+          overbookError === BOOKED_BETWEEN ||
+          overbookError === BEFORE_START
+        ) {
+          setSelectedDates([day, null]);
+          return;
+        }
       }
 
       if (onOverbook) onOverbook(day, overbookError);
