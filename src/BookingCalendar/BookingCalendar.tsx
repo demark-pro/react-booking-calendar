@@ -307,20 +307,17 @@ function Grid({
 }: BookingCalendarGridProps) {
   const listRef = useRef<FixedSizeGrid>(null);
 
-  const calculateScroll = useMemo(() => {
-    if (!scrollToDate) return 0;
+  useEffect(() => {
+    if (!scrollToDate) return;
 
-    return (
+    const rowIndex =
       differenceInCalendarWeeks(scrollToDate, startOfMonth(dateOfStartMonth)) +
       differenceInCalendarMonths(scrollToDate, startOfMonth(dateOfStartMonth)) +
-      1
-    );
-  }, [scrollToDate]);
+      1;
 
-  useEffect(() => {
     listRef?.current?.scrollToItem({
       align: "start",
-      rowIndex: calculateScroll,
+      rowIndex,
     });
   }, [scrollToDate]);
 
