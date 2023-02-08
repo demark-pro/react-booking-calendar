@@ -6,7 +6,7 @@
     "rollup": "rollup -c",
     "test": "jest"
   },
-  "author": "@demarkpro",
+  "author": "Mark Davydkin @demark-pro",
   "license": "MIT",
   "keywords": [
     "react",
