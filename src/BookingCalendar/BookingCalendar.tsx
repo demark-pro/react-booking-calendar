@@ -39,9 +39,9 @@ export interface DayInfo {
 }
 
 export interface Titles {
-  dayFooterStart: string;
-  dayFooterEnd: string;
-  reservedFooter: string;
+  dayFooterStart: string | JSX.Element;
+  dayFooterEnd: string | JSX.Element;
+  reservedFooter: string | JSX.Element;
 }
 
 export interface GetReservedInfoOfDate {
@@ -234,7 +234,7 @@ const Row = memo(
       }
 
       const reservedDate = reservedStart || reservedEnd;
-      let footerText: string = "";
+      let footerText: string | JSX.Element = "";
 
       if (isReserved) footerText = titles.reservedFooter;
 
