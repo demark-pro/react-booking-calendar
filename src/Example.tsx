@@ -1,3 +1,5 @@
+/// <reference lib="es2017.object" />
+
 import BookingCalendar from "@demark-pro/react-booking-calendar";
 import { parse, format, addDays } from "date-fns";
 import { useState } from "react";
