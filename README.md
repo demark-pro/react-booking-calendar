@@ -2,15 +2,29 @@
 
 A responsive customizable React infinite calendar with overbooking protection.
 
-[DEMO](https://demark-pro.github.io/react-booking-calendar-demo/)
+![](https://media.giphy.com/media/GbZsTiqONHQ65ZcUNv/giphy.gif)
 
-## Installation
+## Demo
 
-```bash
-npm i @demark-pro/react-booking-calendar
-```
+[Online demo](https://demark-pro.github.io/react-booking-calendar-demo/) is also available!
 
-## Usage
+## Getting started
+
+#### How can I use another locale?
+
+If you want to use a different locale, you need to pass the dateFnsOptions parameter to the locale. Read more [date-fns](https://date-fns.org/v2.29.3/docs/I18n-Contribution-Guide#choosing-a-directory-name-for-a-locale)
+
+#### Why are two different props used instead of an array of dates?
+
+This is necessary if you want to call the calendar in two different places. For example: check-in date selection button and check-out date selection button. Where for the first you have to pass `isStart=true` and `isStart=false`
+
+### Installation
+
+Add React-Booking-Calendar to your project by executing `npm i @demark-pro/react-booking-calendar --save`.
+
+### Usage
+
+Here's an example of usage with rangeMode:
 
 ```js
 import React, { useState } from "react";
@@ -24,27 +38,23 @@ const reserved = [
 ];
 
 const MyBookingCalendar = () => {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [selectedDates, setSelectedDays] = useState([null, null]);
+  const [startDate, endDate] = selectedDates;
 
-  const handleChange = (e) => (isStart ? setStartDate(e) : setEndDate(e));
-  const isStart = !startDate;
+  const handleChange = (e) => setSelectedDays(e);
 
   return (
     <BookingCalendar
       selectedStart={startDate}
       selectedEnd={endDate}
-      isStart={isStart}
       reserved={reserved}
-      onChange={handleChange}
+      onChangeRange={handleChange}
       onOverbook={(e, err) => alert(err)}
-      numOfMonths={1000}
+      rangeMode
     />
   );
 };
 ```
-
-![](https://media.giphy.com/media/GbZsTiqONHQ65ZcUNv/giphy.gif)
 
 ## Options
 
