@@ -310,14 +310,17 @@ function Grid({
   useEffect(() => {
     if (!scrollToDate) return;
 
-    const rowIndex =
-      differenceInCalendarWeeks(scrollToDate, startOfMonth(dateOfStartMonth)) +
-      differenceInCalendarMonths(scrollToDate, startOfMonth(dateOfStartMonth)) +
-      1;
+    const diffWeeks = differenceInCalendarWeeks(
+      scrollToDate,
+      startOfMonth(dateOfStartMonth)
+    );
+    const diffMonths =
+      differenceInCalendarMonths(scrollToDate, startOfMonth(dateOfStartMonth)) *
+      2;
 
     listRef?.current?.scrollToItem({
       align: "start",
-      rowIndex,
+      rowIndex: diffWeeks + diffMonths,
     });
   }, [scrollToDate]);
 
