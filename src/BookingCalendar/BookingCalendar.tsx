@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useState, useEffect, useMemo, useRef } from "react";
 
 import isSameDay from "date-fns/isSameDay";
 import isBefore from "date-fns/isBefore";
@@ -17,7 +17,6 @@ import AutoSizer from "react-virtualized-auto-sizer";
 
 import styles from "./BookingCalendar.module.css";
 import { createDays, isBetween, isBetweenInterval } from "../helpers";
-import { useEffect, useMemo, useRef } from "react";
 import { getSelectedTime } from "../utils/getSelectedTime";
 
 export interface Reserved {
