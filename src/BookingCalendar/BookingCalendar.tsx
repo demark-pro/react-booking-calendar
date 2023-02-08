@@ -114,6 +114,7 @@ const PAST = "PAST";
 const BOOKED = "BOOKED";
 const BEFORE_START = "BEFORE_START";
 const AFTER_END = "AFTER_END";
+const BOOKED_BETWEEN = "BOOKED_BETWEEN";
 
 const titlesInit: Titles = {
   dayFooterStart: "check-in",
@@ -149,9 +150,7 @@ function checkOberbooking(
     !!reserved.find((r) =>
       isBetweenInterval(r.startDate, r.endDate, selectedStart, startOfDay(day))
     );
-  if (isReservedBetween) {
-    return "BOOKED_BETWEEN";
-  }
+  if (isReservedBetween) return BOOKED_BETWEEN;
 
   return null;
 }
@@ -437,7 +436,10 @@ function BookingCalendar({
     );
 
     if (overbookError) {
-      if (rangeMode) {
+      if (
+        rangeMode &&
+        (overbookError === BOOKED_BETWEEN || overbookError === BEFORE_START)
+      ) {
         setSelectedDates([day, null]);
         return;
       }
