@@ -6,6 +6,8 @@ A responsive customizable React infinite calendar with overbooking protection.
 
 ## Demo
 
+A minimal demo page can be found in [example](https://github.com/demark-pro/react-booking-calendar/tree/main/example) directory.
+
 [Online demo](https://demark-pro.github.io/react-booking-calendar/) is also available!
 
 ## Getting started
