@@ -1,6 +1,6 @@
 # React Booking Calendar
 
-A responsive customizable React infinite booking calendar and overbooking protection
+A responsive customizable React infinite calendar with overbooking protection.
 
 [DEMO](https://demark-pro.github.io/react-booking-calendar-demo/)
 
