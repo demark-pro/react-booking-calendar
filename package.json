@@ -1,6 +1,6 @@
 {
   "name": "@demark-pro/react-booking-calendar",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "A responsive customizable React infinite calendar with overbooking protection.",
   "scripts": {
     "rollup": "rollup -c",
