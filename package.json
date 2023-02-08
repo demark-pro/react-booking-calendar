@@ -1,7 +1,7 @@
 {
   "name": "@demark-pro/react-booking-calendar",
   "version": "1.2.7",
-  "description": "react infinite booking calendar",
+  "description": "A responsive customizable React infinite calendar with overbooking protection.",
   "scripts": {
     "rollup": "rollup -c",
     "test": "jest"
@@ -40,8 +40,8 @@
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    "react": ">=16",
+    "react-dom": ">=16"
   },
   "dependencies": {
     "date-fns": "^2.29.3",
