@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "start": "parcel src/index.html"
+        "start": "parcel index.html"
     },
     "devDependencies": {
         "@demark-pro/react-booking-calendar": "^1.2.7",
