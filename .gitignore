@@ -1,10 +1,5 @@
-dist
 node_modules
+.parcel-cache
+dist
 
-# Cache and IDE-related files
-.cache
-.idea
-
-# Other
-**/.DS_Store
-**/.env
+.DS_Store
