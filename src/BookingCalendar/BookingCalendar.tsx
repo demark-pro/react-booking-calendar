@@ -437,7 +437,7 @@ function BookingCalendar({
     );
 
     if (overbookError) {
-      if (rangeMode && overbookError === BEFORE_START) {
+      if (rangeMode) {
         setSelectedDates([day, null]);
         return;
       }
