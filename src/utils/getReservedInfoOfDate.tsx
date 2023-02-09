@@ -1,11 +1,11 @@
 import { differenceInMinutes, endOfDay, isSameDay, startOfDay } from "date-fns";
-import { GetReservedInfoOfDate, Reserved } from "../types";
+import { ReservedInfoOfDate, Reserved } from "../types";
 
 export function getReservedInfoOfDate(
   date: Date | number,
   reserved: Reserved[],
   isStart: boolean = false
-): GetReservedInfoOfDate {
+): ReservedInfoOfDate {
   const reservedInfo = {
     reserved: false,
     startDate: startOfDay(date),

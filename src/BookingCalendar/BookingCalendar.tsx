@@ -23,7 +23,7 @@ import {
   DateFnsOptions,
   DayInfo,
   Reserved,
-  RowProps,
+  BookingCalendarGridRowProps,
   Titles,
 } from "../types";
 
@@ -75,7 +75,10 @@ function checkOberbooking(
 }
 
 const Row = memo(
-  ({ renderDay, ...props }: GridChildComponentProps & RowProps) => {
+  ({
+    renderDay,
+    ...props
+  }: GridChildComponentProps & BookingCalendarGridRowProps) => {
     const renderCol = (): JSX.Element => {
       const {
         selectedStart,

@@ -22,7 +22,7 @@ export interface Titles {
   reservedFooter: string | JSX.Element;
 }
 
-export interface GetReservedInfoOfDate {
+export interface ReservedInfoOfDate {
   reserved: boolean;
   startDate: Date;
   endDate: Date;
@@ -71,7 +71,7 @@ export type BookingCalendarGridProps = {
   handleClickDay: (e: DayInfo) => void;
 };
 
-export type RowProps = {
+export type BookingCalendarGridRowProps = {
   selectedStart: Date | number | null;
   selectedEnd: Date | number | null;
   titles: Titles;
