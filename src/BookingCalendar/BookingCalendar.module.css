@@ -83,6 +83,8 @@
   cursor: pointer;
   user-select: none;
   border-top: 1px solid #eaeaea;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .day_col_header,
