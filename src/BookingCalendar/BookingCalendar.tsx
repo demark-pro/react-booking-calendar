@@ -166,8 +166,6 @@ const Cell = memo((props: GridChildComponentProps): JSX.Element => {
 
   day = { ...day, header, footer, month };
 
-  if (renderDay) return renderDay({ ...day, style });
-
   // empty col
   if (!day.isSameMonth) {
     return (
@@ -178,6 +176,8 @@ const Cell = memo((props: GridChildComponentProps): JSX.Element => {
       />
     );
   }
+
+  if (renderDay) return renderDay({ ...day, style });
 
   return (
     <div

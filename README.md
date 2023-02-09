@@ -1,3 +1,5 @@
+[![npm](https://img.shields.io/npm/v/@demark-pro/react-booking-calendar)](https://www.npmjs.com/package/@demark-pro/react-booking-calendar)
+
 # React Booking Calendar
 
 A responsive customizable React infinite calendar with overbooking protection.
@@ -80,6 +82,60 @@ const MyBookingCalendar = () => {
 | onOverbook        | Func                 |                     | Returns date and type of overbooking error                          |
 | onChange          | Func                 |                     | Callback after date selection. Return selected date (e: Date)       |
 | onChangeRange     | Func                 |                     | Callback after end date selection.Return selected dates (e: Date[]) |
+
+## Styles
+
+You can pass your `renderDay` function with the following signature:
+
+```ts
+{
+  date: Date;
+  text?: string;
+  classNames?: (string | never)[];
+  isStartMonth?: boolean;
+  isSameMonth: boolean;
+  isSameYear?: boolean;
+  reservedStart?: Date | null;
+  reservedEnd?: Date | null;
+  isReserved?: boolean;
+  isPast?: boolean;
+  isToday?: boolean;
+  header: {
+    classNames: string[];
+    text: string | JSX.Element;
+    visible: boolean;
+  },
+  footer: {
+    classNames: string[];
+    text: string | JSX.Element;
+    visible: boolean;
+  },
+  month: {
+    classNames: string[];
+    text: string;
+    yearText: string | null;
+  } | null,
+  style,
+  handleClick?: (e: DayInfo) => void;
+}
+```
+
+Important, you need to pass the style prop to the parent element(used for positioning react-window).
+For example:
+
+```js
+<BookingCalendar
+  renderDay={({ style, ...day }) => (
+    <div
+      className={["my-class", ...day.classNames].join(" ")}
+      styles={{ ...customStyle, ...style }}
+    >
+      {day.month && <div className="my-month-class">{day.month.text}</div>}
+      <span style={{ color: isReserved ? "red" : "black" }}>{day.text}</span>
+    </div>
+  )}
+/>
+```
 
 ## Utils
 
