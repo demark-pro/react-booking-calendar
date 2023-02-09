@@ -2,7 +2,6 @@ import isSameDay from "date-fns/isSameDay";
 import isBefore from "date-fns/isBefore";
 import isAfter from "date-fns/isAfter";
 import isEqual from "date-fns/isEqual";
-import isSameMonth from "date-fns/isSameMonth";
 import startOfDay from "date-fns/startOfDay";
 import endOfDay from "date-fns/endOfDay";
 import addMonths from "date-fns/addMonths";
@@ -12,10 +11,10 @@ import endOfMonth from "date-fns/endOfMonth";
 import startOfWeek from "date-fns/startOfWeek";
 import endOfWeek from "date-fns/endOfWeek";
 import addDays from "date-fns/addDays";
-import getDay from "date-fns/getDay";
 import format from "date-fns/format";
+import isSameMonth from "date-fns/isSameMonth";
 
-import { Reserved, DayInfo } from "./types";
+import { Reserved, DayInfo, DaysProps } from "./types";
 import { getReservedInfoOfDate } from "./utils/getReservedInfoOfDate";
 
 export const isBetween = (
@@ -61,14 +60,14 @@ export const isBetweenInterval = (
   );
 };
 
-export const createDays = (
-  startMonth: Date | number,
-  numOfMonths: number,
-  reserved: Array<Reserved>
-): DayInfo[] => {
+export const createDays = ({
+  dateOfStartMonth,
+  numOfMonths,
+  reserved,
+}: DaysProps): DayInfo[] => {
   let days: DayInfo[] = [];
   for (let i in Array.from({ length: numOfMonths })) {
-    const currentMonth = addMonths(startMonth, +i);
+    const currentMonth = addMonths(dateOfStartMonth, +i);
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(currentMonth);
     const weekStart = startOfWeek(monthStart, { weekStartsOn: 1 });
@@ -77,8 +76,8 @@ export const createDays = (
     days = [
       ...days,
       ...Array.from({ length: 7 }).map((i) => ({
-        day: addDays(weekEnd, 1),
-        monthStart,
+        date: addDays(weekEnd, 1),
+        isSameMonth: false,
       })),
     ];
 
@@ -89,27 +88,32 @@ export const createDays = (
       // prettier-ignore
       const reservedStart = getReservedInfoOfDate(startOfDay(cloneDay), reserved, true);
       const reservedEnd = getReservedInfoOfDate(endOfDay(cloneDay), reserved);
+      const isReserved = !!reserved.find(
+        (d) =>
+          isBetween(endOfDay(cloneDay), d.startDate, d.endDate, "[]") &&
+          isBetween(startOfDay(cloneDay), d.startDate, d.endDate, "[]")
+      );
+      const isToday = isSameDay(cloneDay, new Date());
+      const isPast = isBefore(cloneDay, new Date());
 
-      days.push({
-        day: cloneDay,
-        dayText: format(cloneDay, "d"),
-        monthStart,
-        isWeekend: getDay(cloneDay) > 4,
-        isCurrentMonth: isSameMonth(cloneDay, monthStart),
-        isCurrentYear: isSameYear(new Date(), monthStart),
-        isToday: isSameDay(cloneDay, new Date()),
-        isPast: isBefore(cloneDay, new Date()),
-        isReserved: !!reserved.find(
-          (d) =>
-            isBetween(endOfDay(cloneDay), d.startDate, d.endDate, "[]") &&
-            isBetween(startOfDay(cloneDay), d.startDate, d.endDate, "[]")
-        ),
+      const dayObj = {
+        date: cloneDay,
+        text: format(cloneDay, "d"),
+        isStartMonth: isSameDay(cloneDay, monthStart),
+        isSameMonth: isSameMonth(cloneDay, monthStart),
+        isSameYear: isSameYear(cloneDay, new Date()),
         reservedStart: reservedStart.reserved ? reservedStart.startDate : null,
         reservedEnd: reservedEnd.reserved ? reservedEnd.endDate : null,
-      });
+        isReserved,
+        isPast,
+        isToday,
+      };
 
+      // push
+      days.push(dayObj);
       day = addDays(cloneDay, 1);
     }
   }
+
   return days;
 };

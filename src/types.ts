@@ -1,22 +1,38 @@
-import { GridChildComponentProps } from "react-window";
-
 export interface Reserved {
   startDate: Date | number;
   endDate: Date | number;
 }
 
+export interface DayInfoHeader {
+  classNames: string[];
+  text: string | JSX.Element;
+  visible: boolean;
+}
+export interface DayInfoFooter {
+  classNames: string[];
+  text: string | JSX.Element;
+  visible: boolean;
+}
+
+export interface DayInfoMonth {
+  classNames: string[];
+  text: string;
+  yearText: string | null;
+}
+
 export interface DayInfo {
-  day: Date;
-  dayText?: string;
-  monthStart: Date;
-  isWeekend?: boolean;
-  isCurrentMonth?: boolean;
-  isCurrentYear?: boolean;
-  isToday?: boolean;
-  isPast?: boolean;
+  date: Date;
+  text?: string;
+  classNames?: (string | never)[];
+  isStartMonth?: boolean;
+  isSameMonth: boolean;
+  isSameYear?: boolean;
+  reservedStart?: Date | null;
+  reservedEnd?: Date | null;
   isReserved?: boolean;
-  reservedStart?: Date | number | null;
-  reservedEnd?: Date | number | null;
+  isPast?: boolean;
+  isToday?: boolean;
+  handleClick?: (e: DayInfo) => void;
 }
 
 export interface Titles {
@@ -37,6 +53,14 @@ export interface DateFnsOptions {
   firstWeekContainsDate?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
 }
 
+export type CalendarContextProps = {
+  selectedDates: Array<Date | number | null>;
+  dateFnsOptions: DateFnsOptions;
+  titles: Titles;
+  renderDay?: (e: DayInfo) => JSX.Element;
+  handleClickDay: (e: DayInfo) => void;
+};
+
 export type BookingCalendarProps = {
   selectedStart?: Date | number | null;
   selectedEnd?: Date | number | null;
@@ -51,7 +75,7 @@ export type BookingCalendarProps = {
   scrollToDate?: Date | number | null;
   dateFnsOptions?: DateFnsOptions;
   rangeMode?: boolean;
-  renderDay?: (e: GridChildComponentProps & CellProps) => JSX.Element;
+  renderDay?: (e: DayInfo) => JSX.Element;
   onOverbook?: (e: Date, errorType: string) => void;
   onChange?: (e: Date) => void;
   onChangeRange?: (e: [Date | number, Date | number]) => void;
@@ -66,19 +90,11 @@ export type GridProps = {
   items: Array<Object>;
   colHeight: number;
   scrollToDate?: Date | number | null;
-  selectedStart: Date | number | null;
-  selectedEnd: Date | number | null;
-  titles: Titles;
-  dateFnsOptions?: DateFnsOptions;
-  renderDay?: (e: GridChildComponentProps & CellProps) => JSX.Element;
-  handleClickDay: (e: DayInfo) => void;
+  renderDay?: (e: DayInfo) => JSX.Element;
 };
 
-export type CellProps = {
-  selectedStart: Date | number | null;
-  selectedEnd: Date | number | null;
-  titles: Titles;
-  dateFnsOptions?: DateFnsOptions;
-  renderDay?: (props: GridChildComponentProps & CellProps) => JSX.Element;
-  handleClickDay: (e: DayInfo) => void;
+export type DaysProps = {
+  dateOfStartMonth: Date | number;
+  numOfMonths: number;
+  reserved: Array<Reserved>;
 };

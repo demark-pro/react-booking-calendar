@@ -1,4 +1,8 @@
-import { differenceInMinutes, endOfDay, isSameDay, startOfDay } from "date-fns";
+import isSameDay from "date-fns/isSameDay";
+import startOfDay from "date-fns/startOfDay";
+import endOfDay from "date-fns/endOfDay";
+import differenceInMinutes from "date-fns/differenceInMinutes";
+
 import { ReservedInfoOfDate, Reserved } from "../types";
 
 export function getReservedInfoOfDate(
