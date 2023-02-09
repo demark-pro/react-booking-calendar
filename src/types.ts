@@ -1,3 +1,5 @@
+import { GridChildComponentProps } from "react-window";
+
 export interface Reserved {
   startDate: Date | number;
   endDate: Date | number;
@@ -49,14 +51,14 @@ export type BookingCalendarProps = {
   scrollToDate?: Date | number | null;
   dateFnsOptions?: DateFnsOptions;
   rangeMode?: boolean;
-  renderDay?: (e: ColProps) => JSX.Element;
+  renderDay?: (e: GridChildComponentProps & CellProps) => JSX.Element;
   onOverbook?: (e: Date, errorType: string) => void;
   onChange?: (e: Date) => void;
   onChangeRange?: (e: [Date | number, Date | number]) => void;
   className?: string;
 };
 
-export type BookingCalendarGridProps = {
+export type GridProps = {
   dateOfStartMonth: Date | number;
   overscanWeekCount: number;
   width: number;
@@ -68,23 +70,15 @@ export type BookingCalendarGridProps = {
   selectedEnd: Date | number | null;
   titles: Titles;
   dateFnsOptions?: DateFnsOptions;
-  renderDay?: (e: ColProps) => JSX.Element;
+  renderDay?: (e: GridChildComponentProps & CellProps) => JSX.Element;
   handleClickDay: (e: DayInfo) => void;
 };
 
-export type BookingCalendarGridRowProps = {
+export type CellProps = {
   selectedStart: Date | number | null;
   selectedEnd: Date | number | null;
   titles: Titles;
   dateFnsOptions?: DateFnsOptions;
-  renderDay?: (e: ColProps) => JSX.Element;
-  handleClickDay: (e: DayInfo) => void;
-};
-
-export type ColProps = {
-  selectedStart: Date | number | null;
-  selectedEnd: Date | number | null;
-  titles: Titles;
-  dateFnsOptions?: DateFnsOptions;
+  renderDay?: (props: GridChildComponentProps & CellProps) => JSX.Element;
   handleClickDay: (e: DayInfo) => void;
 };
