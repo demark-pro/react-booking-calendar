@@ -5,6 +5,7 @@ export interface Reserved {
 
 export interface DayInfo {
   day: Date;
+  dayText?: string;
   monthStart: Date;
   isWeekend?: boolean;
   isCurrentMonth?: boolean;

@@ -97,6 +97,7 @@ const Row = memo(
 
       const {
         day,
+        dayText,
         isCurrentMonth,
         isReserved,
         isToday,
@@ -189,7 +190,7 @@ const Row = memo(
             </div>
           )}
           {dayHeader && dayHeader}
-          <span className={styles.day_col_date}>{format(day, "d")}</span>
+          <span className={styles.day_col_date}>{dayText}</span>
           <span className={footerClassNames.join(" ")}>{footerText}</span>
           {(isSelectedStart || isSelectedEnd) && (
             <div className={styles.selected_event} />

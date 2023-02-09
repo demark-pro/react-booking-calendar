@@ -13,6 +13,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import endOfWeek from "date-fns/endOfWeek";
 import addDays from "date-fns/addDays";
 import getDay from "date-fns/getDay";
+import format from "date-fns/format";
 
 import { Reserved, DayInfo } from "./types";
 import { getReservedInfoOfDate } from "./utils/getReservedInfoOfDate";
@@ -91,6 +92,7 @@ export const createDays = (
 
       days.push({
         day: cloneDay,
+        dayText: format(cloneDay, "d"),
         monthStart,
         isWeekend: getDay(cloneDay) > 4,
         isCurrentMonth: isSameMonth(cloneDay, monthStart),
