@@ -40,7 +40,7 @@ function Example() {
     selectedEnd: null,
     isStart: true,
     dateOfStartMonth: new Date(),
-    numOfMonths: 12,
+    numOfMonths: 100,
     scrollToDate: null,
     rangeMode: true,
     disabled: false,
