@@ -165,11 +165,6 @@
   bottom: 5px;
 }
 
-.day_col.selected .day_col_footer {
-  font-size: 10px;
-  bottom: 5px;
-}
-
 .day_col.today:not(.selected) .day_col_date,
 .day_col.today:not(.selected) span {
   color: #0d6efd !important;

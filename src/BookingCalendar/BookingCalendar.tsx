@@ -166,7 +166,6 @@ const Cell = memo(
     }
 
     if (reservedDate) {
-      footerClassNames.push(styles.text_normal);
       footerText = format(reservedDate, "HH:mm");
     }
 
