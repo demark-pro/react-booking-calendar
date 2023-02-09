@@ -14,7 +14,7 @@ import endOfWeek from "date-fns/endOfWeek";
 import addDays from "date-fns/addDays";
 import getDay from "date-fns/getDay";
 
-import { Reserved, DayInfo } from "./BookingCalendar/BookingCalendar";
+import { Reserved, DayInfo } from "./types";
 import { getReservedInfoOfDate } from "./utils/getReservedInfoOfDate";
 
 export const isBetween = (

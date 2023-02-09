@@ -1,8 +1,5 @@
 import { differenceInMinutes, endOfDay, isSameDay, startOfDay } from "date-fns";
-import {
-  GetReservedInfoOfDate,
-  Reserved,
-} from "../BookingCalendar/BookingCalendar";
+import { GetReservedInfoOfDate, Reserved } from "../types";
 
 export function getReservedInfoOfDate(
   date: Date | number,

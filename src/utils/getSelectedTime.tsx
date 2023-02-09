@@ -1,5 +1,5 @@
 import { endOfDay, isAfter, startOfDay } from "date-fns";
-import { Reserved } from "../BookingCalendar/BookingCalendar";
+import { Reserved } from "../types";
 import { isBetweenInterval } from "../helpers";
 import { getReservedInfoOfDate } from "./getReservedInfoOfDate";
 
