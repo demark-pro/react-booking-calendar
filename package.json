@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/demark-pro/react-booking-calendar#readme",
   "devDependencies": {
-    "@demark-pro/react-booking-calendar": "^2.0.1",
+    "@demark-pro/react-booking-calendar": "^2.0.2",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "parcel": "^2.8.3",
