@@ -1,3 +1,5 @@
+import { GridOnScrollProps } from "react-window";
+
 export interface Reserved {
   startDate: Date | number;
   endDate: Date | number;
@@ -79,6 +81,7 @@ export type BookingCalendarProps = {
   onOverbook?: (e: Date, errorType: string) => void;
   onChange?: (e: Date) => void;
   onChangeRange?: (e: [Date | number, Date | number]) => void;
+  onScroll?: (e: GridOnScrollProps) => void;
   className?: string;
 };
 
@@ -90,7 +93,7 @@ export type GridProps = {
   items: Array<Object>;
   colHeight: number;
   scrollToDate?: Date | number | null;
-  renderDay?: (e: DayInfo) => JSX.Element;
+  onScroll?: (e: GridOnScrollProps) => void;
 };
 
 export type DaysProps = {

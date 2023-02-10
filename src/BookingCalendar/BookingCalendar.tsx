@@ -228,6 +228,7 @@ function Grid({
   items,
   colHeight,
   scrollToDate,
+  onScroll,
 }: GridProps) {
   const listRef = useRef<FixedSizeGrid>(null);
 
@@ -271,6 +272,7 @@ function Grid({
       width={width}
       className={styles.grid}
       overscanRowCount={calcWeekWithMonths}
+      onScroll={onScroll}
     >
       {Cell}
     </FixedSizeGrid>
@@ -295,6 +297,7 @@ function BookingCalendar({
   onOverbook,
   onChange,
   onChangeRange,
+  onScroll,
   className = "",
   ...props
 }: BookingCalendarProps) {
@@ -412,6 +415,7 @@ function BookingCalendar({
               items={items}
               colHeight={colHeight}
               scrollToDate={scrollToDate}
+              onScroll={onScroll}
             />
           )}
         </AutoSizer>
