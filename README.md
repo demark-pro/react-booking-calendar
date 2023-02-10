@@ -1,10 +1,18 @@
 [![npm](https://img.shields.io/npm/v/@demark-pro/react-booking-calendar)](https://www.npmjs.com/package/@demark-pro/react-booking-calendar)
 
-# React Booking Calendar
+<div align="center">
+    <h2>React Booking Calendar</h2>
+    <p align="center">
+        <p>A responsive customizable React infinite calendar with overbooking protection.</p>
+        <p>This is based on the work of <a href="https://frappe.github.io/gantt"><b>Frappe Gantt</b></a></p>
+    </p>
+</div>
 
-A responsive customizable React infinite calendar with overbooking protection.
-
-![](https://media.giphy.com/media/GbZsTiqONHQ65ZcUNv/giphy.gif)
+<p align="center">
+    <a href="https://frappe.github.io/gantt">
+        <img src="https://media.giphy.com/media/GbZsTiqONHQ65ZcUNv/giphy.gif">
+    </a>
+</p>
 
 ## Demo
 
