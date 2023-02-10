@@ -1,9 +1,11 @@
-[![npm](https://img.shields.io/npm/v/@demark-pro/react-booking-calendar)](https://www.npmjs.com/package/@demark-pro/react-booking-calendar)
 
 <div align="center">
     <h2>React Booking Calendar</h2>
     <p align="center">
         <p>A responsive customizable React infinite calendar with overbooking protection.</p>
+        <a href="https://www.npmjs.com/package/@demark-pro/react-booking-calendar" target="_blank">
+            <img src="https://img.shields.io/npm/v/@demark-pro/react-booking-calendar">
+        </a>
     </p>
 </div>
 
