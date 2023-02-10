@@ -4,7 +4,6 @@
     <h2>React Booking Calendar</h2>
     <p align="center">
         <p>A responsive customizable React infinite calendar with overbooking protection.</p>
-        <p>This is based on the work of <a href="https://frappe.github.io/gantt"><b>Frappe Gantt</b></a></p>
     </p>
 </div>
 
