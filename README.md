@@ -11,7 +11,7 @@
 
 <p align="center">
     <a href="https://frappe.github.io/gantt">
-        <img src="https://media.giphy.com/media/GbZsTiqONHQ65ZcUNv/giphy.gif">
+        <img src="https://media.giphy.com/media/a7duNBi2PPNrJmxv0b/giphy.gif">
     </a>
 </p>
 
