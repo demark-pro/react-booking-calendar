@@ -1,7 +1,7 @@
 import InfiniteCalendar from "./InfiniteCalendar/InfiniteCalendar";
 import { getReservedInfoOfDate } from "./utils/getReservedInfoOfDate";
-import { getSelectedTime } from "./utils/getSelectedTime";
+import { getTimeOfSelected } from "./utils/getTimeOfSelected";
 
-export { InfiniteCalendar, getReservedInfoOfDate, getSelectedTime };
+export { InfiniteCalendar, getReservedInfoOfDate, getTimeOfSelected };
 
 export default InfiniteCalendar;

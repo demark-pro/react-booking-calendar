@@ -25,7 +25,7 @@ import { areEqual, FixedSizeGrid, GridChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 import { createDays, isBetween, isBetweenInterval } from "../helpers";
-import { getSelectedTime } from "../utils/getSelectedTime";
+import { getTimeOfSelected } from "../utils/getTimeOfSelected";
 import {
   CalendarContextProps,
   InfiniteCalendarProps,
@@ -378,7 +378,7 @@ function InfiniteCalendar({
       return;
     }
 
-    const dayWithTime = getSelectedTime(date, reserved, startDate);
+    const dayWithTime = getTimeOfSelected(date, reserved, startDate);
 
     if (rangeMode) {
       if (onChangeRange) {

@@ -3,7 +3,7 @@ import { Reserved } from "../types";
 import { isBetweenInterval } from "../helpers";
 import { getReservedInfoOfDate } from "./getReservedInfoOfDate";
 
-export function getSelectedTime(
+export function getTimeOfSelected(
   date: Date | number,
   reservedDates: Reserved[],
   selectedStart?: Date | number | null
