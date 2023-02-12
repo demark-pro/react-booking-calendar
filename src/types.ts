@@ -34,6 +34,7 @@ export interface DayInfo {
   isReserved?: boolean;
   isPast?: boolean;
   isToday?: boolean;
+  rowIndex: number;
   handleClick?: (e: DayInfo) => void;
 }
 
@@ -90,7 +91,7 @@ export type GridProps = {
   overscanWeekCount: number;
   width: number;
   height: number;
-  items: Array<Object>;
+  items: Array<DayInfo>;
   colHeight: number;
   scrollToDate?: Date | number | null;
   onScroll?: (e: GridOnScrollProps) => void;

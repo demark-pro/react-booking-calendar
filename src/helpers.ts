@@ -14,7 +14,7 @@ import addDays from "date-fns/addDays";
 import format from "date-fns/format";
 import isSameMonth from "date-fns/isSameMonth";
 
-import { Reserved, DayInfo, DaysProps } from "./types";
+import { DayInfo, DaysProps } from "./types";
 import { getReservedInfoOfDate } from "./utils/getReservedInfoOfDate";
 
 export const isBetween = (
@@ -66,6 +66,8 @@ export const createDays = ({
   reserved,
 }: DaysProps): DayInfo[] => {
   let days: DayInfo[] = [];
+
+  let rowIndex = 0;
   for (let i in Array.from({ length: numOfMonths })) {
     const currentMonth = addMonths(dateOfStartMonth, +i);
     const monthStart = startOfMonth(currentMonth);
@@ -78,8 +80,10 @@ export const createDays = ({
       ...Array.from({ length: 7 }).map((i) => ({
         date: addDays(weekEnd, 1),
         isSameMonth: false,
+        rowIndex: -1,
       })),
     ];
+    rowIndex++;
 
     let day = weekStart;
     while (day <= weekEnd) {
@@ -93,21 +97,32 @@ export const createDays = ({
           isBetween(endOfDay(cloneDay), d.startDate, d.endDate, "[]") &&
           isBetween(startOfDay(cloneDay), d.startDate, d.endDate, "[]")
       );
+      const isStartMonth = isSameDay(cloneDay, monthStart);
+      const isCurrentMonth = isSameMonth(cloneDay, monthStart);
       const isToday = isSameDay(cloneDay, new Date());
       const isPast = isBefore(cloneDay, new Date());
+
+      // if (isStartMonth && !isSameDay(monthStart, weekStart)) {
+      //   rowIndex = rowIndex + 1;
+      // }
 
       const dayObj = {
         date: cloneDay,
         text: format(cloneDay, "d"),
-        isStartMonth: isSameDay(cloneDay, monthStart),
-        isSameMonth: isSameMonth(cloneDay, monthStart),
-        isSameYear: isSameYear(cloneDay, new Date()),
         reservedStart: reservedStart.reserved ? reservedStart.startDate : null,
         reservedEnd: reservedEnd.reserved ? reservedEnd.endDate : null,
         isReserved,
+        isSameYear: isSameYear(cloneDay, new Date()),
+        isSameMonth: isCurrentMonth,
+        isStartMonth,
         isPast,
         isToday,
+        rowIndex: isCurrentMonth ? rowIndex : -1,
       };
+
+      if (isSameDay(cloneDay, endOfWeek(cloneDay, { weekStartsOn: 1 }))) {
+        rowIndex = rowIndex + 1;
+      }
 
       // push
       days.push(dayObj);

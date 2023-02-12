@@ -233,7 +233,19 @@ function Grid({
   const listRef = useRef<FixedSizeGrid>(null);
 
   useEffect(() => {
-    if (!scrollToDate) return;
+    if (!scrollToDate || !items?.length) return;
+
+    const day = items.find(
+      (d) => isSameDay(d.date, scrollToDate) && d.rowIndex > -1
+    );
+
+    if (!!day && listRef?.current) {
+      console.log(day)
+      listRef.current.scrollToItem({
+        align: "start",
+        rowIndex: day.rowIndex,
+      });
+    }
 
     const diffWeeks = differenceInCalendarWeeks(
       scrollToDate,
@@ -242,11 +254,6 @@ function Grid({
     const diffMonths =
       differenceInCalendarMonths(scrollToDate, startOfMonth(dateOfStartMonth)) *
       2;
-
-    listRef?.current?.scrollToItem({
-      align: "start",
-      rowIndex: diffWeeks + diffMonths,
-    });
   }, [scrollToDate]);
 
   const calcWeekWithMonths = useMemo(
