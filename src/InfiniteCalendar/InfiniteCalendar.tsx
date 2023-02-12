@@ -28,7 +28,7 @@ import { createDays, isBetween, isBetweenInterval } from "../helpers";
 import { getSelectedTime } from "../utils/getSelectedTime";
 import {
   CalendarContextProps,
-  BookingCalendarProps,
+  InfiniteCalendarProps,
   GridProps,
   DateFnsOptions,
   DayInfo,
@@ -39,7 +39,7 @@ import {
   DayInfoMonth,
 } from "../types";
 
-import styles from "./BookingCalendar.module.css";
+import styles from "./InfiniteCalendar.module.css";
 
 const PAST = "PAST";
 const BOOKED = "BOOKED";
@@ -286,7 +286,7 @@ function Grid({
   );
 }
 
-function BookingCalendar({
+function InfiniteCalendar({
   selectedStart = null,
   selectedEnd = null,
   isStart = true,
@@ -307,7 +307,7 @@ function BookingCalendar({
   onScroll,
   className = "",
   ...props
-}: BookingCalendarProps) {
+}: InfiniteCalendarProps) {
   const weekHeight = colHeight / 2;
   const startMonth = format(dateOfStartMonth, "yyyy-MM");
 
@@ -431,4 +431,4 @@ function BookingCalendar({
   );
 }
 
-export default BookingCalendar;
+export default InfiniteCalendar;

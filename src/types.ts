@@ -64,7 +64,7 @@ export type CalendarContextProps = {
   handleClickDay: (e: DayInfo) => void;
 };
 
-export type BookingCalendarProps = {
+export type InfiniteCalendarProps = {
   selectedStart?: Date | number | null;
   selectedEnd?: Date | number | null;
   isStart?: boolean;

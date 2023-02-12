@@ -102,10 +102,6 @@ export const createDays = ({
       const isToday = isSameDay(cloneDay, new Date());
       const isPast = isBefore(cloneDay, new Date());
 
-      // if (isStartMonth && !isSameDay(monthStart, weekStart)) {
-      //   rowIndex = rowIndex + 1;
-      // }
-
       const dayObj = {
         date: cloneDay,
         text: format(cloneDay, "d"),

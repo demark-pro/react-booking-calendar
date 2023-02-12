@@ -1,7 +1,7 @@
-import BookingCalendar from "./BookingCalendar/BookingCalendar";
+import InfiniteCalendar from "./InfiniteCalendar/InfiniteCalendar";
 import { getReservedInfoOfDate } from "./utils/getReservedInfoOfDate";
 import { getSelectedTime } from "./utils/getSelectedTime";
 
-export { BookingCalendar, getReservedInfoOfDate, getSelectedTime };
+export { InfiniteCalendar, getReservedInfoOfDate, getSelectedTime };
 
-export default BookingCalendar;
+export default InfiniteCalendar;
