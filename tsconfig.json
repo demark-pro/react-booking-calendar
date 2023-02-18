@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    // по умолчанию
-    "target": "es6",
+    "target": "e6",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

@@ -11,11 +11,21 @@ import endOfMonth from "date-fns/endOfMonth";
 import startOfWeek from "date-fns/startOfWeek";
 import endOfWeek from "date-fns/endOfWeek";
 import addDays from "date-fns/addDays";
-import format from "date-fns/format";
 import isSameMonth from "date-fns/isSameMonth";
+import {
+  Day,
+  DayState,
+  DaysProps,
+  Reserved,
+  Selected,
+  CommonPropsType,
+  DisabledFuncType,
+} from "./types";
+import { StylesProps } from "./styles";
 
-import { DayInfo, DaysProps } from "./types";
-import { getReservedInfoOfDate } from "./utils/getReservedInfoOfDate";
+// ==============================
+// isBetween
+// ==============================
 
 export const isBetween = (
   date: Date | number,
@@ -47,6 +57,10 @@ export const isBetween = (
   );
 };
 
+// ==============================
+// isBetweenInterval
+// ==============================
+
 export const isBetweenInterval = (
   startDate: Date | number,
   endDate: Date | number,
@@ -60,71 +74,156 @@ export const isBetweenInterval = (
   );
 };
 
+// ==============================
+// getSelectedDates
+// ==============================
+
+export const getSelectedDates = (
+  selected: (Date | number | null | undefined)[]
+) =>
+  selected
+    .map((s) => (s ? new Date(s) : null))
+    .concat(Array.from({ length: 2 - selected.length }, () => null));
+
+// ==============================
+// createDays
+// ==============================
+
 export const createDays = ({
   dateOfStartMonth,
   numOfMonths,
-  reserved,
-}: DaysProps): DayInfo[] => {
-  let days: DayInfo[] = [];
+  dateFnsOptions,
+  isInfinte = true,
+}: DaysProps): Day[] => {
+  let days: Day[] = [];
 
   let rowIndex = 0;
   for (let i in Array.from({ length: numOfMonths })) {
     const currentMonth = addMonths(dateOfStartMonth, +i);
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(currentMonth);
-    const weekStart = startOfWeek(monthStart, { weekStartsOn: 1 });
-    const weekEnd = endOfWeek(monthEnd, { weekStartsOn: 1 });
+    const weekStart = startOfWeek(monthStart, dateFnsOptions);
+    const weekEnd = endOfWeek(monthEnd, dateFnsOptions);
 
-    days = [
-      ...days,
-      ...Array.from({ length: 7 }).map((i) => ({
-        date: addDays(weekEnd, 1),
-        isSameMonth: false,
-        rowIndex: -1,
-      })),
-    ];
-    rowIndex++;
+    if (isInfinte) {
+      days = [
+        ...days,
+        ...Array.from({ length: 7 }).map((i) => ({
+          date: addDays(weekEnd, 1),
+          monthStartDate: monthStart,
+          rowIndex: -1,
+        })),
+      ];
+      rowIndex++;
+    }
 
     let day = weekStart;
     while (day <= weekEnd) {
       const cloneDay = day;
-
-      // prettier-ignore
-      const reservedStart = getReservedInfoOfDate(startOfDay(cloneDay), reserved, true);
-      const reservedEnd = getReservedInfoOfDate(endOfDay(cloneDay), reserved);
-      const isReserved = !!reserved.find(
-        (d) =>
-          isBetween(endOfDay(cloneDay), d.startDate, d.endDate, "[]") &&
-          isBetween(startOfDay(cloneDay), d.startDate, d.endDate, "[]")
-      );
-      const isStartMonth = isSameDay(cloneDay, monthStart);
-      const isCurrentMonth = isSameMonth(cloneDay, monthStart);
-      const isToday = isSameDay(cloneDay, new Date());
-      const isPast = isBefore(cloneDay, new Date());
-
-      const dayObj = {
+      days.push({
         date: cloneDay,
-        text: format(cloneDay, "d"),
-        reservedStart: reservedStart.reserved ? reservedStart.startDate : null,
-        reservedEnd: reservedEnd.reserved ? reservedEnd.endDate : null,
-        isReserved,
-        isSameYear: isSameYear(cloneDay, new Date()),
-        isSameMonth: isCurrentMonth,
-        isStartMonth,
-        isPast,
-        isToday,
-        rowIndex: isCurrentMonth ? rowIndex : -1,
-      };
+        monthStartDate: monthStart,
+        rowIndex:
+          isInfinte && isSameMonth(cloneDay, monthStart) ? rowIndex : -1,
+      });
 
-      if (isSameDay(cloneDay, endOfWeek(cloneDay, { weekStartsOn: 1 }))) {
+      if (
+        isInfinte &&
+        isSameDay(cloneDay, endOfWeek(cloneDay, dateFnsOptions))
+      ) {
         rowIndex = rowIndex + 1;
       }
 
-      // push
-      days.push(dayObj);
       day = addDays(cloneDay, 1);
     }
   }
 
   return days;
+};
+
+// ==============================
+// getDayState
+// ==============================
+
+interface DayStateProps {
+  day: Day;
+  keys?: stateKeyType[];
+  selected?: Selected[];
+  reserved?: Reserved[];
+  disabled?: boolean | DisabledFuncType;
+}
+
+type stateKeyType = keyof typeof dayStateValues;
+
+const dayStateValues = {
+  isSameYear: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
+    isSameYear(d, new Date()),
+  isSameMonth: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
+    isSameMonth(d, m),
+  isStartMonth: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
+    isSameDay(d, m),
+  isPast: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
+    isBefore(d, new Date()),
+  isToday: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
+    isSameDay(d, new Date()),
+  isSelectedStart: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
+    s[0] ? isSameDay(d, s[0]) : false,
+  isSelectedEnd: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
+    s[1] ? isSameDay(d, s[1]) : false,
+  isSelected: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
+    !!(s[0] && s[1] && isBetween(d, s[0], s[1], "{}")),
+  isReserved: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
+    !!r.find(
+      (e) =>
+        isBetween(endOfDay(d), e.startDate, e.endDate, "[]") &&
+        isBetween(startOfDay(d), e.startDate, e.endDate, "[]")
+    ),
+};
+
+export const getDayState = ({
+  day,
+  keys,
+  selected = [],
+  reserved = [],
+  disabled = false,
+}: DayStateProps): DayState => {
+  const { date, monthStartDate } = day;
+
+  let state: DayState = {};
+
+  const stateKeys = keys?.length ? keys : Object.keys(dayStateValues);
+
+  for (const key of stateKeys) {
+    state = {
+      ...state,
+      [key]: dayStateValues[key as stateKeyType](
+        date,
+        monthStartDate,
+        selected,
+        reserved
+      ),
+    };
+  }
+
+  return {
+    ...state,
+    isDisabled: typeof disabled === "function" ? disabled(date, state) : false,
+  };
+};
+
+// ==============================
+// getStyleProps
+// ==============================
+
+export const getStyleProps = <Key extends keyof StylesProps>(
+  props: any,
+  name: Key,
+  commonProps: CommonPropsType
+) => {
+  const { getClassNames, getStyles } = commonProps;
+
+  return {
+    css: getStyles(props, name),
+    className: getClassNames(name),
+  };
 };
