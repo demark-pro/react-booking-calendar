@@ -1,4 +1,3 @@
-
 <div align="center">
     <h2>React Booking Calendar</h2>
     <p align="center">
@@ -37,11 +36,11 @@ Add React-Booking-Calendar to your project by executing `npm i @demark-pro/react
 
 ### Usage
 
-Here's an example of usage with rangeMode:
+Here's an example of usage with range:
 
 ```js
 import React, { useState } from "react";
-import BookingCalendar from "@demark-pro/react-booking-calendar";
+import Calendar from "@demark-pro/react-booking-calendar";
 
 const reserved = [
   {
@@ -51,105 +50,60 @@ const reserved = [
 ];
 
 const MyBookingCalendar = () => {
-  const [selectedDates, setSelectedDays] = useState([null, null]);
-  const [startDate, endDate] = selectedDates;
-
-  const handleChange = (e) => setSelectedDays(e);
+  const [selectedDates, setSelectedDates] = useState([]);
+  const handleChange = (e) => setSelectedDates(e);
 
   return (
-    <BookingCalendar
-      selectedStart={startDate}
-      selectedEnd={endDate}
-      reserved={reserved}
-      onChangeRange={handleChange}
+    <Calendar
+      selected={selectedDates}
+      onChange={handleChange}
       onOverbook={(e, err) => alert(err)}
-      rangeMode
+      disabled={(date, state) => !state.isSameMonth}
+      components={{
+        DayCellFooter: ({ innerProps }) => (
+          <div {...innerProps}>My custom day footer</div>
+        ),
+      }}
+      reserved={reserved}
+      range
     />
   );
 };
 ```
 
-
 ## Styles
 
-You can pass your `renderDay` function with the following signature:
+If you provide the classNamePrefix prop to React Select, all inner elements will be given a className with the provided prefix.
 
-```ts
-{
-  date: Date;
-  text?: string;
-  classNames?: (string | never)[];
-  isStartMonth?: boolean;
-  isSameMonth: boolean;
-  isSameYear?: boolean;
-  reservedStart?: Date | null;
-  reservedEnd?: Date | null;
-  isReserved?: boolean;
-  isPast?: boolean;
-  isToday?: boolean;
-  header: {
-    classNames: string[];
-    text: string | JSX.Element;
-    visible: boolean;
-  },
-  footer: {
-    classNames: string[];
-    text: string | JSX.Element;
-    visible: boolean;
-  },
-  month: {
-    classNames: string[];
-    text: string;
-    yearText: string | null;
-  } | null,
-  style,
-  handleClick?: (e: DayInfo) => void;
+InfiniteСalendar example
+
+```js
+<InfinteCalendar classNamePrefix="calendar" />;
+```
+and CSS...
+
+```css
+.calendar__dayCell-footer {
+  color: "red";
 }
 ```
 
-Important, you need to pass the style prop to the parent element(used for positioning react-window).
-For example:
-
-```js
-<BookingCalendar
-  renderDay={({ style, ...day }) => (
-    <div
-      className={["my-class", ...day.classNames].join(" ")}
-      styles={{ ...customStyle, ...style }}
-    >
-      {day.month && <div className="my-month-class">{day.month.text}</div>}
-      <span style={{ color: isReserved ? "red" : "black" }}>{day.text}</span>
-    </div>
-  )}
-/>
-```
-
-
 ## Options
 
-| Prop              | Type                 | Default             | Description                                                         |
-| :---------------- | :------------------- | :------------------ | :------------------------------------------------------------------ |
-| selectedStart     | Date / number / null |                     | Value of start date                                                 |
-| selectedEnd       | Date / number / null |                     | Value of end date                                                   |
-| isStart           | boolean              | true                | Current value selection                                             |
-| dateOfStartMonth  | Date / number        | new Date()          | Any day of the first month                                          |
-| numOfMonths       | number               | 12                  | Number of months since `dateOfStartMonth`                           |
-| overscanWeekCount | number               | 4                   | The number of weeks to render outside of the visible area           |
-| colHeight         | number               | 55                  | The number of height col                                            |
-| reserved          | Array                | `[]`                | Array of objects `{ startDate: Date, endDate: Date }`               |
-| titles            | Object               | Titles              | Object of titles                                                    |
-| scrollToDate      | Date / number / null |                     | Scroll to desired week                                              |
-| dateFnsOptions    | Object               | `{weekStartsOn: 1}` | Read more date-fns documentation                                    |
-| rangeMode         | boolean              | false               | With range mode use onChangeRange                                   |
-| renderDay         | Func                 |                     | Must return JSX.Element                                             |
-| className         | string               |                     | Class name(s) main Calendar `<div>` element                         |
-| disabled          | boolean              | false               | Ignore `onChange`                                                   |
-| onOverbook        | Func                 |                     | Returns date and type of overbooking error                          |
-| onChange          | Func                 |                     | Callback after date selection. Return selected date (e: Date)       |
-| onChangeRange     | Func                 |                     | Callback after end date selection.Return selected dates (e: Date[]) |
-| onScroll          | Func                 |                     | Called when the grid scroll positions changes,                      |
-
-
+| Prop           | Type                 | Default             | Description                                                   |
+| :------------- | :------------------- | :------------------ | :------------------------------------------------------------ |
+| selected       | (Date/number/null)[] | []                  | [selectedStartDate, selectedEndDate]                          |
+| month          | number               | current month       | Optional                                                      |
+| year           | number               | current year        | Optional                                                      |
+| isStart        | boolean              | true                | Current value selection                                       |
+| reserved       | Array                | `[]`                | Array of objects `{ startDate: Date, endDate: Date }`         |
+| dateFnsOptions | Object               | `{weekStartsOn: 1}` | Read more date-fns documentation                              |
+| range          | boolean              | false               | add range logic                                               |
+| className      | string               |                     | Class name(s) main Calendar `<div>` element                   |
+| disabled       | boolean/func         | false               |                                                               |
+| components     |                      | false               | Custom components                                             |
+| onOverbook     | Func                 |                     | Returns date and type of overbooking error                    |
+| onChange       | Func                 |                     | Callback after date selection. Return selected date (e: Date) |
 
 ## Utils
 
