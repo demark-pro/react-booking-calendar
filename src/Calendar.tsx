@@ -129,7 +129,7 @@ function Calendar(props: CalendarProps) {
 
     const prefix = classNamePrefix.length ? classNamePrefix + "__" : "";
 
-    return prefix + name.replaceAll("_", "-");
+    return prefix + name.replace(/_/g, "-");
   };
 
   // ==============================
