@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { DayCellProps } from "./components/DayCell";
 import { defaultComponents } from "./components/index";
 import { getSelectedDates, createDays, getDayState } from "./helpers";

@@ -1,5 +1,5 @@
-/** @jsxImportSource @emotion/react */
-import { CSSObject } from "@emotion/react";
+/** @jsx jsx */
+import { jsx, CSSObject } from "@emotion/react";
 import formatRelative from "date-fns/formatRelative";
 import format from "date-fns/format";
 import { DayState } from "../types";

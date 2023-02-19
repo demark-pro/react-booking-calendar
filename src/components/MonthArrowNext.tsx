@@ -1,6 +1,6 @@
-/** @jsxImportSource @emotion/react */
+/** @jsx jsx */
 import { SVGProps } from "react";
-import { CSSObject } from "@emotion/react";
+import { jsx, CSSObject } from "@emotion/react";
 import { getStyleProps } from "../helpers";
 import { CommonPropsType } from "../types";
 

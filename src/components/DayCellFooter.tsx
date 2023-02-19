@@ -1,5 +1,5 @@
-/** @jsxImportSource @emotion/react */
-import { CSSObject } from "@emotion/react";
+/** @jsx jsx */
+import { jsx, CSSObject } from "@emotion/react";
 import { ReactNode } from "react";
 import { DayState } from "../types";
 import { getReservedInfoOfDate } from "../utils/getReservedInfoOfDate";

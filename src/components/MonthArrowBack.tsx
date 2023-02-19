@@ -1,6 +1,6 @@
-/** @jsxImportSource @emotion/react */
+/** @jsx jsx */
 import { SVGProps } from "react";
-import { CSSObject } from "@emotion/react";
+import { jsx, CSSObject } from "@emotion/react";
 import { getStyleProps } from "../helpers";
 import { CommonPropsType } from "../types";
 
@@ -16,7 +16,7 @@ export const monthArrowBackCSS = (): CSSObject => ({
   height: 28,
   cursor: "pointer",
   userSelect: "none",
-  WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
+  WebkitTapHighlightColor: "rgba(0, 0, 0, 0)",
 });
 
 const MonthArrowBack = (props: MonthArrowBackProps) => {

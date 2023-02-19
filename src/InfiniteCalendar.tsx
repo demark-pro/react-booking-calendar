@@ -1,5 +1,7 @@
-/** @jsxImportSource @emotion/react */
-import React, {
+/** @jsx jsx */
+
+import { jsx } from "@emotion/react";
+import {
   memo,
   useEffect,
   useMemo,
@@ -97,7 +99,7 @@ const RenderCell = memo((props: GridChildComponentProps): JSX.Element => {
   };
 
   if (!DayCell || !DayCellContent || !DayCellFooter || !DayCellHeader)
-    return <></>;
+    return <div />;
 
   // empty col
   if (!state.isSameMonth) {
