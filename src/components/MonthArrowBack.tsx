@@ -1,4 +1,4 @@
-/** @jsx jsx */
+
 import { SVGProps } from "react";
 import { jsx, CSSObject } from "@emotion/react";
 import { getStyleProps } from "../helpers";

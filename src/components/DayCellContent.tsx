@@ -1,4 +1,4 @@
-/** @jsx jsx */
+
 import { jsx, CSSObject } from "@emotion/react";
 import { getStyleProps } from "../helpers";
 
