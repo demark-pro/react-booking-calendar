@@ -8,9 +8,7 @@ import format from "date-fns/format";
 import { DayCellProps } from "./DayCell";
 import { getStyleProps } from "../helpers";
 import { getFreeTimeOfDate } from "../utils/getFreeTimeOfDate";
-import { isAfter, isBefore } from "date-fns";
-import { endOfDay } from "date-fns/esm";
-import { time } from "console";
+import { endOfDay } from "date-fns";
 
 type Titles = {
   footerStart: string;
