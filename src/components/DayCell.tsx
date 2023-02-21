@@ -1,7 +1,6 @@
-
 import { jsx, CSSObject } from "@emotion/react";
 import { ReactNode } from "react";
-import { getStyleProps } from "../helpers";
+import { getStyleProps, isClickable } from "../helpers";
 import { CommonPropsType, DayState, VarinatType } from "../types";
 
 export type DayCellProps = CommonPropsType & {
@@ -31,6 +30,12 @@ export const dayCellCSS = ({ variant, state }: dayCellCSSProps): CSSObject => ({
   WebkitTapHighlightColor: "rgba(0, 0, 0, 0)",
   width: "calc(100%/7)",
   flexBasis: "calc(100%/7)",
+  "&:hover": !isClickable(state)
+    ? {}
+    : {
+        background: "#eef5ff",
+        borderRadius: 6,
+      },
 });
 
 export const dayCellSelectedCSS = ({
