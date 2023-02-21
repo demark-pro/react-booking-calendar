@@ -19,8 +19,10 @@ import {
   dayCellSelectedEventCSS,
 } from "./components/DayCell";
 import { monthContentCSS } from "./components/MonthContent";
-import { monthArrowBackCSS } from "./components/MonthArrowBack";
-import { monthArrowNextCSS } from "./components/MonthArrowNext";
+import {
+  monthArrowCSS,
+  MonthArrowDirectionType,
+} from "./components/MonthArrowBack";
 
 const MonthCSS = (): CSSObject => ({
   position: "absolute",
@@ -36,8 +38,8 @@ export interface StylesProps {
   calendar_container: any;
   month_container: any;
   month_content: any;
-  month_arrowBack: any;
-  month_arrowNext: any;
+  month_arrowBack: MonthArrowDirectionType;
+  month_arrowNext: MonthArrowDirectionType;
   month: any;
   week_container: any;
   weekCell: boolean;
@@ -57,8 +59,8 @@ export const defaultStyles: {
   calendar_container: CalendarContainerCSS,
   month_container: monthContainerCSS,
   month_content: monthContentCSS,
-  month_arrowBack: monthArrowBackCSS,
-  month_arrowNext: monthArrowNextCSS,
+  month_arrowBack: monthArrowCSS,
+  month_arrowNext: monthArrowCSS,
   month: MonthCSS,
   week_container: weekContainerCSS,
   weekCell: weekCellCSS,

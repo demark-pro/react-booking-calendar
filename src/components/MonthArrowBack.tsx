@@ -7,9 +7,15 @@ export type MonthArrowBackProps = CommonPropsType & {
   innerProps?: SVGProps<SVGSVGElement>;
 };
 
+export type MonthArrowDirectionType = "left" | "right" | "up" | "down";
+
+const dirRotate = { left: "0", right: "180deg", up: "90deg", down: "270deg" };
 const iconColor = "#007aff";
 
-export const monthArrowBackCSS = (): CSSObject => ({
+export const monthArrowCSS = (
+  direction: MonthArrowDirectionType = "left"
+): CSSObject => ({
+  transform: `rotate(${dirRotate[direction]})`,
   fill: iconColor,
   width: 28,
   height: 28,
@@ -29,7 +35,7 @@ const MonthArrowBack = (props: MonthArrowBackProps) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      {...getStyleProps({}, "month_arrowBack", props)}
+      {...getStyleProps("left", "month_arrowBack", props)}
       {...innerProps}
     >
       <path
