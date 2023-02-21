@@ -1,4 +1,3 @@
-import React from "react"
 import { CSSObject } from "@emotion/react";
 import { ComponentType, ReactNode } from "react";
 import { getStyleProps } from "../helpers";
