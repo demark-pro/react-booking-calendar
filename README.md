@@ -93,37 +93,29 @@ and CSS...
 
 ## Options
 
-| Prop           | Type                 | Default             | Description                                                   |
-| :------------- | :------------------- | :------------------ | :------------------------------------------------------------ |
-| selected       | (Date/number/null)[] | []                  | [selectedStartDate, selectedEndDate]                          |
-| month          | number               | current month       | Optional                                                      |
-| year           | number               | current year        | Optional                                                      |
-| isStart        | boolean              | true                | Current value selection                                       |
-| reserved       | Array                | `[]`                | Array of objects `{ startDate: Date, endDate: Date }`         |
-| dateFnsOptions | Object               | `{weekStartsOn: 1}` | Read more date-fns documentation                              |
-| range          | boolean              | false               | add range logic                                               |
-| className      | string               |                     | Class name(s) main Calendar `<div>` element                   |
-| disabled       | boolean/func         | false               |                                                               |
-| components     |                      | false               | Custom components                                             |
-| variant        | events               | booking             | booking                                                       | 
-| onOverbook     | Func                 |                     | Returns date and type of overbooking error                    |
-| onChange       | Func                 |                     | Callback after date selection. Returns (date)                 |
-| onMonthChange  | Func                 |                     | Callback after month change. Returns (month, year)            |
+| Prop           | Type                 | Default             | Description                                           |
+| :------------- | :------------------- | :------------------ | :---------------------------------------------------- |
+| selected       | (Date/number/null)[] | []                  | [selectedStartDate, selectedEndDate]                  |
+| month          | number               | current month       | Optional                                              |
+| year           | number               | current year        | Optional                                              |
+| isStart        | boolean              | true                | Current value selection                               |
+| reserved       | Array                | `[]`                | Array of objects `{ startDate: Date, endDate: Date }` |
+| dateFnsOptions | Object               | `{weekStartsOn: 1}` | Read more date-fns documentation                      |
+| range          | boolean              | false               | add range logic                                       |
+| className      | string               |                     | Class name(s) main Calendar `<div>` element           |
+| disabled       | boolean/func         | false               |                                                       |
+| components     |                      | false               | Custom components                                     |
+| variant        | events               | booking             | booking                                               |
+| onOverbook     | Func                 |                     | Returns date and type of overbooking error            |
+| onChange       | Func                 |                     | Callback after date selection. Returns (date)         |
+| onMonthChange  | Func                 |                     | Callback after month change. Returns (month, year)    |
 
 ## Utils
 
-### getReservedInfoOfDate
+### getFreeTimeofDate
 
 ```ts
-(date: Date | number, reserved: Reserved[], isStart: boolean = false)
+(date: Date | number, reserved: Reserved[])
 ```
 
-Returns information about whether there is a reservation on this date and the beginning and end of free time of the day.
-
-### getSelectedTime
-
-```ts
-(date: Date | number, reserved: Reserved[], selectedStart?: Date | number | null)`
-```
-
-Returns the available booking time for that day
+Returns free check-in and check-out time `{ startDate: Date, endDate: Date }`
