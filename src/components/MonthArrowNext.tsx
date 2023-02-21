@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import React, { SVGProps } from "react";
 import { getStyleProps } from "../helpers";
 import { CommonPropsType } from "../types";
 

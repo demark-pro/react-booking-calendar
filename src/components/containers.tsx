@@ -1,5 +1,5 @@
+import React, { ComponentType, ReactNode } from "react";
 import { CSSObject } from "@emotion/react";
-import { ComponentType, ReactNode } from "react";
 import { getStyleProps } from "../helpers";
 import { CommonPropsType } from "../types";
 
