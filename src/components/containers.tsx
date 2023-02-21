@@ -1,4 +1,3 @@
-
 import { jsx, CSSObject } from "@emotion/react";
 import { ComponentType, ReactNode } from "react";
 import { getStyleProps } from "../helpers";
@@ -116,6 +115,7 @@ export const daysContainerCSS = (): CSSObject => ({
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
+  paddingBottom: "0.75rem",
 });
 
 export const DaysContainer = (props: DaysContainerProps) => {
