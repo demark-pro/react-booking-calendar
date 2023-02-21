@@ -20,6 +20,7 @@ import {
   Selected,
   CommonPropsType,
   DisabledFuncType,
+  VarinatType,
 } from "./types";
 import { StylesProps } from "./styles";
 
@@ -232,11 +233,11 @@ export const getStyleProps = <Key extends keyof StylesProps>(
 // isClickable
 // ==============================
 
-export const isClickable = ({
-  isDisabled,
-  isPast,
-  isReserved,
-}: DayState): boolean => {
+export const isClickable = (
+  { isDisabled, isPast, isReserved }: DayState,
+  variant: VarinatType = "booking"
+): boolean => {
+  if (variant === "events") return true;
   if (isDisabled) return false;
   if (isPast) return false;
   if (isReserved) return false;
