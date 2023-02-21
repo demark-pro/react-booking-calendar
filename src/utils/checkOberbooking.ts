@@ -64,7 +64,7 @@ const validateBooking = (
   const isReservedBetween =
     startDate &&
     reserved.find((r) =>
-      isBetweenInterval(startDate, startOfDay(date), r.startDate, r.endDate)
+      isBetweenInterval(r.startDate, r.endDate, startDate, startOfDay(date))
     );
   // if booked beetwen start date and current date
   if (isReservedBetween) {
