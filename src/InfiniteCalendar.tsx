@@ -1,5 +1,3 @@
-
-
 import { jsx } from "@emotion/react";
 import {
   memo,
@@ -104,7 +102,7 @@ const RenderCell = memo((props: GridChildComponentProps): JSX.Element => {
   // empty col
   if (!state.isSameMonth) {
     dayProps.state = { isSameMonth: false };
-    return <DayCell innerProps={{ style: style }} {...dayProps} />;
+    return <div style={style} />;
   }
 
   return (
