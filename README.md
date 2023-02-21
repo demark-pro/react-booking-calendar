@@ -58,14 +58,16 @@ const MyBookingCalendar = () => {
       selected={selectedDates}
       onChange={handleChange}
       onOverbook={(e, err) => alert(err)}
-      disabled={(date, state) => !state.isSameMonth}
       components={{
         DayCellFooter: ({ innerProps }) => (
           <div {...innerProps}>My custom day footer</div>
         ),
       }}
+      disabled={(date, state) => !state.isSameMonth}
       reserved={reserved}
-      range
+      variant="events"
+      dateFnsOptions={{ weekStartsOn: 1 }}
+      range={true}
     />
   );
 };
@@ -78,8 +80,9 @@ If you provide the classNamePrefix prop to Calendar, all inner elements will be 
 InfiniteСalendar example
 
 ```js
-<InfiniteCalendar classNamePrefix="calendar" />;
+<InfiniteCalendar classNamePrefix="calendar" />
 ```
+
 and CSS...
 
 ```css
@@ -102,8 +105,10 @@ and CSS...
 | className      | string               |                     | Class name(s) main Calendar `<div>` element                   |
 | disabled       | boolean/func         | false               |                                                               |
 | components     |                      | false               | Custom components                                             |
+| variant        | events               | booking             | booking                                                       | 
 | onOverbook     | Func                 |                     | Returns date and type of overbooking error                    |
-| onChange       | Func                 |                     | Callback after date selection. Return selected date (e: Date) |
+| onChange       | Func                 |                     | Callback after date selection. Returns (date)                 |
+| onMonthChange  | Func                 |                     | Callback after month change. Returns (month, year)            |
 
 ## Utils
 
