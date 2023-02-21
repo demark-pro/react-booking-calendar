@@ -1,4 +1,4 @@
-import { jsx } from "@emotion/react";
+import { ClassNames } from "@emotion/react";
 import {
   memo,
   useEffect,
@@ -164,21 +164,30 @@ const Grid = ({
   }, [scrollToDate, items]);
 
   return (
-    <FixedSizeGrid
-      ref={listRef}
-      itemData={items}
-      columnCount={7}
-      columnWidth={width / 7}
-      height={height}
-      rowCount={items.length / 7}
-      rowHeight={colHeight}
-      width={width}
-      overscanRowCount={3}
-      onScroll={onScroll}
-      {...props}
-    >
-      {RenderCell}
-    </FixedSizeGrid>
+    <ClassNames>
+      {({ css }) => (
+        <FixedSizeGrid
+          ref={listRef}
+          itemData={items}
+          columnCount={7}
+          columnWidth={width / 7}
+          height={height}
+          rowCount={items.length / 7}
+          rowHeight={colHeight}
+          width={width}
+          overscanRowCount={3}
+          onScroll={onScroll}
+          className={css({
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+          })}
+          {...props}
+        >
+          {RenderCell}
+        </FixedSizeGrid>
+      )}
+    </ClassNames>
   );
 };
 
