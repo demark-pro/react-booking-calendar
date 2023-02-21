@@ -73,12 +73,12 @@ const MyBookingCalendar = () => {
 
 ## Styles
 
-If you provide the classNamePrefix prop to React Select, all inner elements will be given a className with the provided prefix.
+If you provide the classNamePrefix prop to Calendar, all inner elements will be given a className with the provided prefix.
 
 InfiniteСalendar example
 
 ```js
-<InfinteCalendar classNamePrefix="calendar" />;
+<InfiniteCalendar classNamePrefix="calendar" />;
 ```
 and CSS...
 
