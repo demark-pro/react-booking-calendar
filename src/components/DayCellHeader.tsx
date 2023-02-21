@@ -1,10 +1,10 @@
-
 import { jsx, CSSObject } from "@emotion/react";
 import formatRelative from "date-fns/formatRelative";
 import format from "date-fns/format";
 import { DayState } from "../types";
 import { DayCellProps } from "./DayCell";
 import { getStyleProps } from "../helpers";
+import { endOfMonth, isSameDay, startOfMonth } from "date-fns";
 
 export const dayCellHeaderCSS = ({
   isToday,
@@ -42,7 +42,10 @@ const DayCellHeader = (props: DayCellProps) => {
     )[0];
   }
 
-  if (state.isSelectedStart || state.isSelectedEnd) {
+  // prettier-ignore
+  if (state.isSelectedStart || state.isSelectedEnd ||
+    (!state.isSameMonth && (isSameDay(date, endOfMonth(date)) || isSameDay(date, startOfMonth(date))))
+  ) {
     content = format(date, "MMM", dateFnsOptions);
   }
 
