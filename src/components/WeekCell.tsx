@@ -1,4 +1,3 @@
-
 import { jsx, CSSObject } from "@emotion/react";
 import { addDays, format, isWeekend, startOfWeek } from "date-fns";
 import { getStyleProps } from "../helpers";
@@ -17,7 +16,7 @@ export const weekCellCSS = (isWeekend: boolean = false): CSSObject => ({
   fontSize: "10px",
   textTransform: "uppercase",
   padding: "0.5rem 0",
-  fontWeight: 500,
+  fontWeight: 700,
   color: isWeekend ? "red" : "#424242",
 });
 

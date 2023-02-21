@@ -1,4 +1,4 @@
-import { CSSObject } from "@emotion/react";
+import { jsx, CSSObject } from "@emotion/react";
 import { format, isSameMonth, isSameYear } from "date-fns";
 import { getStyleProps } from "../helpers";
 import { CommonPropsType } from "../types";
@@ -15,7 +15,7 @@ export const monthContentCSS = (): CSSObject => ({
   top: "50%",
   transform: "translate(-50%, -50%)",
   fontSize: "16px",
-  fontWeight: 700,
+  fontWeight: 500,
   display: "flex",
   gap: "0.25rem",
 });
