@@ -227,3 +227,19 @@ export const getStyleProps = <Key extends keyof StylesProps>(
     className: getClassNames(name),
   };
 };
+
+// ==============================
+// isClickable
+// ==============================
+
+export const isClickable = ({
+  isDisabled,
+  isPast,
+  isReserved,
+}: DayState): boolean => {
+  if (isDisabled) return false;
+  if (isPast) return false;
+  if (isReserved) return false;
+
+  return true;
+};
