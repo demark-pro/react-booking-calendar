@@ -234,12 +234,13 @@ export const getStyleProps = <Key extends keyof StylesProps>(
 // ==============================
 
 export const isClickable = (
-  { isDisabled, isPast, isReserved, isSameMonth }: DayState,
+  { isDisabled, isPast, isReserved }: DayState,
   variant: VarinatType = "booking"
 ): boolean => {
+  if (isDisabled) return false;
+
   if (variant === "events") return true;
 
-  if (isDisabled) return false;
   if (isPast) return false;
   if (isReserved) return false;
 
