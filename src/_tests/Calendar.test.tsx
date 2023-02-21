@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { Calendar } from "..";
+import { Calendar } from "../index";
 import { createSerializer } from "@emotion/jest";
 
 expect.addSnapshotSerializer(createSerializer());
