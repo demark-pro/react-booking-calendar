@@ -98,7 +98,6 @@ function Calendar(props: CalendarProps) {
     if (typeof disabled === "boolean" && disabled) return;
 
     const { date } = day;
-    if (!state.isSameMonth) handleChangeMonth(date.getMonth());
 
     const { errorType, newSelected } = checkOberbooking({
       date,
