@@ -1,4 +1,4 @@
-import { jsx, CSSObject } from "@emotion/react";
+import { CSSObject } from "@emotion/react";
 import { format, isSameMonth, isSameYear } from "date-fns";
 import { getStyleProps } from "../helpers";
 import { CommonPropsType } from "../types";

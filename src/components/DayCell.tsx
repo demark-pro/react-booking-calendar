@@ -1,4 +1,4 @@
-import { jsx, CSSObject } from "@emotion/react";
+import { CSSObject } from "@emotion/react";
 import { ReactNode } from "react";
 import { getStyleProps, isClickable } from "../helpers";
 import { CommonPropsType, DayState, VarinatType } from "../types";

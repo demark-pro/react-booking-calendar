@@ -1,5 +1,5 @@
 
-import { jsx, CSSObject } from "@emotion/react";
+import { CSSObject } from "@emotion/react";
 import { getStyleProps } from "../helpers";
 
 import { DayCellProps, dayCellCSSProps } from "./DayCell";
