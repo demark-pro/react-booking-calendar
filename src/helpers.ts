@@ -164,7 +164,7 @@ const dayStateValues = {
   isStartMonth: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
     isSameDay(d, m),
   isPast: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
-    isBefore(d, new Date()),
+    isBefore(d, startOfDay(new Date())),
   isToday: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
     isSameDay(d, new Date()),
   isSelectedStart: (d: Date, m: Date, s: Selected[], r: Reserved[]) =>
@@ -234,10 +234,11 @@ export const getStyleProps = <Key extends keyof StylesProps>(
 // ==============================
 
 export const isClickable = (
-  { isDisabled, isPast, isReserved }: DayState,
+  { isDisabled, isPast, isReserved, isSameMonth }: DayState,
   variant: VarinatType = "booking"
 ): boolean => {
   if (variant === "events") return true;
+
   if (isDisabled) return false;
   if (isPast) return false;
   if (isReserved) return false;

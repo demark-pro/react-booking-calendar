@@ -1,3 +1,4 @@
+import { isToday } from "date-fns";
 import isBefore from "date-fns/isBefore";
 import startOfDay from "date-fns/startOfDay";
 import { isBetweenInterval } from "../helpers";
@@ -31,7 +32,7 @@ export function checkOberbooking(
   const { date, selected, reserved, state, range, variant } = props;
   const [startDate, endDate] = selected;
 
-  console.log(state)
+  console.log(state);
 
   const isStart = range ? !startDate : props.isStart;
 
@@ -88,7 +89,9 @@ export function checkOberbooking(
     }
   }
 
-  const timeOfSelected = getTimeOfSelected(date, reserved, startDate);
+  const timeOfSelected = isToday(date)
+    ? new Date()
+    : getTimeOfSelected(date, reserved, startDate);
 
   const newStart = isStart ? timeOfSelected : startDate;
   const newEnd = !isStart ? timeOfSelected : endDate;
