@@ -1,15 +1,16 @@
-
-import { jsx, CSSObject } from "@emotion/react";
+import { CSSObject } from "@emotion/react";
 import { ReactNode } from "react";
 import { DayState } from "../types";
-import { getReservedInfoOfDate } from "../utils/getReservedInfoOfDate";
 
 import isSameDay from "date-fns/isSameDay";
 import startOfDay from "date-fns/startOfDay";
-import endOfDay from "date-fns/endOfDay";
 import format from "date-fns/format";
 import { DayCellProps } from "./DayCell";
 import { getStyleProps } from "../helpers";
+import { getFreeTimeOfDate } from "../utils/getFreeTimeOfDate";
+import { isAfter, isBefore } from "date-fns";
+import { endOfDay } from "date-fns/esm";
+import { time } from "console";
 
 type Titles = {
   footerStart: string;
@@ -75,15 +76,17 @@ function bookingVariant({ date, reserved, state }: DayCellProps): ReactNode {
     return titles.footerReserved;
   }
 
-  // prettier-ignore
-  const reservedStart = getReservedInfoOfDate(startOfDay(date), reserved, true);
-  if (reservedStart.reserved) {
-    return format(reservedStart.startDate, "HH:mm");
+  const freeTime = getFreeTimeOfDate(date, reserved);
+  const timeFormat = "HH:mm";
+  const startToFormat = format(freeTime.startDate, timeFormat);
+  const endToFormat = format(freeTime.endDate, timeFormat);
+
+  if (format(startOfDay(date), timeFormat) !== startToFormat) {
+    return startToFormat;
   }
 
-  const reservedEnd = getReservedInfoOfDate(endOfDay(date), reserved);
-  if (reservedEnd.reserved) {
-    return format(reservedEnd.endDate, "HH:mm");
+  if (format(endOfDay(date), timeFormat) !== endToFormat) {
+    return endToFormat;
   }
 
   return;

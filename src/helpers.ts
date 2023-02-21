@@ -238,7 +238,7 @@ export const isClickable = (
   variant: VarinatType = "booking"
 ): boolean => {
   if (isDisabled) return false;
-
+  
   if (variant === "events") return true;
 
   if (isPast) return false;

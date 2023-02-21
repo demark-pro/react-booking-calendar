@@ -3,7 +3,7 @@ import isBefore from "date-fns/isBefore";
 import startOfDay from "date-fns/startOfDay";
 import { isBetweenInterval } from "../helpers";
 import { DayState, Reserved, Selected, VarinatType } from "../types";
-import { getTimeOfSelected } from "./getTimeOfSelected";
+import { getFreeTimeOfDate } from "./getFreeTimeOfDate";
 
 export const PAST = "PAST";
 export const BOOKED = "BOOKED";
@@ -26,75 +26,87 @@ type CheckOberbookingType = {
   newSelected: Selected[] | null;
 };
 
-export function checkOberbooking(
+const validateBooking = (
   props: CheckOberbookingProps
-): CheckOberbookingType {
-  const { date, selected, reserved, state, range, variant } = props;
+): CheckOberbookingType | null => {
+  const { date, selected, reserved, state, range } = props;
   const [startDate, endDate] = selected;
-
-  console.log(state);
-
   const isStart = range ? !startDate : props.isStart;
 
-  if (state.isDisabled) return { errorType: "DISABLED", newSelected: null };
+  const newSelected = [getFreeTimeOfDate(date, reserved).startDate];
 
-  if (variant !== "events") {
-    if (state.isPast) {
-      return { errorType: PAST, newSelected: null };
+  // if past
+  if (state.isPast) return { errorType: PAST, newSelected: null };
+
+  // if reserved between
+  if (state.isReserved) return { errorType: BOOKED, newSelected: null };
+
+  // if selected length 0 or 2 then set selected date
+  if (range && ((!startDate && !endDate) || (startDate && endDate))) {
+    return { errorType: null, newSelected };
+  }
+
+  if (isStart) {
+    // if selected start date after end date
+    if (endDate && isBefore(endDate, date)) {
+      return { errorType: AFTER_END, newSelected: range ? newSelected : null };
     }
-
-    if (state.isReserved) {
-      return { errorType: BOOKED, newSelected: null };
-    }
-
-    if (range) {
-      if ((!startDate && !endDate) || (startDate && endDate)) {
-        return {
-          errorType: null,
-          newSelected: [getTimeOfSelected(date, reserved, startDate)],
-        };
-      }
-    }
-
-    if (!isStart && startDate && isBefore(date, startDate)) {
+  } else {
+    // if selected end date before start date
+    if (startDate && isBefore(date, startDate)) {
       return {
         errorType: BEFORE_START,
-        newSelected: range
-          ? [getTimeOfSelected(date, reserved, startDate)]
-          : null,
-      };
-    }
-
-    if (isStart && endDate && isBefore(endDate, date)) {
-      return {
-        errorType: AFTER_END,
-        newSelected: range
-          ? [getTimeOfSelected(date, reserved, startDate)]
-          : null,
-      };
-    }
-
-    const isReservedBetween =
-      startDate &&
-      !!reserved.find((r) =>
-        isBetweenInterval(r.startDate, r.endDate, startDate, startOfDay(date))
-      );
-    if (isReservedBetween) {
-      return {
-        errorType: BOOKED_BETWEEN,
-        newSelected: range
-          ? [getTimeOfSelected(date, reserved, startDate)]
-          : null,
+        newSelected: range ? newSelected : null,
       };
     }
   }
 
-  const timeOfSelected = isToday(date)
-    ? new Date()
-    : getTimeOfSelected(date, reserved, startDate);
+  const isReservedBetween =
+    startDate &&
+    reserved.find((r) =>
+      isBetweenInterval(startDate, startOfDay(date), r.startDate, r.endDate)
+    );
+  // if booked beetwen start date and current date
+  if (isReservedBetween) {
+    return {
+      errorType: BOOKED_BETWEEN,
+      newSelected: range || isStart ? newSelected : null,
+    };
+  }
 
-  const newStart = isStart ? timeOfSelected : startDate;
-  const newEnd = !isStart ? timeOfSelected : endDate;
+  return null;
+};
+
+const validateEvents = (
+  props: CheckOberbookingProps
+): CheckOberbookingType | null => {
+  return null;
+};
+
+const validateVariants = {
+  booking: validateBooking,
+  events: validateEvents,
+};
+
+export function checkOberbooking(
+  props: CheckOberbookingProps
+): CheckOberbookingType {
+  const { date, selected, reserved, state, range, variant } = props;
+  if (state.isDisabled) return { errorType: "DISABLED", newSelected: null };
+
+  const validate = validateVariants[variant](props);
+  if (validate) return validate;
+
+  const [startDate, endDate] = selected;
+  const isStart = range ? !startDate : props.isStart;
+  const freeTime = getFreeTimeOfDate(date, reserved);
+
+  const newStart = isStart
+    ? isToday(date)
+      ? new Date()
+      : freeTime.startDate
+    : startDate;
+  const newEnd = !isStart ? freeTime.endDate : endDate;
 
   const newSelected = [newStart || null, newEnd || null];
 
