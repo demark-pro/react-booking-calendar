@@ -1,4 +1,3 @@
-
 import { SVGProps } from "react";
 import { jsx, CSSObject } from "@emotion/react";
 import { getStyleProps } from "../helpers";
@@ -17,6 +16,10 @@ export const monthArrowBackCSS = (): CSSObject => ({
   cursor: "pointer",
   userSelect: "none",
   WebkitTapHighlightColor: "rgba(0, 0, 0, 0)",
+  "&:hover": {
+    background: "#eef5ff",
+    borderRadius: "50%",
+  },
 });
 
 const MonthArrowBack = (props: MonthArrowBackProps) => {
