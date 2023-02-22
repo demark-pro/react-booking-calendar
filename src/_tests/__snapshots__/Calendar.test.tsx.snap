@@ -273,7 +273,7 @@ exports[`snapshot - Calendar 1`] = `
   box-sizing: border-box;
 }
 
-.emotion-110 {
+.emotion-114 {
   height: 55px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -305,12 +305,12 @@ exports[`snapshot - Calendar 1`] = `
   box-sizing: border-box;
 }
 
-.emotion-110:hover {
+.emotion-114:hover {
   background: #eef5ff;
   border-radius: 6px;
 }
 
-.emotion-111 {
+.emotion-115 {
   position: absolute;
   left: 0;
   right: 0;
@@ -323,7 +323,7 @@ exports[`snapshot - Calendar 1`] = `
   box-sizing: border-box;
 }
 
-.emotion-112 {
+.emotion-116 {
   z-index: 3;
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -331,7 +331,7 @@ exports[`snapshot - Calendar 1`] = `
   box-sizing: border-box;
 }
 
-.emotion-113 {
+.emotion-117 {
   position: absolute;
   left: 0;
   right: 0;
@@ -344,7 +344,7 @@ exports[`snapshot - Calendar 1`] = `
   box-sizing: border-box;
 }
 
-.emotion-115 {
+.emotion-119 {
   position: absolute;
   left: 0;
   right: 0;
@@ -357,7 +357,7 @@ exports[`snapshot - Calendar 1`] = `
   box-sizing: border-box;
 }
 
-.emotion-116 {
+.emotion-120 {
   z-index: 3;
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -365,7 +365,7 @@ exports[`snapshot - Calendar 1`] = `
   box-sizing: border-box;
 }
 
-.emotion-117 {
+.emotion-121 {
   position: absolute;
   left: 0;
   right: 0;
@@ -825,28 +825,28 @@ exports[`snapshot - Calendar 1`] = `
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-14"
       >
         <div
-          class="calendar__dayCell-header emotion-111"
-        >
-          today
-        </div>
+          class="calendar__dayCell-header emotion-15"
+        />
         <div
-          class="calendar__dayCell-content emotion-112"
+          class="calendar__dayCell-content emotion-16"
         >
           22
         </div>
         <div
-          class="calendar__dayCell-footer emotion-113"
+          class="calendar__dayCell-footer emotion-17"
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-114"
       >
         <div
           class="calendar__dayCell-header emotion-115"
-        />
+        >
+          today
+        </div>
         <div
           class="calendar__dayCell-content emotion-116"
         >
@@ -857,140 +857,140 @@ exports[`snapshot - Calendar 1`] = `
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-114"
       >
         <div
-          class="calendar__dayCell-header emotion-115"
+          class="calendar__dayCell-header emotion-119"
         />
         <div
-          class="calendar__dayCell-content emotion-116"
+          class="calendar__dayCell-content emotion-120"
         >
           24
         </div>
         <div
-          class="calendar__dayCell-footer emotion-117"
+          class="calendar__dayCell-footer emotion-121"
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-114"
       >
         <div
-          class="calendar__dayCell-header emotion-115"
+          class="calendar__dayCell-header emotion-119"
         />
         <div
-          class="calendar__dayCell-content emotion-116"
+          class="calendar__dayCell-content emotion-120"
         >
           25
         </div>
         <div
-          class="calendar__dayCell-footer emotion-117"
+          class="calendar__dayCell-footer emotion-121"
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-114"
       >
         <div
-          class="calendar__dayCell-header emotion-115"
+          class="calendar__dayCell-header emotion-119"
         />
         <div
-          class="calendar__dayCell-content emotion-116"
+          class="calendar__dayCell-content emotion-120"
         >
           26
         </div>
         <div
-          class="calendar__dayCell-footer emotion-117"
+          class="calendar__dayCell-footer emotion-121"
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-114"
       >
         <div
-          class="calendar__dayCell-header emotion-115"
+          class="calendar__dayCell-header emotion-119"
         />
         <div
-          class="calendar__dayCell-content emotion-116"
+          class="calendar__dayCell-content emotion-120"
         >
           27
         </div>
         <div
-          class="calendar__dayCell-footer emotion-117"
+          class="calendar__dayCell-footer emotion-121"
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-114"
       >
         <div
-          class="calendar__dayCell-header emotion-115"
+          class="calendar__dayCell-header emotion-119"
         />
         <div
-          class="calendar__dayCell-content emotion-116"
+          class="calendar__dayCell-content emotion-120"
         >
           28
         </div>
         <div
-          class="calendar__dayCell-footer emotion-117"
+          class="calendar__dayCell-footer emotion-121"
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-114"
       >
         <div
-          class="calendar__dayCell-header emotion-115"
+          class="calendar__dayCell-header emotion-119"
         >
           Mar
         </div>
         <div
-          class="calendar__dayCell-content emotion-116"
+          class="calendar__dayCell-content emotion-120"
         >
           1
         </div>
         <div
-          class="calendar__dayCell-footer emotion-117"
+          class="calendar__dayCell-footer emotion-121"
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-114"
       >
         <div
-          class="calendar__dayCell-header emotion-115"
+          class="calendar__dayCell-header emotion-119"
         />
         <div
-          class="calendar__dayCell-content emotion-116"
+          class="calendar__dayCell-content emotion-120"
         >
           2
         </div>
         <div
-          class="calendar__dayCell-footer emotion-117"
+          class="calendar__dayCell-footer emotion-121"
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-114"
       >
         <div
-          class="calendar__dayCell-header emotion-115"
+          class="calendar__dayCell-header emotion-119"
         />
         <div
-          class="calendar__dayCell-content emotion-116"
+          class="calendar__dayCell-content emotion-120"
         >
           3
         </div>
         <div
-          class="calendar__dayCell-footer emotion-117"
+          class="calendar__dayCell-footer emotion-121"
         />
       </div>
       <div
-        class="calendar__dayCell emotion-110"
+        class="calendar__dayCell emotion-114"
       >
         <div
-          class="calendar__dayCell-header emotion-115"
+          class="calendar__dayCell-header emotion-119"
         />
         <div
-          class="calendar__dayCell-content emotion-116"
+          class="calendar__dayCell-content emotion-120"
         >
           4
         </div>
         <div
-          class="calendar__dayCell-footer emotion-117"
+          class="calendar__dayCell-footer emotion-121"
         />
       </div>
     </div>
