@@ -30,7 +30,7 @@ export const dayCellCSS = ({ variant, state }: dayCellCSSProps): CSSObject => ({
   WebkitTapHighlightColor: "rgba(0, 0, 0, 0)",
   width: "calc(100%/7)",
   flexBasis: "calc(100%/7)",
-  margin: "0.15rem 0",
+  borderTop: "1px solid #f7f5f5",
   "&:hover": isClickable(state, variant)
     ? {
         background: "#eef5ff",
