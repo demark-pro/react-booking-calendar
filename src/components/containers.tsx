@@ -115,7 +115,6 @@ export const daysContainerCSS = (): CSSObject => ({
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
-  paddingBottom: "0.75rem",
 });
 
 export const DaysContainer = (props: DaysContainerProps) => {
