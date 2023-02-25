@@ -45,7 +45,7 @@ export const monthContainerCSS = (): CSSObject => ({
   alignItems: "center",
   justifyContent: "space-between",
   flexDirection: "row",
-  padding: "0.75rem 0.25rem",
+  padding: ".5rem .25rem .75rem .25rem",
   position: "relative",
 });
 
