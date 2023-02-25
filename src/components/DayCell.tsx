@@ -16,7 +16,7 @@ export interface dayCellCSSProps {
 }
 
 export const dayCellCSS = ({ variant, state }: dayCellCSSProps): CSSObject => ({
-  height: 55,
+  height: 58,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
