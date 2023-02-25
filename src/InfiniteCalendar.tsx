@@ -195,7 +195,9 @@ const Grid = ({
 // InfiniteCalendar
 // ==============================
 
-function InfiniteCalendar(props: InfiniteCalendarProps) {
+function InfiniteCalendar(
+  props: InfiniteCalendarProps & JSX.IntrinsicElements["div"]
+) {
   const {
     selected = selectedInit,
     isStart = isStartInit,

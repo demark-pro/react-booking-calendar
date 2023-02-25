@@ -35,7 +35,7 @@ export const dateFnsOptionsInit: DateFnsOptions = {};
 export const monthInit: number = new Date().getMonth();
 export const yearInit: number = new Date().getFullYear();
 
-function Calendar(props: CalendarProps) {
+function Calendar(props: CalendarProps & JSX.IntrinsicElements["div"]) {
   const {
     selected = selectedInit,
     isStart = isStartInit,
