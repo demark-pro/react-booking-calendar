@@ -196,7 +196,8 @@ const Grid = ({
 // ==============================
 
 function InfiniteCalendar(
-  props: InfiniteCalendarProps & JSX.IntrinsicElements["div"]
+  props: InfiniteCalendarProps &
+    Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">
 ) {
   const {
     selected = selectedInit,
