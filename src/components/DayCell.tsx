@@ -44,8 +44,8 @@ export const dayCellSelectedCSS = ({
   isSelectedEnd,
 }: DayState): CSSObject => ({
   position: "absolute",
-  top: 0,
-  bottom: 0,
+  top: ".5px",
+  bottom: ".5px",
   left: isSelectedStart ? "50%" : 0,
   right: isSelectedEnd ? "50%" : 0,
   backgroundColor: "#559fff",
@@ -54,7 +54,7 @@ export const dayCellSelectedCSS = ({
 
 export const dayCellSelectedEventCSS = (): CSSObject => ({
   position: "absolute",
-  inset: 0,
+  inset: '.5px',
   borderRadius: 6,
   backgroundColor: "#448aff",
   border: "2px solid rgb(68, 138, 255)",
