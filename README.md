@@ -16,19 +16,14 @@
 
 ## Demo
 
-A minimal demo page can be found in [example](https://github.com/demark-pro/react-booking-calendar/tree/main/example) directory.
 
-[Online demo](https://demark-pro.github.io/react-booking-calendar/) is also available!
+[Online demo](https://demark-pro.github.io/react-booking-calendar/)!
 
 ## Getting started
 
 #### How can I use another locale?
 
 If you want to use a different locale, you need to pass the dateFnsOptions parameter to the locale. Read more [date-fns](https://date-fns.org/v2.29.3/docs/I18n-Contribution-Guide#choosing-a-directory-name-for-a-locale)
-
-#### Why are two different props used instead of an array of dates?
-
-This is necessary if you want to call the calendar in two different places. For example: check-in date selection button and check-out date selection button. Where for the first you have to pass `isStart=true` and `isStart=false`
 
 ### Installation
 
