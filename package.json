@@ -47,7 +47,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "date-fns": "^2.29.3",
-    "react-virtualized-auto-sizer": "^1.0.7",
+    "react-virtualized-auto-sizer": "^1.0.9",
     "react-window": "^1.8.8"
   },
   "main": "./dist/cjs/index.js",
