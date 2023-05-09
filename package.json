@@ -48,7 +48,7 @@
     "@emotion/react": "^11.10.6",
     "date-fns": "^2.29.3",
     "react-virtualized-auto-sizer": "^1.0.7",
-    "react-window": "^1.8.8"
+    "react-window": "^1.8.9"
   },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
