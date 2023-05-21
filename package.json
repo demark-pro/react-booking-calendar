@@ -45,7 +45,7 @@
     "react-dom": ">=16.14.0"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.6",
+    "@emotion/react": "^11.10.8",
     "date-fns": "^2.29.3",
     "react-virtualized-auto-sizer": "^1.0.7",
     "react-window": "^1.8.8"
