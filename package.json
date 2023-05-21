@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
-    "date-fns": "^2.29.3",
+    "date-fns": "^2.30.0",
     "react-virtualized-auto-sizer": "^1.0.7",
     "react-window": "^1.8.8"
   },
