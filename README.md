@@ -8,7 +8,7 @@ A responsive customizable booking calendar with overbooking protection.
 
 [Example #2](https://codesandbox.io/p/sandbox/example-2-scrollablecalendar-component-ydwds4) - ScrollableСalendar component
 
-[Example #3](https://codesandbox.io/p/sandbox/example-3-eventscalendar-vwkz9r) - An example of how easily you can customize a calendar using components and classnames props with tailwindcss
+[Example #3](https://codesandbox.io/p/devbox/example-3-eventscalendar-tailwind-pwtxpy) - EventsCalendar component. An example of how easily you can customize a calendar using components and classnames props with tailwindcss
 
 ## Installation
 
