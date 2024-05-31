@@ -93,4 +93,4 @@ const DaySelection = ({ innerProps, state }: DaySelectionProps) => {
 
 ## Documentation
 
-For more information about the props that you can pass to the component, see the [documentation here](https://linktodocumentation).
+For more information about the props that you can pass to the component, see the [documentation here](https://github.com/demark-pro/react-booking-calendar/blob/main/docs/Calendar.md).
