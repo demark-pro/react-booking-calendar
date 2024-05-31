@@ -48,7 +48,7 @@ export type CalendarSelected = CalendarDate | null | undefined;
 export type ClickDayHandler = (date: Date, state: CalendarDayState) => void;
 
 export type CalendarChangeHandler = (e: CalendarSelected[]) => void;
-export type OverbookHandler = (e: Date, errorType: string) => void;
+export type OverbookHandler = (e: Date, overbookType: OverbookTypes) => void;
 export type MonthChangeHandler = (month: CalendarMonth, year: number) => void;
 export type YearChangeHandler = (year: number) => void;
 
