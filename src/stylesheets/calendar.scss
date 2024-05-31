@@ -107,7 +107,7 @@
   padding: 0;
   text-indent: -999em;
   svg {
-    fill: currentColor;
+    fill: currentcolor;
     width: 30px;
     height: 30px;
   }
@@ -117,7 +117,7 @@
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
-  fill: currentColor;
+  fill: currentcolor;
 }
 
 .calendar__week-container {
@@ -150,7 +150,7 @@
   font-size: 0.9rem;
   text-transform: capitalize;
   padding: 0.5rem 0px;
-  color: currentColor;
+  color: currentcolor;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
@@ -189,7 +189,7 @@
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  color: currentColor;
+  color: currentcolor;
   z-index: 20;
   font-size: 0.95rem;
 }
@@ -269,8 +269,6 @@
   -webkit-transform: scale(1);
   -ms-transform: scale(1);
   transform: scale(1);
-  animation: scaleIn 50ms ease-in-out;
-  -webkit-animation: scaleIn 50ms ease-in-out;
   border: 1px solid $calendar__selected-background-color;
   z-index: 30;
 }
