@@ -1,116 +1,96 @@
-<div align="center">
-    <h2>React Booking Calendar</h2>
-    <p align="center">
-        <p>A responsive customizable React infinite calendar with overbooking protection.</p>
-        <a href="https://www.npmjs.com/package/@demark-pro/react-booking-calendar" target="_blank">
-            <img src="https://img.shields.io/npm/v/@demark-pro/react-booking-calendar">
-        </a>
-    </p>
-</div>
+# React Booking Calendar
 
-<p align="center">
-    <a href="https://frappe.github.io/gantt">
-        <img src="https://media.giphy.com/media/a7duNBi2PPNrJmxv0b/giphy.gif">
-    </a>
-</p>
+A responsive customizable booking calendar with overbooking protection.
 
 ## Demo
 
+[Example #1](https://codesandbox.io/p/sandbox/example-1-calendar-component-kg3984) - Сalendar component
 
-[Online demo](https://demark-pro.github.io/react-booking-calendar/)!
+[Example #2](https://codesandbox.io/p/sandbox/example-2-scrollablecalendar-component-ydwds4) - ScrollableСalendar component
 
-## Getting started
+[Example #3](https://codesandbox.io/p/sandbox/example-3-eventscalendar-vwkz9r) - An example of how easily you can customize a calendar using components and classnames props with tailwindcss
 
-#### How can I use another locale?
+## Installation
 
-If you want to use a different locale, you need to pass the dateFnsOptions parameter to the locale. Read more [date-fns](https://date-fns.org/v2.29.3/docs/I18n-Contribution-Guide#choosing-a-directory-name-for-a-locale)
+Install with npm
 
-### Installation
+```bash
+  npm i @demark-pro/react-booking-calendar --save
+```
 
-Add React-Booking-Calendar to your project by executing `npm i @demark-pro/react-booking-calendar --save`.
-
-### Usage
-
-Here's an example of usage with range:
+Below is a simple example of how to use the Calendar in a React view. You will also need to require the CSS file from this package (or provide your own). The example below shows how to include the CSS from this package if your build system supports requiring CSS files (Webpack is one that does).
 
 ```js
 import React, { useState } from "react";
-import Calendar from "@demark-pro/react-booking-calendar";
+import { Calendar } from "@demark-pro/react-booking-calendar";
 
-const reserved = [
-  {
-    startDate: new Date(2023, 3, 22),
-    endDate: new Date(2016, 4, 05),
-  },
-];
+import "@demark-pro/react-booking-calendar/dist/react-booking-calendar.css";
 
-const MyBookingCalendar = () => {
+// CSS Modules, react-booking-calendar-cssmodules.css
+// import '@demark-pro/react-booking-calendar/dist/react-booking-calendar-cssmodules.css';
+
+const oneDay = 86400000;
+const today = new Date().getTime() + oneDay;
+
+const reserved = Array.from({ length: 3 }, (_, i) => {
+  const daysCount = Math.floor(Math.random() * (7 - 4) + 3);
+  const startDate = new Date(today + oneDay * 8 * i);
+
+  return {
+    startDate,
+    endDate: new Date(startDate.getTime() + oneDay * daysCount),
+  };
+});
+
+const BookingCalendar = () => {
   const [selectedDates, setSelectedDates] = useState([]);
-  const handleChange = (e) => setSelectedDates(e);
 
   return (
     <Calendar
       selected={selectedDates}
-      onChange={handleChange}
-      onOverbook={(e, err) => alert(err)}
-      components={{
-        DayCellFooter: ({ innerProps }) => (
-          <div {...innerProps}>My custom day footer</div>
-        ),
-      }}
-      disabled={(date, state) => !state.isSameMonth}
       reserved={reserved}
-      variant="events"
-      dateFnsOptions={{ weekStartsOn: 1 }}
-      range={true}
+      onChange={setSelectedDates}
     />
   );
 };
 ```
 
-## Styles
+## Customisation
 
-If you provide the classNamePrefix prop to Calendar, all inner elements will be given a className with the provided prefix.
+### The classNames prop
 
-InfiniteСalendar example
-
-```js
-<InfiniteCalendar classNamePrefix="calendar" />
-```
-
-and CSS...
-
-```css
-.calendar__dayCell-footer {
-  color: "red";
-}
-```
-
-## Options
-
-| Prop           | Type                 | Default             | Description                                           |
-| :------------- | :------------------- | :------------------ | :---------------------------------------------------- |
-| selected       | (Date/number/null)[] | []                  | [selectedStartDate, selectedEndDate]                  |
-| month          | number               | current month       | Optional                                              |
-| year           | number               | current year        | Optional                                              |
-| isStart        | boolean              | true                | Current value selection                               |
-| reserved       | Array                | `[]`                | Array of objects `{ startDate: Date, endDate: Date }` |
-| dateFnsOptions | Object               | `{weekStartsOn: 1}` | Read more date-fns documentation                      |
-| range          | boolean              | false               | add range logic                                       |
-| className      | string               |                     | Class name(s) main Calendar `<div>` element           |
-| disabled       | boolean/func         | false               |                                                       |
-| components     |                      | false               | Custom components                                     |
-| variant        | events               | booking             | booking                                               |
-| onOverbook     | Func                 |                     | Returns date and type of overbooking error            |
-| onChange       | Func                 |                     | Callback after date selection. Returns (date)         |
-| onMonthChange  | Func                 |                     | Callback after month change. Returns (month, year)    |
-
-## Utils
-
-### getFreeTimeofDate
+ClassNames takes an object with keys to represent the various inner components that react-select is made up of. Each inner component takes a callback function with the following signature:
 
 ```ts
-(date: Date | number, reserved: Reserved[])
+<Calendar
+  classNames={{
+    DayContent: "text-orange-600",
+  }}
+/>
 ```
 
-Returns free check-in and check-out time `{ startDate: Date, endDate: Date }`
+### The components prop
+
+React-Select allows you to augment layout and functionality by replacing the default components with your own, using the components property. These components are given all the current props and state
+
+```ts
+import { DaySelectionProps } from "@demark-pro/react-booking-calendar";
+
+import "@demark-pro/react-booking-calendar/dist/react-booking-calendar.css";
+
+const DaySelection = ({ innerProps, state }: DaySelectionProps) => {
+  if (state.isReserved) return null;
+
+  return <div {...innerProps} />;
+};
+
+<Calendar
+  components={{
+    DaySelection: DaySelection,
+  }}
+/>;
+```
+
+## Documentation
+
+For more information about the props that you can pass to the component, see the [documentation here](https://linktodocumentation).

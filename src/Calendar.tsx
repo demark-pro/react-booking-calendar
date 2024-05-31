@@ -1,89 +1,116 @@
-import { format } from "date-fns";
-import React, { useMemo, useState } from "react";
-import { DayCellProps } from "./components/DayCell";
-import { defaultComponents } from "./components/index";
-import { getSelectedDates, createDays, getDayState } from "./helpers";
-
-import { defaultStyles, StylesProps } from "./styles";
+import React, { useState } from "react";
+import {
+  CalendarComponentsBase,
+  componentClasses,
+  defaultComponents,
+} from "./components/index";
+import {
+  getSelectedDates,
+  getDayState,
+  isNumeric,
+  createMonthDays,
+  cn,
+  preProtection,
+} from "./helpers";
 
 import {
-  CommonPropsType,
-  DateFnsOptions,
-  Day,
-  DayState,
-  DefaultCalendarProps,
-  Reserved,
-  Selected,
-  VarinatType,
+  CommonProps,
+  CalendarDayState,
+  CalendarMonth,
+  MonthChangeHandler,
+  CalendarPropsBase,
+  YearChangeHandler,
 } from "./types";
-import { checkOberbooking } from "./utils/checkOberbooking";
+import {
+  disabledInit,
+  initialDateInit,
+  isStartInit,
+  monthInit,
+  rangeInit,
+  reservedInit,
+  selectedInit,
+  yearInit,
+} from "./constants";
+import { getProtectedInterval } from "utils/get-protected-interval";
 
-export type CalendarProps = DefaultCalendarProps & {
-  month?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+export type CalendarProps = CalendarPropsBase & {
+  initialDate?: Date | number | null;
+  month?: CalendarMonth;
   year?: number;
-  onMonthChange?: (month: number, year: number) => void;
+  onMonthChange?: MonthChangeHandler;
+  onYearChange?: YearChangeHandler;
 };
 
-export const selectedInit: Selected[] = [null, null];
-export const isStartInit: boolean = true;
-export const dateOfStartMonthInit: Date = new Date();
-export const reservedInit: Reserved[] = [];
-export const variantInit: VarinatType = "booking";
-export const rangeInit: boolean = false;
-export const disabledInit: boolean = false;
-export const dateFnsOptionsInit: DateFnsOptions = {};
-export const monthInit: number = new Date().getMonth();
-export const yearInit: number = new Date().getFullYear();
-
-function Calendar(
-  props: CalendarProps & Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">
-) {
+export function Calendar(props: CalendarProps) {
   const {
     selected = selectedInit,
     isStart = isStartInit,
-    dateOfStartMonth = dateOfStartMonthInit,
+    initialDate = initialDateInit,
     reserved = reservedInit,
-    variant = variantInit,
-    dateFnsOptions = dateFnsOptionsInit,
     range = rangeInit,
+    protection = true,
     disabled = disabledInit,
     month,
     year,
     components = {},
-    className = "",
-    classNamePrefix,
+    classNames = {},
+    options = {},
     onOverbook,
     onChange,
     onMonthChange,
+    onYearChange,
     ...innerProps
   } = props;
 
   const [activeMonth, setActiveMonth] = useState(monthInit);
   const [activeYear, setActiveYear] = useState(yearInit);
 
-  const currentMonth = month && !Number.isNaN(month) ? month : activeMonth;
-  const currentYear = year && !Number.isNaN(year) ? year : activeYear;
+  const currentMonth = isNumeric(month) ? month! : activeMonth;
+  const currentYear = isNumeric(year) ? year! : activeYear;
 
-  const isControled =
-    (month && !Number.isNaN(month)) || (year && !Number.isNaN(year));
+  const isControled = isNumeric(month) || isNumeric(year);
+
+  const [startDate, endDate] = getSelectedDates(selected);
+
+  // ==============================
+  // getClassNames
+  // ==============================
+
+  const getClassNames = <Key extends keyof CalendarComponentsBase>(
+    name: Key,
+    classes?: string
+  ) => {
+    const defaultClass = `calendar__${componentClasses[name]}`;
+    const propsClasses = classNames[name];
+
+    return cn(defaultClass, propsClasses, classes);
+  };
+
+  // ==============================
+  // commonProps
+  // ==============================
+
+  const commonProps: CommonProps = {
+    selected: [startDate, endDate],
+    reserved,
+    disabled,
+    protection,
+    range,
+    isStart,
+    options,
+    getClassNames,
+  };
 
   // ==============================
   // handleMonthChange
   // ==============================
 
-  const handleChangeMonth = (value: number) => {
-    let newMonth = value;
-    let newYear = null;
-    if (newMonth > 11) {
-      newMonth = 0;
-      newYear = currentYear + 1;
-    }
-    if (newMonth < 0) {
-      newMonth = 11;
-      newYear = currentYear - 1;
-    }
+  const handleChangeMonth = (value: CalendarMonth) => {
+    const [newMonth, newYear] = getMonthYear(value, currentYear);
+
     if (onMonthChange) {
-      onMonthChange(newMonth, newYear || currentYear);
+      onMonthChange(newMonth, newYear ?? currentYear);
+      if (newYear && onYearChange) onYearChange(newYear);
 
       if (isControled) return;
     }
@@ -96,65 +123,28 @@ function Calendar(
   // handleClickDay
   // ==============================
 
-  const handleClickDay = (day: Day, state: DayState) => {
-    if (typeof disabled === "boolean" && disabled) return;
+  const handleClickDay = (date: Date, state: CalendarDayState) => {
+    const preSelected = preProtection(date, state, commonProps);
 
-    const { date } = day;
+    if (preSelected !== null) {
+      if (onChange) onChange(preSelected);
 
-    const { errorType, newSelected } = checkOberbooking({
-      date,
-      selected,
-      isStart,
-      reserved,
-      state,
-      range,
-      variant,
-    });
-
-    if (errorType && !newSelected) {
-      if (onOverbook) onOverbook(date, errorType);
       return;
     }
 
-    if (newSelected && onChange) onChange(newSelected);
-  };
+    const { interval, overbookType } = getProtectedInterval(
+      date,
+      state,
+      commonProps
+    );
 
-  const [startDate, endDate] = getSelectedDates(selected);
+    if (overbookType && !interval) {
+      if (onOverbook) onOverbook(date, overbookType);
+      return;
+    }
 
-  // ==============================
-  // getClassNames
-  // ==============================
-
-  const getClassNames = (name: string) => {
-    if (!classNamePrefix) return "";
-
-    const prefix = classNamePrefix.length ? classNamePrefix + "__" : "";
-
-    return prefix + name.replace(/_/g, "-");
-  };
-
-  // ==============================
-  // getStyles
-  // ==============================
-
-  const getStyles = <Key extends keyof StylesProps>(props: any, name: Key) => {
-    const base = defaultStyles[name](props as any);
-    base.boxSizing = "border-box";
-
-    return base;
-  };
-
-  // ==============================
-  // commonProps
-  // ==============================
-
-  const commonProps = {
-    selected: [startDate, endDate],
-    reserved,
-    variant,
-    dateFnsOptions,
-    getClassNames,
-    getStyles,
+    if (interval && onChange) onChange(interval);
+    return;
   };
 
   // ==============================
@@ -165,79 +155,99 @@ function Calendar(
     CalendarContainer,
     MonthContainer,
     MonthArrowBack,
-    MonthContent,
     MonthArrowNext,
+    MonthContent,
     WeekContainer,
-    WeekCell,
+    WeekContent,
     DaysContainer,
-    DayCell,
-    DayCellContent,
-    DayCellHeader,
-    DayCellFooter,
+    DayContainer,
+    DayContent,
+    DaySelection,
+    DayReservation,
+    DayToday,
   } = defaultComponents(components);
 
-  // ==============================
-  // renderCell
-  // ==============================
-
-  const renderCell = (day: Day): JSX.Element => {
-    const { selected, reserved } = commonProps;
-
-    const state = getDayState({ day, selected, reserved, disabled });
-    const dayProps: DayCellProps & CommonPropsType = {
-      date: day.date,
-      state,
-      ...commonProps,
-    };
-
-    return (
-      <DayCell
-        key={format(day.date, "dd-MM-yyyy")}
-        innerProps={{ onClick: () => handleClickDay(day, state) }}
-        {...dayProps}
-      >
-        <DayCellHeader {...dayProps} />
-        <DayCellContent {...dayProps} />
-        <DayCellFooter {...dayProps} />
-      </DayCell>
-    );
-  };
-
   const startMonth = new Date(currentYear, currentMonth);
-  const items = useMemo(
-    () =>
-      createDays({
-        dateOfStartMonth: startMonth,
-        numOfMonths: 1,
-        dateFnsOptions,
-        isInfinte: false,
-      }),
-    [startMonth, dateFnsOptions]
-  );
+  const days = createMonthDays({ dateOfMonth: startMonth, options });
 
   return (
-    <CalendarContainer {...commonProps} innerProps={innerProps}>
+    <CalendarContainer {...commonProps} innerProps={{ ...innerProps }}>
       <MonthContainer {...commonProps}>
         <MonthArrowBack
           {...commonProps}
-          innerProps={{ onClick: () => handleChangeMonth(currentMonth - 1) }}
+          innerProps={{
+            onClick: () =>
+              handleChangeMonth((currentMonth - 1) as CalendarMonth),
+          }}
         />
+
         <MonthContent
           month={currentMonth}
           year={currentYear}
           {...commonProps}
         />
+
         <MonthArrowNext
           {...commonProps}
-          innerProps={{ onClick: () => handleChangeMonth(currentMonth + 1) }}
+          innerProps={{
+            onClick: () =>
+              handleChangeMonth((currentMonth + 1) as CalendarMonth),
+          }}
         />
       </MonthContainer>
-      <WeekContainer {...commonProps}>{WeekCell}</WeekContainer>
+      <WeekContainer {...commonProps}>
+        {Array.from({ length: 7 }).map((_, key) => (
+          <WeekContent
+            key={`calendar_week_container_${key}`}
+            day={key}
+            {...commonProps}
+            innerProps={{}}
+          />
+        ))}
+      </WeekContainer>
       <DaysContainer {...commonProps}>
-        {items.map((day) => renderCell(day))}
+        {days.map((day, key) => {
+          const dayProps = {
+            date: day.date,
+            state: getDayState({ day, selected, reserved, disabled }),
+          };
+
+          return (
+            <DayContainer
+              key={`calendar_day_container_${key}`}
+              innerProps={{ onClick: handleClickDay }}
+              {...dayProps}
+              {...commonProps}
+            >
+              <DayContent {...dayProps} {...commonProps}>
+                {day.date.getDate()}
+              </DayContent>
+              <DayToday {...dayProps} {...commonProps} />
+              <DaySelection {...dayProps} {...commonProps} />
+              <DayReservation {...dayProps} {...commonProps} />
+            </DayContainer>
+          );
+        })}
       </DaysContainer>
     </CalendarContainer>
   );
 }
 
-export default Calendar;
+const getMonthYear = (
+  newMonth: CalendarMonth,
+  year: number
+): [CalendarMonth, number | null] => {
+  let month = newMonth;
+  let newYear = null;
+
+  if (newMonth > 11) {
+    month = 0;
+    newYear = year + 1;
+  }
+  if (newMonth < 0) {
+    month = 11;
+    newYear = year - 1;
+  }
+
+  return [month, newYear];
+};

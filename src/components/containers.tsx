@@ -1,31 +1,33 @@
-import React, { ComponentType, ReactNode } from "react";
-import { CSSObject } from "@emotion/react";
-import { getStyleProps } from "../helpers";
-import { CommonPropsType } from "../types";
+import React, {
+  CSSProperties,
+  ComponentPropsWithoutRef,
+  PropsWithChildren,
+} from "react";
+import { CalendarDayState, ClickDayHandler, CommonProps } from "../types";
+import { getAttributes } from "helpers";
+import { formatDate } from "utils/date.utils";
 
 // ==============================
 // Calendar Container
 // ==============================
 
-export type CalendarContainerProps = CommonPropsType & {
-  children: ReactNode;
-  innerProps?: {};
-};
-export const CalendarContainerCSS = (): CSSObject => ({
-  backgroundColor: "#fff",
-  position: "relative",
-  height: "100%",
-  width: "100%",
-  fontFamily:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
-  WebkitFontSmoothing: "antialiased",
-});
+export type CalendarContainerProps = CommonProps &
+  PropsWithChildren & {
+    innerProps: ComponentPropsWithoutRef<"div"> & { isScrollable?: boolean };
+  };
 
 export const CalendarContainer = (props: CalendarContainerProps) => {
-  const { children, innerProps } = props;
+  const { getClassNames, children, innerProps } = props;
+  const { isScrollable, className = "", ...restInner } = innerProps ?? {};
+
+  const classNames = getClassNames("CalendarContainer", className);
 
   return (
-    <div {...getStyleProps({}, "calendar_container", props)} {...innerProps}>
+    <div
+      className={classNames}
+      {...getAttributes({ "data-scrollable": !!isScrollable })}
+      {...restInner}
+    >
       {children}
     </div>
   );
@@ -35,25 +37,16 @@ export const CalendarContainer = (props: CalendarContainerProps) => {
 // Month Container
 // ==============================
 
-export type MonthContainerProps = CommonPropsType & {
-  children: ReactNode;
-  innerProps?: JSX.IntrinsicElements["div"];
-};
-
-export const monthContainerCSS = (): CSSObject => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  flexDirection: "row",
-  padding: ".5rem .25rem .75rem .25rem",
-  position: "relative",
-});
+export type MonthContainerProps = CommonProps &
+  PropsWithChildren & {
+    innerProps?: { style?: CSSProperties };
+  };
 
 export const MonthContainer = (props: MonthContainerProps) => {
-  const { children, innerProps } = props;
+  const { children, innerProps, getClassNames } = props;
 
   return (
-    <div {...getStyleProps({}, "month_container", props)} {...innerProps}>
+    <div className={getClassNames("MonthContainer")} {...innerProps}>
       {children}
     </div>
   );
@@ -63,65 +56,73 @@ export const MonthContainer = (props: MonthContainerProps) => {
 // Week Container
 // ==============================
 
-export type WeekContainerProps = CommonPropsType & {
-  children: ComponentType<WeekContainerChildProps>;
-  innerProps?: JSX.IntrinsicElements["div"];
-};
-
-export type WeekContainerChildProps = CommonPropsType & {
-  day: number;
-  innerProps?: JSX.IntrinsicElements["div"];
-};
-
-export const weekContainerCSS = (): CSSObject => ({
-  position: "sticky",
-  top: 0,
-  left: 0,
-  right: 0,
-  background: "#fff",
-  zIndex: 10,
-  display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
-  alignItems: "center",
-  alignContent: "center",
-  width: "100%",
-});
+export type WeekContainerProps = CommonProps &
+  PropsWithChildren & {
+    innerProps?: {};
+  };
 
 export const WeekContainer = (props: WeekContainerProps) => {
-  const { children, innerProps, ...childProps } = props;
-  const Component = children;
+  const { getClassNames, children } = props;
 
-  return (
-    <div {...getStyleProps({}, "week_container", props)} {...innerProps}>
-      {children &&
-        Array.from({ length: 7 }).map((_, i) => (
-          <Component key={i} day={i} {...childProps} />
-        ))}
-    </div>
-  );
+  return <div className={getClassNames("WeekContainer")}>{children}</div>;
 };
 
 // ==============================
 // Days Container
 // ==============================
 
-export type DaysContainerProps = CommonPropsType & {
-  children: ReactNode;
-  innerProps?: JSX.IntrinsicElements["div"];
-};
-
-export const daysContainerCSS = (): CSSObject => ({
-  display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
-});
+export type DaysContainerProps = CommonProps &
+  PropsWithChildren & {
+    innerProps?: {};
+  };
 
 export const DaysContainer = (props: DaysContainerProps) => {
-  const { children, innerProps } = props;
+  const { getClassNames, children } = props;
 
   return (
-    <div {...getStyleProps({}, "day_container", props)} {...innerProps}>
+    <div role="listbox" className={getClassNames("DaysContainer")}>
+      {children}
+    </div>
+  );
+};
+
+// ==============================
+// Day Container
+// ==============================
+
+export type DayContainerProps = CommonProps &
+  PropsWithChildren & {
+    date: Date;
+    state: CalendarDayState;
+    innerProps?: {
+      style?: CSSProperties;
+      onClick: ClickDayHandler;
+    };
+  };
+
+export const DayContainer = (props: DayContainerProps) => {
+  const { date, state, innerProps, children, getClassNames, options } = props;
+  const { onClick, ...restInner } = innerProps ?? {};
+
+  const attributes = getAttributes({
+    "data-selected":
+      !!state.isSelected || !!state.isSelectedStart || !!state.isSelectedEnd,
+    "data-reserved": !!state.isReserved,
+    "data-past": !!state.isPast,
+    "data-start-month": !!state.isStartMonth,
+    "data-end-month": !!state.isEndMonth,
+  });
+
+  return (
+    <div
+      aria-label={formatDate(date, {}, options)}
+      role="option"
+      tabIndex={-1}
+      className={getClassNames("DayContainer")}
+      onClick={() => onClick && onClick(date, state)}
+      {...attributes}
+      {...restInner}
+    >
       {children}
     </div>
   );

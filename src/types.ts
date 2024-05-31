@@ -1,104 +1,97 @@
-import { CSSObject } from "@emotion/react";
-import { GridOnScrollProps } from "react-window";
-import { CalendarComponentsConfig } from "./components";
-import { StylesProps } from "./styles";
+import { CalendarClassNamesBase, CalendarComponents } from "./components";
+import { ComponentPropsWithoutRef } from "react";
 
-export interface Titles {
-  dayFooterStart: string | JSX.Element;
-  dayFooterEnd: string | JSX.Element;
-  reservedFooter: string | JSX.Element;
-}
+// export
 
-export interface ReservedInfoOfDate {
-  reserved: boolean;
-  startDate: Date;
-  endDate: Date;
-}
+export type CalendarDate = Date | number | string;
+export type OverbookTypes =
+  | "PAST"
+  | "BOOKED"
+  | "BEFORE_START"
+  | "AFTER_END"
+  | "BOOKED_BETWEEN"
+  | "DISABLED";
 
-export type ClickDayType = (e: Day, state: DayState) => void;
-
-export interface Reserved {
-  startDate: Date | number;
-  endDate: Date | number;
-  color?: string;
-}
-
-export interface Day {
+export type CalendarDay = {
   date: Date;
-  rowIndex: number;
   monthStartDate: Date;
-  handleClick?: ClickDayType;
-}
+  handleClick?: ClickDayHandler;
+  isMonthRow?: boolean;
+};
 
-export interface DayState {
+export interface CalendarDayState {
   isPast?: boolean;
   isToday?: boolean;
   isStartMonth?: boolean;
+  isEndMonth?: boolean;
   isSameMonth?: boolean;
   isSameYear?: boolean;
   isSelected?: boolean;
   isSelectedStart?: boolean;
   isSelectedEnd?: boolean;
   isReserved?: boolean;
+  isReservedStart?: boolean;
+  isReservedEnd?: boolean;
   isDisabled?: boolean;
 }
 
-export interface DateFnsOptions {
-  locale?: Locale;
-  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  firstWeekContainsDate?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type CalendarMonth = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+
+export interface CalendarReserved {
+  startDate: CalendarDate;
+  endDate: CalendarDate;
+  color?: string;
 }
 
-export type Selected = Date | number | null;
-export type VarinatType = "booking" | "events";
-export type DisabledFuncType = (date: Date, state: DayState) => boolean;
+export type CalendarSelected = CalendarDate | null | undefined;
 
-export type CommonPropsType = {
-  selected: Selected[];
-  reserved: Reserved[];
-  variant: VarinatType;
-  dateFnsOptions: DateFnsOptions;
-  getClassNames: <Key extends keyof StylesProps>(name: Key) => string;
-  getStyles: <Key extends keyof StylesProps>(
-    props: any,
-    name: Key
-  ) => CSSObject;
+export type ClickDayHandler = (date: Date, state: CalendarDayState) => void;
+
+export type CalendarChangeHandler = (e: CalendarSelected[]) => void;
+export type OverbookHandler = (e: Date, errorType: string) => void;
+export type MonthChangeHandler = (month: CalendarMonth, year: number) => void;
+export type YearChangeHandler = (year: number) => void;
+
+// ========================== old ==========================
+
+export type CalendarDisabled =
+  | boolean
+  | ((date: Date, state: CalendarDayState) => boolean);
+
+export type CalendarProtection = boolean;
+
+export type CalendarOptions = {
+  locale?: Intl.LocalesArgument;
+  weekStartsOn?: number;
+  useAttributes?: boolean;
 };
 
-export type CalendarContextProps = {
-  components: CalendarComponentsConfig;
-  commonProps: CommonPropsType;
-  handleClickDay: ClickDayType;
-};
-
-export type DefaultCalendarProps = {
-  selected?: Selected[];
-  isStart?: boolean;
-  dateOfStartMonth?: Date | number;
-  reserved?: Array<Reserved>;
-  variant?: VarinatType;
-  disabled?: boolean | DisabledFuncType;
-  dateFnsOptions?: DateFnsOptions;
+export type CommonProps = {
+  selected: CalendarSelected[];
+  reserved: CalendarReserved[];
+  disabled?: CalendarDisabled;
+  protection?: CalendarProtection;
   range?: boolean;
-  components?: CalendarComponentsConfig;
-  onOverbook?: (e: Date, errorType: string) => void;
-  onChange?: (e: Selected[]) => void;
-  className?: string;
-  classNamePrefix?: string;
+  isStart?: boolean;
+  options?: CalendarOptions;
+  getClassNames: (
+    name: keyof CalendarClassNamesBase,
+    classes?: string
+  ) => string;
 };
 
-export type GridProps = {
-  width: number;
-  height: number;
-  items: Array<Day>;
-  colHeight: number;
-  scrollToDate?: Date | number | null;
-  onScroll?: (e: GridOnScrollProps) => void;
-};
+export type CalendarClassNames = Partial<CalendarClassNamesBase>;
 
-export type DaysProps = {
-  dateOfStartMonth: Date | number;
-  numOfMonths: number;
-  dateFnsOptions: DateFnsOptions;
-  isInfinte?: boolean;
-};
+export type CalendarPropsBase = {
+  selected?: CalendarSelected[];
+  reserved?: Array<CalendarReserved>;
+  components?: CalendarComponents;
+  classNames?: CalendarClassNames;
+  disabled?: CalendarDisabled;
+  isStart?: boolean;
+  options?: CalendarOptions;
+  range?: boolean;
+  protection?: boolean;
+  onOverbook?: OverbookHandler;
+  onChange?: CalendarChangeHandler;
+} & Omit<ComponentPropsWithoutRef<"div">, "onChange">;

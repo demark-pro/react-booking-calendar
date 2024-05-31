@@ -1,18 +1,15 @@
-import isSameDay from "date-fns/isSameDay";
-import startOfDay from "date-fns/startOfDay";
-import endOfDay from "date-fns/endOfDay";
+import { CalendarReserved } from "../types";
+import { endOfDay, isSameDay, startOfDay } from "./date.utils";
 
-import { Reserved } from "../types";
-
-export type FreeTimeOfDateType = {
+export type GetProtectedTimeReturn = {
   startDate: Date;
   endDate: Date;
 };
 
-export const getFreeTimeOfDate = (
+export const getProtectedTime = (
   date: Date,
-  reserved: Reserved[]
-): FreeTimeOfDateType => {
+  reserved: CalendarReserved[]
+): GetProtectedTimeReturn => {
   const initTime = {
     startDate: startOfDay(date),
     endDate: endOfDay(date),

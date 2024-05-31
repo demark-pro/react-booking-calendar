@@ -1,9 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { Calendar } from "../index";
-import { createSerializer } from "@emotion/jest";
-
-expect.addSnapshotSerializer(createSerializer());
+import { Calendar } from "index";
 
 describe("Calendar", () => {
   test("renders the Calendar component", () => {
@@ -12,8 +9,6 @@ describe("Calendar", () => {
 });
 
 test("snapshot - Calendar", () => {
-  const { container } = render(
-    <Calendar selected={[]} classNamePrefix="calendar" />
-  );
+  const { container } = render(<Calendar selected={[]} />);
   expect(container).toMatchSnapshot();
 });

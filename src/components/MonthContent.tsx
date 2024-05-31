@@ -1,46 +1,34 @@
-import React from "react";
-import { CSSObject } from "@emotion/react";
-import { format, isSameMonth, isSameYear } from "date-fns";
-import { getStyleProps } from "../helpers";
-import { CommonPropsType } from "../types";
+import React, { ComponentPropsWithoutRef } from "react";
+import { getAttributes } from "../helpers";
+import { CommonProps } from "../types";
+import { formatDate, isSameMonth, isSameYear } from "../utils/date.utils";
 
-export type MonthContentProps = CommonPropsType & {
+export type MonthContentProps = CommonProps & {
   month: number;
   year: number;
-  innerProps?: JSX.IntrinsicElements["div"];
+  innerProps?: ComponentPropsWithoutRef<"div"> & { isScrollable?: boolean };
 };
 
-export const monthContentCSS = (): CSSObject => ({
-  position: "absolute",
-  left: "50%",
-  top: "50%",
-  transform: "translate(-50%, -50%)",
-  fontSize: "16px",
-  fontWeight: 500,
-  display: "flex",
-  gap: "0.25rem",
-});
-
-const MonthContent = (props: MonthContentProps) => {
-  const { year, month, innerProps } = props;
+export const MonthContent = (props: MonthContentProps) => {
+  const { year, month, options, innerProps, getClassNames } = props;
+  const { isScrollable, ...restInner } = innerProps ?? {};
 
   const date = new Date(year, month);
-  const monthContent = format(date, "MMMM");
+  const monthContent = formatDate(date, { month: "long" }, options);
+
+  const attributes = getAttributes({
+    "data-some-month": isSameMonth(date, new Date()),
+    "data-some-year": isSameYear(date, new Date()),
+  });
 
   return (
-    <div {...getStyleProps({}, "month_content", props)} {...innerProps}>
-      <span
-        style={{ color: isSameMonth(date, new Date()) ? "#007aff" : "#424242" }}
-      >
-        {monthContent}
-      </span>
-      <span
-        style={{ color: isSameYear(date, new Date()) ? "#007aff" : "#424242" }}
-      >
-        {year}
-      </span>
+    <div
+      className={getClassNames("MonthContent")}
+      {...attributes}
+      {...restInner}
+    >
+      <span>{monthContent}</span>
+      <span>{year}</span>
     </div>
   );
 };
-
-export default MonthContent;
