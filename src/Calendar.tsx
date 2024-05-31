@@ -41,7 +41,7 @@ export type CalendarProps = CalendarPropsBase & {
   onYearChange?: YearChangeHandler;
 };
 
-export function Calendar(props: CalendarProps) {
+export function Calendar(props: CalendarProps): JSX.Element {
   const {
     selected = selectedInit,
     isStart = isStartInit,
