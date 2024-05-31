@@ -1,5 +1,8 @@
 # React Booking Calendar
 
+<img width="394" alt="Снимок экрана 2024-05-31 в 23 54 21" src="https://github.com/demark-pro/react-booking-calendar/assets/87781788/44d84296-c404-4a40-8f5f-1c4f3530bbe4">
+
+
 A responsive customizable booking calendar with overbooking protection.
 
 ## Demo
