@@ -71,7 +71,7 @@ ClassNames takes an object with keys to represent the various inner components t
 
 ### The components prop
 
-React-Select allows you to augment layout and functionality by replacing the default components with your own, using the components property. These components are given all the current props and state
+Calendar allows you to augment layout and functionality by replacing the default components with your own, using the components property. These components are given all the current props and state
 
 ```ts
 import { DaySelectionProps } from "@demark-pro/react-booking-calendar";
