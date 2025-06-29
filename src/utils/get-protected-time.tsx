@@ -1,5 +1,5 @@
 import { CalendarReserved } from "../types";
-import { endOfDay, isSameDay, startOfDay } from "./date.utils";
+import { isSameDay } from "./date.utils";
 
 export type GetProtectedTimeReturn = {
   startDate: Date;
@@ -11,8 +11,10 @@ export const getProtectedTime = (
   reserved: CalendarReserved[]
 ): GetProtectedTimeReturn => {
   const initTime = {
-    startDate: startOfDay(date),
-    endDate: endOfDay(date),
+    // startDate: startOfDay(date),
+    // endDate: endOfDay(date),
+    startDate: date,
+    endDate: date,
   };
 
   const reserveEnd = reserved.find((d) => isSameDay(d.endDate, date));
