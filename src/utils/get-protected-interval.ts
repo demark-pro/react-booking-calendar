@@ -58,7 +58,7 @@ const validateBooking = (
   if (state.isPast) return { overbookType: "PAST", interval: null };
 
   // if reserved between
-  if (state.isReserved) return { overbookType: "BOOKED", interval: null };
+  if (!state.isAvailable) return { overbookType: "BOOKED", interval: null };
 
   // if selected length 0 or 2 then set selected date
   if (range && ((!startDate && !endDate) || (startDate && endDate))) {

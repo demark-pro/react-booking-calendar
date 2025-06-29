@@ -153,6 +153,11 @@ export const getDayState = ({
       isBetween(endOfDay(date), r.startDate, r.endDate, "{}") &&
       isBetween(startOfDay(date), r.startDate, r.endDate, "{}")
   );
+  state.isAvailable = !!reserved.find(
+    (r) =>
+      !isBetween(endOfDay(date), r.startDate, r.endDate, "[]") ||
+      !isBetween(startOfDay(date), r.startDate, r.endDate, "[]")
+  );
   state.isReservedStart = !!reserved.find((r) => isSameDay(r.startDate, date));
   state.isReservedEnd = !!reserved.find((r) => isSameDay(r.endDate, date));
 

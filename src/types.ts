@@ -32,6 +32,7 @@ export interface CalendarDayState {
   isReserved?: boolean;
   isReservedStart?: boolean;
   isReservedEnd?: boolean;
+  isAvailable?: boolean;
   isDisabled?: boolean;
 }
 
