@@ -1,6 +1,6 @@
 {
   "name": "@demark-pro/react-booking-calendar",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "A responsive customizable React Booking calendar with overbooking protection",
   "author": "Mark Davydkin @demark-pro",
   "license": "MIT",
