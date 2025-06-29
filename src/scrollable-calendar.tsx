@@ -186,7 +186,7 @@ const Grid = ({
   onChange,
   ...props
 }: GridProps) => {
-  useEffect(() => {}, [items, initialScroll]);
+  useEffect(() => { }, [items, initialScroll]);
 
   return (
     <FixedSizeGrid
@@ -296,11 +296,11 @@ export const ScrollableCalendar = (props: ScrollableCalendarProps) => {
               items={items}
               colHeight={colHeight}
               initialScroll={initialScroll}
-              onScroll={onScroll}
               components={calendarComponents}
               commonProps={commonProps}
               isStart={isStart}
               range={range}
+              onScroll={onScroll}
               onOverbook={onOverbook}
               onChange={onChange}
             />
