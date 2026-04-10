@@ -9,8 +9,9 @@ export type DayTodayProps = CommonProps & {
 
 export const DayToday = (props: DayTodayProps) => {
   const { innerProps, state, getClassNames } = props;
+  const { className = "", ...restInner } = innerProps ?? {};
 
   if (!state.isToday) return null;
 
-  return <div className={getClassNames("DayToday")} {...innerProps} />;
+  return <div className={getClassNames("DayToday", className)} {...restInner} />;
 };

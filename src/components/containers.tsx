@@ -1,5 +1,4 @@
 import React, {
-  CSSProperties,
   ComponentPropsWithoutRef,
   PropsWithChildren,
 } from "react";
@@ -39,14 +38,15 @@ export const CalendarContainer = (props: CalendarContainerProps) => {
 
 export type MonthContainerProps = CommonProps &
   PropsWithChildren & {
-    innerProps?: { style?: CSSProperties };
+    innerProps?: ComponentPropsWithoutRef<"div">;
   };
 
 export const MonthContainer = (props: MonthContainerProps) => {
   const { children, innerProps, getClassNames } = props;
+  const { className = "", ...restInner } = innerProps ?? {};
 
   return (
-    <div className={getClassNames("MonthContainer")} {...innerProps}>
+    <div className={getClassNames("MonthContainer", className)} {...restInner}>
       {children}
     </div>
   );
@@ -58,13 +58,18 @@ export const MonthContainer = (props: MonthContainerProps) => {
 
 export type WeekContainerProps = CommonProps &
   PropsWithChildren & {
-    innerProps?: {};
+    innerProps?: Omit<ComponentPropsWithoutRef<"div">, "children">;
   };
 
 export const WeekContainer = (props: WeekContainerProps) => {
-  const { getClassNames, children } = props;
+  const { getClassNames, children, innerProps } = props;
+  const { className = "", ...restInner } = innerProps ?? {};
 
-  return <div className={getClassNames("WeekContainer")}>{children}</div>;
+  return (
+    <div className={getClassNames("WeekContainer", className)} {...restInner}>
+      {children}
+    </div>
+  );
 };
 
 // ==============================
@@ -73,14 +78,19 @@ export const WeekContainer = (props: WeekContainerProps) => {
 
 export type DaysContainerProps = CommonProps &
   PropsWithChildren & {
-    innerProps?: {};
+    innerProps?: Omit<ComponentPropsWithoutRef<"div">, "children">;
   };
 
 export const DaysContainer = (props: DaysContainerProps) => {
-  const { getClassNames, children } = props;
+  const { getClassNames, children, innerProps } = props;
+  const { className = "", ...restInner } = innerProps ?? {};
 
   return (
-    <div role="listbox" className={getClassNames("DaysContainer")}>
+    <div
+      role="listbox"
+      className={getClassNames("DaysContainer", className)}
+      {...restInner}
+    >
       {children}
     </div>
   );
@@ -94,15 +104,14 @@ export type DayContainerProps = CommonProps &
   PropsWithChildren & {
     date: Date;
     state: CalendarDayState;
-    innerProps?: {
-      style?: CSSProperties;
+    innerProps?: Omit<ComponentPropsWithoutRef<"div">, "children" | "onClick"> & {
       onClick: ClickDayHandler;
     };
   };
 
 export const DayContainer = (props: DayContainerProps) => {
   const { date, state, innerProps, children, getClassNames, options } = props;
-  const { onClick, ...restInner } = innerProps ?? {};
+  const { onClick, className = "", ...restInner } = innerProps ?? {};
 
   const attributes = getAttributes({
     "data-selected":
@@ -118,7 +127,7 @@ export const DayContainer = (props: DayContainerProps) => {
       aria-label={formatDate(date, {}, options)}
       role="option"
       tabIndex={-1}
-      className={getClassNames("DayContainer")}
+      className={getClassNames("DayContainer", className)}
       onClick={() => onClick && onClick(date, state)}
       {...attributes}
       {...restInner}

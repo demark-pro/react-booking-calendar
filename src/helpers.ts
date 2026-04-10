@@ -23,8 +23,13 @@ import {
 } from "./utils/date.utils";
 import memoize from "memoize-one";
 
-export function cn(...classes: any) {
-  return classes.filter(Boolean).join(" ");
+export function cn(...classes: Array<string | null | undefined | false>) {
+  return classes
+    .filter(
+      (className): className is string =>
+        typeof className === "string" && className.length > 0
+    )
+    .join(" ");
 }
 
 export function getAttributes(attributes: Record<string, boolean>) {

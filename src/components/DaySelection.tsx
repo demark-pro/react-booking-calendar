@@ -10,14 +10,15 @@ export type DaySelectionProps = CommonProps & {
 
 export const DaySelection = (props: DaySelectionProps) => {
   const { innerProps, state, options, getClassNames } = props;
+  const { className = "", ...restInner } = innerProps ?? {};
 
   if (!isShow(state)) return null;
 
   return (
     <div
-      className={getClassNames("DaySelection")}
+      className={getClassNames("DaySelection", className)}
       {...getDayAttributes(state, options)}
-      {...innerProps}
+      {...restInner}
     />
   );
 };

@@ -78,7 +78,9 @@ Calendar allows you to augment layout and functionality by replacing the default
 
 You can also export the props type like CalendarContainerProps.
 
-All functional properties that the component needs are provided in innerProps which you must spread.
+All functional properties that the component needs are provided in `innerProps`, which you should spread onto your DOM element.
+
+If you want the default styles and the `classNames` prop to keep working with a replacement component, merge `innerProps.className` with `getClassNames(...)` instead of replacing it.
 
 Every component receives `commonProps` which are spread onto the component.
 
@@ -101,10 +103,21 @@ Also, all components of the day have additional props:
 **Example:**
 
 ```ts
-const DaySelection = ({ innerProps, state }: DaySelectionProps) => {
+const DaySelection = ({
+  innerProps,
+  state,
+  getClassNames,
+}: DaySelectionProps) => {
   if (state.isReserved) return null;
 
-  return <div {...innerProps} />;
+  const { className = "", ...restInnerProps } = innerProps ?? {};
+
+  return (
+    <div
+      className={getClassNames("DaySelection", className)}
+      {...restInnerProps}
+    />
+  );
 };
 
 <Calendar
@@ -124,7 +137,7 @@ _- The problem here isn’t just about performance — remounting a component ca
 
 #### type: `CalendarClassNames`
 
-An object where you need to pass the name of the component as a key and the value as a string with the classes you want to add.
+An object where the key is the component name and the value is a string with classes to append to that component's default `calendar__*` class.
 
 ```ts
 <Calendar

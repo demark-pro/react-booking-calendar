@@ -11,7 +11,7 @@ export type MonthContentProps = CommonProps & {
 
 export const MonthContent = (props: MonthContentProps) => {
   const { year, month, options, innerProps, getClassNames } = props;
-  const { isScrollable, ...restInner } = innerProps ?? {};
+  const { isScrollable, className = "", ...restInner } = innerProps ?? {};
 
   const date = new Date(year, month);
   const monthContent = formatDate(date, { month: "long" }, options);
@@ -23,7 +23,7 @@ export const MonthContent = (props: MonthContentProps) => {
 
   return (
     <div
-      className={getClassNames("MonthContent")}
+      className={getClassNames("MonthContent", className)}
       {...attributes}
       {...restInner}
     >

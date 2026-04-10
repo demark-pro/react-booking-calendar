@@ -15,15 +15,16 @@ export type WeekContentProps = CommonProps & {
 
 export const WeekContent = (props: WeekContentProps) => {
   const { day, options, innerProps, getClassNames } = props;
+  const { className = "", ...restInner } = innerProps ?? {};
 
   const startDate = startOfWeek(new Date(), options);
   const date = addDays(startDate, day);
 
   return (
     <div
-      className={getClassNames("WeekContent")}
+      className={getClassNames("WeekContent", className)}
       {...getAttributes({ "data-weekend": isWeekend(date) })}
-      {...innerProps}
+      {...restInner}
     >
       {formatDate(date, { weekday: "short" }, options)}
     </div>

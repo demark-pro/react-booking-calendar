@@ -11,12 +11,13 @@ export type DayContentProps = CommonProps & {
 
 export const DayContent = (props: DayContentProps) => {
   const { children, innerProps, state, options, getClassNames } = props;
+  const { className = "", ...restInner } = innerProps ?? {};
 
   return (
     <div
-      className={getClassNames("DayContent")}
+      className={getClassNames("DayContent", className)}
       {...getDayAttributes(state, options)}
-      {...innerProps}
+      {...restInner}
     >
       {children}
     </div>

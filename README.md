@@ -62,7 +62,7 @@ const BookingCalendar = () => {
 
 ### The classNames prop
 
-ClassNames takes an object with keys to represent the various inner components that react-select is made up of. Each inner component takes a callback function with the following signature:
+`classNames` accepts an object where the key is a calendar component name and the value is a string of classes to append to that component's default `calendar__*` class.
 
 ```ts
 <Calendar
@@ -81,10 +81,21 @@ import { DaySelectionProps } from "@demark-pro/react-booking-calendar";
 
 import "@demark-pro/react-booking-calendar/dist/react-booking-calendar.css";
 
-const DaySelection = ({ innerProps, state }: DaySelectionProps) => {
+const DaySelection = ({
+  innerProps,
+  state,
+  getClassNames,
+}: DaySelectionProps) => {
   if (state.isReserved) return null;
 
-  return <div {...innerProps} />;
+  const { className = "", ...restInnerProps } = innerProps ?? {};
+
+  return (
+    <div
+      className={getClassNames("DaySelection", className)}
+      {...restInnerProps}
+    />
+  );
 };
 
 <Calendar

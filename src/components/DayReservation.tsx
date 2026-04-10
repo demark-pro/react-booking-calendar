@@ -9,10 +9,16 @@ export type DayReservationProps = CommonProps & {
 
 export const DayReservation = (props: DayReservationProps) => {
   const { innerProps, state, getClassNames } = props;
+  const { className = "", ...restInner } = innerProps ?? {};
 
   if (!isShow(state)) return null;
 
-  return <div className={getClassNames("DayReservation")} {...innerProps} />;
+  return (
+    <div
+      className={getClassNames("DayReservation", className)}
+      {...restInner}
+    />
+  );
 };
 
 const isShow = (state: CalendarDayState) =>
