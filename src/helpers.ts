@@ -130,17 +130,18 @@ export const getDayState = ({
   const { date, monthStartDate } = day;
 
   const today = new Date();
+  const dayStart = startOfDay(date);
+  const dayEnd = endOfDay(date);
+  const todayStart = startOfDay(today);
 
   let state: CalendarDayState = {};
 
-  state.isDisabled =
-    typeof disabled === "function" ? disabled(date, state) : disabled;
   state.isSameYear = date.getFullYear() === today.getFullYear();
   state.isSameMonth = isSameMonth(date, monthStartDate);
   state.isStartMonth = isSameDay(date, startOfMonth(date));
   state.isEndMonth = isSameDay(date, endOfMonth(date));
   state.isToday = isSameDay(date, today);
-  state.isPast = date.getTime() - today.getTime() < 0;
+  state.isPast = dayStart.getTime() < todayStart.getTime();
   state.isSelectedStart = selected[0] ? isSameDay(date, selected[0]) : false;
   state.isSelectedEnd = selected[1] ? isSameDay(date, selected[1]) : false;
   state.isSelected = !!(
@@ -148,18 +149,16 @@ export const getDayState = ({
     selected[1] &&
     isBetween(date, selected[0], selected[1], "{}")
   );
-  state.isReserved = !!reserved.find(
+  state.isReserved = reserved.some(
     (r) =>
-      isBetween(endOfDay(date), r.startDate, r.endDate, "{}") &&
-      isBetween(startOfDay(date), r.startDate, r.endDate, "{}")
+      isBetween(dayEnd, r.startDate, r.endDate, "{}") &&
+      isBetween(dayStart, r.startDate, r.endDate, "{}")
   );
-  state.isAvailable = !!reserved.find(
-    (r) =>
-      !isBetween(endOfDay(date), r.startDate, r.endDate, "[]") ||
-      !isBetween(startOfDay(date), r.startDate, r.endDate, "[]")
-  );
-  state.isReservedStart = !!reserved.find((r) => isSameDay(r.startDate, date));
-  state.isReservedEnd = !!reserved.find((r) => isSameDay(r.endDate, date));
+  state.isAvailable = !state.isReserved;
+  state.isReservedStart = reserved.some((r) => isSameDay(r.startDate, date));
+  state.isReservedEnd = reserved.some((r) => isSameDay(r.endDate, date));
+  state.isDisabled =
+    typeof disabled === "function" ? disabled(date, state) : disabled;
 
   return state;
 };
@@ -202,7 +201,7 @@ export const isClickable = ({
   return true;
 };
 
-export function isNumeric(value: any) {
+export function isNumeric(value: any): value is number {
   return typeof value === "number";
 
   if (typeof value !== "string") return false; // we only process strings!

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CalendarComponentsBase,
   componentClasses,
@@ -25,11 +25,9 @@ import {
   disabledInit,
   initialDateInit,
   isStartInit,
-  monthInit,
   rangeInit,
   reservedInit,
   selectedInit,
-  yearInit,
 } from "./constants";
 import { getProtectedInterval } from "utils/get-protected-interval";
 
@@ -62,13 +60,31 @@ export function Calendar(props: CalendarProps): JSX.Element {
     ...innerProps
   } = props;
 
-  const [activeMonth, setActiveMonth] = useState(monthInit);
-  const [activeYear, setActiveYear] = useState(yearInit);
+  const defaultDate = initialDate ? new Date(initialDate) : initialDateInit;
+  const initialMonth = (
+    isNumeric(month) ? month : defaultDate.getMonth()
+  ) as CalendarMonth;
+  const initialYear = isNumeric(year) ? year : defaultDate.getFullYear();
 
-  const currentMonth = isNumeric(month) ? month! : activeMonth;
-  const currentYear = isNumeric(year) ? year! : activeYear;
+  const [activeMonth, setActiveMonth] = useState<CalendarMonth>(
+    initialMonth
+  );
+  const [activeYear, setActiveYear] = useState<number>(initialYear);
 
-  const isControled = isNumeric(month) || isNumeric(year);
+  const isMonthControlled = isNumeric(month);
+  const isYearControlled = isNumeric(year);
+  const isControled = isMonthControlled && isYearControlled;
+
+  useEffect(() => {
+    if (isMonthControlled) setActiveMonth(month!);
+  }, [isMonthControlled, month]);
+
+  useEffect(() => {
+    if (isYearControlled) setActiveYear(year!);
+  }, [isYearControlled, year]);
+
+  const currentMonth: CalendarMonth = isControled ? month! : activeMonth;
+  const currentYear: number = isControled ? year! : activeYear;
 
   const [startDate, endDate] = getSelectedDates(selected);
 
@@ -108,15 +124,12 @@ export function Calendar(props: CalendarProps): JSX.Element {
   const handleChangeMonth = (value: CalendarMonth) => {
     const [newMonth, newYear] = getMonthYear(value, currentYear);
 
-    if (onMonthChange) {
-      onMonthChange(newMonth, newYear ?? currentYear);
-      if (newYear && onYearChange) onYearChange(newYear);
-
-      if (isControled) return;
-    }
+    if (onMonthChange) onMonthChange(newMonth, newYear ?? currentYear);
+    if (newYear !== null && onYearChange) onYearChange(newYear);
+    if (isControled) return;
 
     setActiveMonth(newMonth);
-    if (newYear) setActiveYear(newYear);
+    if (newYear !== null) setActiveYear(newYear);
   };
 
   // ==============================

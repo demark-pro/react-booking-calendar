@@ -3,6 +3,7 @@ jest.mock("react", () => {
 
   return {
     ...actual,
+    useEffect: jest.fn(),
     useState: jest.fn(),
   };
 });
