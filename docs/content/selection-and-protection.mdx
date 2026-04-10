@@ -5,7 +5,10 @@ sidebar_position: 5
 description: Range selection, overbooking behavior, and blocked click handling.
 ---
 
-import { RangeProtectionExample } from "@site/src/components/examples";
+import {
+  DateTimeBookingExample,
+  RangeProtectionExample,
+} from "@site/src/components/examples";
 
 # Selection and Protection
 
@@ -34,6 +37,14 @@ In range mode, the component waits for a valid second click before completing
 the selection.
 
 <RangeProtectionExample />
+
+## Using date and time values
+
+The calendar accepts full `Date` values, not just day-only dates. That means
+you can store check-in and check-out times directly in `reserved` and keep them
+in the selected range.
+
+<DateTimeBookingExample />
 
 ## Handling blocked clicks
 

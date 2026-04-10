@@ -52,6 +52,48 @@ export const styledReservations = makeReservations([
   [20, 22],
 ]);
 
+export const timedReservations = [
+  {
+    startDate: relativeDate(2, 14),
+    endDate: relativeDate(4, 10),
+    color: "#0d8b84",
+  },
+  {
+    startDate: relativeDate(7, 14),
+    endDate: relativeDate(9, 10),
+    color: "#f36c3d",
+  },
+];
+
+const dayKey = (value) => {
+  const date = new Date(value);
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+};
+
+export const eventItems = [
+  { date: relativeDate(1), label: "Check-in", color: "#0d8b84" },
+  { date: relativeDate(1), label: "Housekeeping", color: "#f6b048" },
+  { date: relativeDate(3), label: "Concert", color: "#f36c3d" },
+  { date: relativeDate(3), label: "VIP", color: "#17302b" },
+  { date: relativeDate(5), label: "Breakfast", color: "#0d8b84" },
+  { date: relativeDate(8), label: "Cleaning", color: "#9d6cfd" },
+  { date: relativeDate(8), label: "Late checkout", color: "#f36c3d" },
+  { date: relativeDate(11), label: "Group arrival", color: "#0d8b84" },
+];
+
+export const eventMarkersByDay = eventItems.reduce((acc, item) => {
+  const key = dayKey(item.date);
+
+  if (!acc[key]) acc[key] = [];
+  acc[key].push(item);
+
+  return acc;
+}, {});
+
+export const eventLegend = Array.from(
+  new Map(eventItems.map((item) => [item.label, item])).values()
+);
+
 const humanDate = (value) =>
   value
     ? new Date(value).toLocaleDateString("en-US", {
@@ -68,4 +110,27 @@ export const formatSelection = (selected) => {
   if (!startDate && endDate) return `${humanDate(endDate)} -> end date only`;
 
   return `${humanDate(startDate)} -> ${humanDate(endDate)}`;
+};
+
+export const formatDateTime = (value) =>
+  value
+    ? new Date(value).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+    : "Not selected";
+
+export const formatSelectionWithTime = (selected) => {
+  const [startDate, endDate] = selected;
+
+  if (!startDate && !endDate) return "Nothing selected yet";
+  if (startDate && !endDate)
+    return `${formatDateTime(startDate)} -> pick an end date`;
+  if (!startDate && endDate)
+    return `${formatDateTime(endDate)} -> end date only`;
+
+  return `${formatDateTime(startDate)} -> ${formatDateTime(endDate)}`;
 };

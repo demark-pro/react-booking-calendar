@@ -5,7 +5,10 @@ sidebar_position: 7
 description: Replace internal calendar pieces while keeping the shared booking state and behavior.
 ---
 
-import { CustomComponentsExample } from "@site/src/components/examples";
+import {
+  CustomComponentsExample,
+  EventMarkersExample,
+} from "@site/src/components/examples";
 
 # Custom Components
 
@@ -38,6 +41,13 @@ replace internal parts with your own React components.
 ```
 
 <CustomComponentsExample />
+
+## Event markers under dates
+
+This pattern works well for booking dashboards, events calendars, and internal
+ops views where each day needs extra status markers below the date label.
+
+<EventMarkersExample />
 
 ## Important rule
 

@@ -157,3 +157,92 @@ const DaySelection = ({
   }}
 />;
 `;
+
+export const eventMarkersCode = String.raw`import { useState } from "react";
+import { Calendar } from "@demark-pro/react-booking-calendar";
+
+const events = [
+  { date: new Date(2030, 4, 12), color: "#0d8b84" },
+  { date: new Date(2030, 4, 12), color: "#f6b048" },
+  { date: new Date(2030, 4, 14), color: "#f36c3d" },
+];
+
+const dayKey = (date) =>
+  String(date.getFullYear()) +
+  "-" +
+  String(date.getMonth()) +
+  "-" +
+  String(date.getDate());
+
+const markersByDay = events.reduce((acc, item) => {
+  const key = dayKey(item.date);
+
+  if (!acc[key]) acc[key] = [];
+  acc[key].push(item);
+
+  return acc;
+}, {});
+
+const DayContent = ({
+  children,
+  date,
+  state,
+  innerProps,
+  getClassNames,
+}) => {
+  const { className = "", ...restInnerProps } = innerProps ?? {};
+  const markers = markersByDay[dayKey(date)] ?? [];
+
+  return (
+    <div className={getClassNames("DayContent", className)} {...restInnerProps}>
+      <span>{children}</span>
+      {state.isSameMonth && markers.length > 0 ? (
+        <span>
+          {markers.slice(0, 3).map((marker, index) => (
+            <span
+              key={index}
+              style={{ backgroundColor: marker.color }}
+            />
+          ))}
+        </span>
+      ) : null}
+    </div>
+  );
+};
+
+<Calendar
+  selected={selected}
+  onChange={setSelected}
+  components={{ DayContent }}
+/>;
+`;
+
+export const dateTimeBookingCode = String.raw`import { useState } from "react";
+import { Calendar } from "@demark-pro/react-booking-calendar";
+
+const reserved = [
+  {
+    startDate: new Date(2030, 4, 12, 14, 0),
+    endDate: new Date(2030, 4, 14, 10, 0),
+  },
+  {
+    startDate: new Date(2030, 4, 17, 14, 0),
+    endDate: new Date(2030, 4, 19, 10, 0),
+  },
+];
+
+export function DateTimeCalendar() {
+  const [selected, setSelected] = useState([
+    reserved[0].endDate,
+    reserved[1].startDate,
+  ]);
+
+  return (
+    <Calendar
+      range
+      selected={selected}
+      reserved={reserved}
+      onChange={setSelected}
+    />
+  );
+}`;

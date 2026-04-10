@@ -460,6 +460,67 @@ h4 {
   letter-spacing: 0.06em;
 }
 
+.docs-demo__event-day-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 0.5rem 0.35rem;
+}
+
+.docs-demo__event-day-number {
+  line-height: 1;
+}
+
+.docs-demo__event-markers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.22rem;
+  min-height: 0.55rem;
+  margin-top: 0.25rem;
+}
+
+.docs-demo__event-marker,
+.docs-demo__legend-dot {
+  display: inline-block;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 999px;
+}
+
+.docs-demo__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.docs-demo__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(239, 228, 213, 0.72);
+  border: 1px solid rgba(23, 48, 43, 0.08);
+  font-size: 0.9rem;
+}
+
+.docs-demo__time-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.docs-demo__time-card {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  background: rgba(239, 228, 213, 0.72);
+  border: 1px solid rgba(23, 48, 43, 0.08);
+}
+
 .calendar__month-arrow-back svg,
 .calendar__month-arrow-next svg {
   fill: currentColor;
@@ -496,6 +557,10 @@ h4 {
   }
 
   .docs-demo__meta {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-demo__time-list {
     grid-template-columns: 1fr;
   }
 }
