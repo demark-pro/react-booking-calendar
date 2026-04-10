@@ -1,5 +1,7 @@
 dist
 node_modules
+docs/.docusaurus
+docs/build
 
 # Cache and IDE-related files
 .cache

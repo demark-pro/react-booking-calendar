@@ -13,6 +13,16 @@ A responsive customizable booking calendar with overbooking protection.
 
 [Example #3](https://codesandbox.io/p/devbox/example-3-eventscalendar-tailwind-pwtxpy) - EventsCalendar component. An example of how easily you can customize a calendar using components and classnames props with tailwindcss
 
+## Live Docs
+
+[Live docs and examples](https://demark-pro.github.io/react-booking-calendar/) - GitHub Pages documentation with interactive local demos
+
+Run the docs locally from the repository root:
+
+```bash
+npm run docs:dev
+```
+
 ## Installation
 
 Install with npm
@@ -105,6 +115,5 @@ const DaySelection = ({
 />;
 ```
 
-## Documentation
-
-For more information about the props that you can pass to the component, see the [documentation here](https://github.com/demark-pro/react-booking-calendar/blob/main/docs/documentation.md).
+For full guides, examples, and API reference, open the GitHub Pages docs:
+[https://demark-pro.github.io/react-booking-calendar/](https://demark-pro.github.io/react-booking-calendar/)

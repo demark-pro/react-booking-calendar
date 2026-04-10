@@ -1,0 +1,110 @@
+---
+id: api-reference
+title: API Reference
+sidebar_position: 9
+description: Prop reference for Calendar, ScrollableCalendar, and the exported helpers.
+---
+
+# API Reference
+
+## Shared props
+
+These props are available on both `Calendar` and `ScrollableCalendar`.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `selected` | `CalendarSelected[]` | Selected date array. Accepts one or two values. |
+| `reserved` | `CalendarReserved[]` | Reserved booking intervals. |
+| `components` | `CalendarComponents` | Partial map of component overrides. |
+| `classNames` | `CalendarClassNames` | Partial map of extra class names for inner parts. |
+| `disabled` | `boolean \| ((date, state) => boolean)` | Disables the whole calendar or individual days. |
+| `isStart` | `boolean` | In non-range mode, controls whether the next selection writes the start or end side. |
+| `options` | `CalendarOptions` | Locale, week start, and attribute settings. |
+| `range` | `boolean` | Enables start-plus-end selection flow. |
+| `protection` | `boolean` | Enables overbooking protection. Defaults to `true` for `Calendar` and `false` for `ScrollableCalendar`. |
+| `onOverbook` | `(date, overbookType) => void` | Called when a blocked selection is attempted. |
+| `onChange` | `(selected) => void` | Receives the next selected interval. |
+
+## `Calendar`
+
+Additional props:
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `initialDate` | `Date \| number \| null` | Starting month when navigation is uncontrolled. |
+| `month` | `CalendarMonth` | Controlled visible month. |
+| `year` | `number` | Controlled visible year. |
+| `onMonthChange` | `(month, year) => void` | Called after month navigation. |
+| `onYearChange` | `(year) => void` | Called when navigation rolls into another year. |
+
+## `ScrollableCalendar`
+
+Additional props:
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `startMonth` | `CalendarDate` | First month in the virtualized timeline. |
+| `monthsCount` | `number` | Number of months to generate into the list. |
+| `colHeight` | `number` | Height of each grid row in pixels. |
+| `initialScroll` | `CalendarDate \| null` | Date used for the initial scroll offset. |
+| `onScroll` | `(event) => void` | Scroll callback from `react-window`. |
+
+## `CalendarOptions`
+
+```ts
+type CalendarOptions = {
+  locale?: Intl.LocalesArgument;
+  weekStartsOn?: number;
+  useAttributes?: boolean;
+};
+```
+
+`useAttributes` enables `data-*` attributes on the day elements so you can style
+state directly in CSS.
+
+## `CalendarReserved`
+
+```ts
+type CalendarReserved = {
+  startDate: CalendarDate;
+  endDate: CalendarDate;
+  color?: string;
+};
+```
+
+## `CalendarDate`
+
+```ts
+type CalendarDate = Date | number | string;
+```
+
+## Exported helper return types
+
+```ts
+type GetProtectedTimeReturn = {
+  startDate: Date;
+  endDate: Date;
+};
+
+type GetProtectedIntervalReturn = {
+  interval: CalendarSelected[] | null;
+  overbookType: OverbookTypes | null;
+};
+```
+
+## Exported override prop types
+
+The package exports prop types for the internal parts you can replace:
+
+- `CalendarContainerProps`
+- `WeekContainerProps`
+- `DaysContainerProps`
+- `DayContainerProps`
+- `MonthArrowBackProps`
+- `MonthContentProps`
+- `MonthArrowNextProps`
+- `WeekContentProps`
+- `DayContentProps`
+- `DayTodayProps`
+- `DayReservationProps`
+- `DaySelectionProps`

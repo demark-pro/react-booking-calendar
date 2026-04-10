@@ -1,0 +1,76 @@
+---
+id: getting-started
+title: Getting Started
+sidebar_position: 2
+description: Install the package, pull in styles, and render your first calendar.
+---
+
+import { BasicCalendarExample } from "@site/src/components/examples";
+
+# Getting Started
+
+## Install the package
+
+```bash
+npm install @demark-pro/react-booking-calendar
+```
+
+The package expects `react` and `react-dom` as peer dependencies.
+
+## Import the stylesheet
+
+Use the bundled CSS unless you want to replace it completely.
+
+```tsx
+import "@demark-pro/react-booking-calendar/dist/react-booking-calendar.css";
+
+// CSS Modules variant
+// import "@demark-pro/react-booking-calendar/dist/react-booking-calendar-cssmodules.css";
+```
+
+## Render a basic calendar
+
+```tsx
+import { useState } from "react";
+import { Calendar } from "@demark-pro/react-booking-calendar";
+
+import "@demark-pro/react-booking-calendar/dist/react-booking-calendar.css";
+
+export function BookingCalendar() {
+  const [selected, setSelected] = useState([null, null]);
+
+  return (
+    <Calendar
+      selected={selected}
+      reserved={[
+        {
+          startDate: new Date(2030, 4, 12, 14, 0),
+          endDate: new Date(2030, 4, 14, 10, 0),
+        },
+      ]}
+      onChange={setSelected}
+    />
+  );
+}
+```
+
+<BasicCalendarExample />
+
+## Core concepts
+
+- `selected` is always an array of one or two values
+- `reserved` marks protected booking intervals
+- `onChange` receives the next selected interval
+- `range` switches the selection flow into start-plus-end mode
+- `protection` keeps overbooking rules enabled by default
+
+## Local docs workflow
+
+From the repository root:
+
+```bash
+npm run docs:dev
+```
+
+That command builds the package and starts this GitHub Pages docs site from the
+`docs/` folder.

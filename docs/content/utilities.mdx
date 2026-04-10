@@ -1,0 +1,80 @@
+---
+id: utilities
+title: Utilities
+sidebar_position: 8
+description: Booking utility helpers exported alongside the calendar components.
+---
+
+# Utilities
+
+The package exports two utilities that are useful when you want booking-aware
+logic outside the UI components.
+
+## `getProtectedTime`
+
+```tsx
+import {
+  getProtectedTime,
+  type CalendarReserved,
+} from "@demark-pro/react-booking-calendar";
+
+const reserved = [
+  {
+    startDate: new Date(2030, 4, 12, 14, 0),
+    endDate: new Date(2030, 4, 14, 10, 0),
+  },
+];
+
+const result = getProtectedTime(new Date(2030, 4, 12), reserved);
+```
+
+Returns:
+
+```ts
+type GetProtectedTimeReturn = {
+  startDate: Date;
+  endDate: Date;
+};
+```
+
+Use it when you want to snap a selected day to the protected reservation
+boundaries.
+
+## `getProtectedInterval`
+
+```tsx
+import {
+  getProtectedInterval,
+  type CalendarDayState,
+} from "@demark-pro/react-booking-calendar";
+
+const result = getProtectedInterval(date, state, {
+  selected,
+  reserved,
+  disabled,
+  protection,
+  range,
+  isStart,
+  options,
+  getClassNames,
+});
+```
+
+Returns:
+
+```ts
+type GetProtectedIntervalReturn = {
+  interval: CalendarSelected[] | null;
+  overbookType: OverbookTypes | null;
+};
+```
+
+Use it when you need to mirror the calendar selection rules in a higher-level
+booking flow, analytics layer, or custom interaction surface.
+
+## Which one to use
+
+- Use `getProtectedTime` when you already know the day and only need protected
+  check-in or check-out boundaries.
+- Use `getProtectedInterval` when you want the same accept-or-reject decision
+  that the calendar uses while handling clicks.

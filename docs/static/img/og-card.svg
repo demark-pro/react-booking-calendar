@@ -1,0 +1,26 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" rx="40" fill="#F5F0E7"/>
+  <rect x="66" y="66" width="1068" height="498" rx="36" fill="url(#paint0_linear)"/>
+  <rect x="110" y="110" width="468" height="410" rx="28" fill="#FFF9F1" stroke="#E6D9C7"/>
+  <text x="642" y="238" fill="#17302B" font-family="Space Grotesk, sans-serif" font-size="70" font-weight="700">React Booking</text>
+  <text x="642" y="314" fill="#17302B" font-family="Space Grotesk, sans-serif" font-size="70" font-weight="700">Calendar</text>
+  <text x="642" y="388" fill="#0D8B84" font-family="IBM Plex Sans, sans-serif" font-size="30" font-weight="600">Interactive GitHub Pages docs with live examples</text>
+  <rect x="150" y="156" width="388" height="52" rx="18" fill="#17302B"/>
+  <rect x="166" y="244" width="62" height="18" rx="9" fill="#EADBC7"/>
+  <rect x="244" y="244" width="62" height="18" rx="9" fill="#EADBC7"/>
+  <rect x="322" y="244" width="62" height="18" rx="9" fill="#EADBC7"/>
+  <rect x="400" y="244" width="62" height="18" rx="9" fill="#EADBC7"/>
+  <rect x="478" y="244" width="28" height="18" rx="9" fill="#EADBC7"/>
+  <rect x="158" y="292" width="66" height="66" rx="22" fill="#0D8B84"/>
+  <rect x="236" y="292" width="66" height="66" rx="22" fill="#F7EEDF" stroke="#E6D9C7"/>
+  <rect x="314" y="292" width="66" height="66" rx="22" fill="#F36C3D" fill-opacity="0.16"/>
+  <rect x="392" y="292" width="66" height="66" rx="22" fill="#F7EEDF" stroke="#E6D9C7"/>
+  <rect x="470" y="292" width="40" height="66" rx="20" fill="#F7EEDF" stroke="#E6D9C7"/>
+  <rect x="158" y="374" width="352" height="100" rx="24" fill="#EFE4D5"/>
+  <defs>
+    <linearGradient id="paint0_linear" x1="66" y1="66" x2="1134" y2="564" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF7EC"/>
+      <stop offset="1" stop-color="#F0E7D9"/>
+    </linearGradient>
+  </defs>
+</svg>

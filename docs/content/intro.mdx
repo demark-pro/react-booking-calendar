@@ -1,0 +1,44 @@
+---
+id: intro
+title: Intro
+sidebar_position: 1
+description: What React Booking Calendar is for and how the docs are organized.
+---
+
+# React Booking Calendar
+
+React Booking Calendar is a booking-focused React package for monthly and
+scrollable availability views. It ships with reservation protection, range
+selection, replaceable internal parts, and exported utilities for advanced
+flows.
+
+This docs site is built from the package in the repository, so the examples on
+these pages render the same public API you publish.
+
+## What you get
+
+- `Calendar` for a focused monthly booking view
+- `ScrollableCalendar` for longer, virtualized timelines
+- `classNames` hooks for styling without rewriting internals
+- `components` overrides when product design needs custom structure
+- `getProtectedTime` and `getProtectedInterval` for deeper booking workflows
+
+## Good starting points
+
+- Head to [Getting Started](./getting-started) if you want the smallest
+  possible integration.
+- Open [Calendar](./calendar) or
+  [Scrollable Calendar](./scrollable-calendar) to compare the two views.
+- Visit [API Reference](./api-reference) when you need prop-level detail.
+
+## What this package does well
+
+React Booking Calendar is a strong fit when you need:
+
+- booking-style check-in and check-out selection
+- protected reservation intervals
+- component-level customization without rebuilding the date logic
+- a lightweight package that can still stretch into branded product UI
+
+It is less opinionated about app state, data fetching, and pricing logic, so
+you can keep those concerns in your own application model.

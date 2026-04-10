@@ -1,202 +1,22 @@
-# React booking calendar documentation
+# React Booking Calendar documentation
 
-Writing documentation takes time, so this section will be updated as soon as possible. I tried to show all the main points in the demo.
+This folder now contains the full GitHub Pages documentation site for the
+package.
 
-- All components accepts the following values:
-  - [`selected`](#selected) (array)
-  - [`reserved`](#reserved) (array)
-  - [`components`](#components) (object)
-  - [`classNames`](#classnames) (object)
-  - [`options`](#options) (object)
-  - [`isStart`](#isstart) (boolean)
-  - [`range`](#range) (boolean)
-  - [`protection`](#protection) (boolean)
-  - [`disabled`](#disabled) (boolean or function)
-  - [`onOverbook`](#onoverbook) (function)
-  - [`onChange`](#onchange) (function)
-- Components
-  - [Calendar](#calendar)
-  - [ScrollableCalendar](#scrollable-calendar)
-- Utilites
-  - [getProtectedInterval](#get-protected-interval)
-  - [getProtectedTime](#get-protected-time)
+- Start with the live site:
+  `https://demark-pro.github.io/react-booking-calendar/`
+- Browse the docs content source in
+  [`docs/content/`](/Users/mark/Desktop/npm/react-booking-calendar/docs/content)
+- Run the site locally from the repository root with `npm run docs:dev`
 
-## `selected`
+The old single-file reference has been split into focused guides:
 
-#### type: `CalendarSelected[]`
-
-An array of selected check-in and check-out dates. Accepts an array with the value `date`, `number`, `string`, `null` or `undefined`.
-
-## `reserved`
-
-#### type: `CalendarReserved[]`
-
-An array of objects with check-in and check-out dates
-
-```ts
-// The date type accepted is also exported
-// CalendarDate: Date | number | string
-
-[
-  {
-    startDate: CalendarDate,
-    endDate: CalendarDate,
-  },
-];
-```
-
-## `components`
-
-#### type: `CalendarComponents`
-
-Calendar allows you to augment layout and functionality by replacing the default components with your own, using the components property. These components are given all the current props and state
-
-**Component structure:**
-
-```ts
-<CalendarContainer>
-  <MonthContainer>
-    <MonthArrowBack />
-    <MonthContent />
-    <MonthArrowNext />
-  </MonthContainer>
-
-  <WeekContainer>
-    <WeekContent />
-  </WeekContainer>
-
-  <DaysContainer>
-    <DayContainer>
-      <DayContent />
-      <DayToday />
-      <DaySelection />
-      <DayReservation />
-    </DayContainer>
-  </DaysContainer>
-</CalendarContainer>
-```
-
-You can also export the props type like CalendarContainerProps.
-
-All functional properties that the component needs are provided in `innerProps`, which you should spread onto your DOM element.
-
-If you want the default styles and the `classNames` prop to keep working with a replacement component, merge `innerProps.className` with `getClassNames(...)` instead of replacing it.
-
-Every component receives `commonProps` which are spread onto the component.
-
-These include:
-
-- `selected`: CalendarSelected[];
-- `reserved`: CalendarReserved[];
-- `disabled?`: CalendarDisabled;
-- `protection?`: CalendarProtection;
-- `range?`: boolean;
-- `isStart?`: boolean;
-- `options?`: CalendarOptions;
-- `getClassNames`: (componentName, classes) => string;
-
-Also, all components of the day have additional props:
-
-- `date`: Date;
-- `state`: CalendarDayState;
-
-**Example:**
-
-```ts
-const DaySelection = ({
-  innerProps,
-  state,
-  getClassNames,
-}: DaySelectionProps) => {
-  if (state.isReserved) return null;
-
-  const { className = "", ...restInnerProps } = innerProps ?? {};
-
-  return (
-    <div
-      className={getClassNames("DaySelection", className)}
-      {...restInnerProps}
-    />
-  );
-};
-
-<Calendar
-  components={{
-    DaySelection: DaySelection,
-  }}
-/>;
-```
-
-When defining replacement components, it is important to do so outside the scope of rendering the Calendar. Defining a replacement component directly in the components prop can cause issues.
-
-On this topic, React [documentation](https://legacy.reactjs.org/docs/higher-order-components.html#dont-use-hocs-inside-the-render-method) has the following to say:
-
-_- The problem here isn’t just about performance — remounting a component causes the state of that component and all of its children to be lost._
-
-## `classNames`
-
-#### type: `CalendarClassNames`
-
-An object where the key is the component name and the value is a string with classes to append to that component's default `calendar__*` class.
-
-```ts
-<Calendar
-  classNames={{
-    DayContent: "text-orange-600",
-  }}
-/>
-```
-
-## `options`
-
-#### type: `CalendarOptions`
-
-```ts
-type CalendarOptions = {
-  locale?: Intl.LocalesArgument;
-  weekStartsOn?: number;
-  useAttributes?: boolean;
-};
-```
-
-## `isStart`
-
-#### type: `boolean`
-
-Works only if prop `range` is missing or `false`.
-
-It is needed to indicate to the component which date is selected, check-in or check-out.
-
-## `range`
-
-#### type: `boolean`
-
-If `true`, the `onChange` will only work after selecting two dates
-
-## `protection`
-
-#### type: `boolean`
-
-**if set to `false`, overbooking protection will be disabled!**
-
-This means that the `onChange` will work in any case, except for checking for `disabled`.
-
-## `disabled`
-
-#### type: `CalendarDisabled`
-
-### `boolean`
-
-If set to false, the component will ignore date selection
-
-### `function`
-
-A function where the first argument is the `date` and the second is the date `state`, the returned boolean.
-
-For example:
-
-```ts
-<Calendar
-  disabled={(date: Date, state: CalendarDayState) => !state.isSameMonth}
-/>
-```
+- Intro
+- Getting started
+- Calendar
+- Scrollable calendar
+- Selection and protection
+- Styling and classNames
+- Custom components
+- Utilities
+- API reference

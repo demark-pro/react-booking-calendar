@@ -71,6 +71,8 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build:src": "rollup -c",
     "js:dev": "rollup -cw",
-    "test": "jest"
+    "test": "jest",
+    "docs:dev": "npm --prefix docs install && npm run build && npm --prefix docs run start",
+    "docs:build": "npm --prefix docs install && npm run build && npm --prefix docs run build"
   }
 }

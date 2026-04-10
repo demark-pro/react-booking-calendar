@@ -1,0 +1,57 @@
+---
+id: styling-and-classnames
+title: Styling and classNames
+sidebar_position: 6
+description: Add your own visual language without rewriting the booking logic.
+---
+
+import { ClassNamesExample } from "@site/src/components/examples";
+
+# Styling and classNames
+
+Use `classNames` when you want to restyle the internal parts while keeping the
+default component tree.
+
+## How it works
+
+Each key in `classNames` maps to one internal calendar part. The value is a
+string of classes that gets appended to the default `calendar__*` class.
+
+```tsx
+<Calendar
+  classNames={{
+    DayContent: "text-orange-600",
+    DaySelection: "bg-orange-500/20",
+  }}
+/>
+```
+
+<ClassNamesExample />
+
+## Available keys
+
+- `CalendarContainer`
+- `MonthContainer`
+- `MonthContent`
+- `MonthArrowBack`
+- `MonthArrowNext`
+- `WeekContainer`
+- `WeekContent`
+- `DaysContainer`
+- `DayContainer`
+- `DayContent`
+- `DaySelection`
+- `DayReservation`
+- `DayToday`
+
+## When to stop at classNames
+
+`classNames` is the right tool when you need:
+
+- visual theming
+- spacing or typography changes
+- custom hover and selection treatment
+- design-system utility classes such as Tailwind
+
+Move to [Custom Components](./custom-components) only when the markup itself
+needs to change.

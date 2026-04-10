@@ -1,0 +1,69 @@
+---
+id: selection-and-protection
+title: Selection and Protection
+sidebar_position: 5
+description: Range selection, overbooking behavior, and blocked click handling.
+---
+
+import { RangeProtectionExample } from "@site/src/components/examples";
+
+# Selection and Protection
+
+The package is designed around booking behavior, not just generic date picking.
+That means selection and reservation rules are first-class parts of the API.
+
+## Default protection behavior
+
+With protection enabled, the calendar prevents selection when the clicked day is:
+
+- in the past
+- reserved
+- before an already selected start date
+- after an already selected end date
+- separated from the selected range by a reserved interval
+
+## Range mode
+
+Set `range` to `true` when you want a start and end date:
+
+```tsx
+<Calendar range selected={selected} onChange={setSelected} />
+```
+
+In range mode, the component waits for a valid second click before completing
+the selection.
+
+<RangeProtectionExample />
+
+## Handling blocked clicks
+
+Use `onOverbook` to react when a click is rejected:
+
+```tsx
+<Calendar
+  onOverbook={(date, overbookType) => {
+    console.log("Blocked selection", date, overbookType);
+  }}
+/>
+```
+
+The exported `OverbookTypes` union includes:
+
+- `PAST`
+- `BOOKED`
+- `BEFORE_START`
+- `AFTER_END`
+- `BOOKED_BETWEEN`
+- `DISABLED`
+
+## Turning protection off
+
+You can disable reservation protection entirely:
+
+```tsx
+<Calendar protection={false} />
+```
+
+That allows selection across reserved intervals, while `disabled` rules still
+apply. This is useful for review tools and internal admin flows, but it is
+usually the wrong setting for customer-facing booking forms.

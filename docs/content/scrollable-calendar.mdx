@@ -1,0 +1,54 @@
+---
+id: scrollable-calendar
+title: Scrollable Calendar
+sidebar_position: 4
+description: Virtualized availability timeline built on the same booking logic as the monthly calendar.
+---
+
+import { ScrollableCalendarExample } from "@site/src/components/examples";
+
+# Scrollable Calendar
+
+`ScrollableCalendar` keeps the same booking rules as `Calendar`, but renders a
+virtualized multi-month timeline using `react-window`.
+
+## When to use it
+
+This view is a better fit when users need to scan a longer planning window:
+
+- long-stay or seasonal booking flows
+- availability search results
+- dashboards where scrolling through months is faster than paging
+
+<ScrollableCalendarExample />
+
+## Required layout rule
+
+The component relies on an auto-sized grid, so the parent container needs a
+real height.
+
+```tsx
+<div style={{ height: 360 }}>
+  <ScrollableCalendar
+    startMonth={new Date()}
+    monthsCount={6}
+    colHeight={56}
+  />
+</div>
+```
+
+## Key props
+
+- `startMonth`: first month in the virtualized list
+- `monthsCount`: how many months to render into the timeline
+- `colHeight`: row height in pixels
+- `initialScroll`: date used for the initial scroll offset
+- `onScroll`: low-level scroll callback from `react-window`
+
+## Notes
+
+- Reservation protection still uses the same `selected`, `reserved`, `range`,
+  and `onOverbook` behavior.
+- `monthsCount` controls how long the virtualized range is, not how many
+  months are visibly mounted at once.
+- `initialScroll` is best for landing closer to the date the user cares about.

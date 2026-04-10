@@ -1,0 +1,81 @@
+---
+id: custom-components
+title: Custom Components
+sidebar_position: 7
+description: Replace internal calendar pieces while keeping the shared booking state and behavior.
+---
+
+import { CustomComponentsExample } from "@site/src/components/examples";
+
+# Custom Components
+
+Use the `components` prop when styling hooks are not enough and you need to
+replace internal parts with your own React components.
+
+## Component structure
+
+```tsx
+<CalendarContainer>
+  <MonthContainer>
+    <MonthArrowBack />
+    <MonthContent />
+    <MonthArrowNext />
+  </MonthContainer>
+
+  <WeekContainer>
+    <WeekContent />
+  </WeekContainer>
+
+  <DaysContainer>
+    <DayContainer>
+      <DayContent />
+      <DayToday />
+      <DaySelection />
+      <DayReservation />
+    </DayContainer>
+  </DaysContainer>
+</CalendarContainer>
+```
+
+<CustomComponentsExample />
+
+## Important rule
+
+Define replacement components outside the render path. Recreating them inline on
+every render can cause remounts and state loss.
+
+## Using `innerProps`
+
+Every replacement component receives the functional props it needs through
+`innerProps`. Spread them unless you intentionally want to replace behavior:
+
+```tsx
+const DaySelection = ({ innerProps, getClassNames, state }) => {
+  const { className = "", ...restInnerProps } = innerProps ?? {};
+
+  if (!state.isSelected && !state.isSelectedStart && !state.isSelectedEnd) {
+    return null;
+  }
+
+  return (
+    <div
+      className={getClassNames("DaySelection", className)}
+      {...restInnerProps}
+    />
+  );
+};
+```
+
+## Exported prop types
+
+The package exports prop types for the replaceable parts, including:
+
+- `CalendarContainerProps`
+- `MonthContentProps`
+- `WeekContentProps`
+- `DayContentProps`
+- `DaySelectionProps`
+- `DayReservationProps`
+- `DayTodayProps`
+
+That makes it easier to write strongly typed overrides in TypeScript apps.

@@ -1,0 +1,59 @@
+---
+id: calendar
+title: Calendar
+sidebar_position: 3
+description: Monthly booking calendar with protected reservations and optional controlled navigation.
+---
+
+import { BasicCalendarExample } from "@site/src/components/examples";
+
+# Calendar
+
+`Calendar` renders a single month view with built-in month navigation,
+reservation protection, and controlled or uncontrolled month state.
+
+## When to use it
+
+Choose `Calendar` when the user is selecting dates inside a focused monthly
+context:
+
+- booking forms
+- reservation detail pages
+- side panels or modals
+- pricing or availability widgets where the current month matters
+
+## Key props
+
+- `selected`: current selection array
+- `reserved`: protected booking intervals
+- `range`: wait for two dates before completing selection
+- `month` and `year`: control the visible month
+- `onMonthChange` and `onYearChange`: react to navigation
+- `disabled`: block specific days or the entire calendar
+
+<BasicCalendarExample />
+
+## Controlled month navigation
+
+When you pass both `month` and `year`, the component becomes fully controlled
+for navigation:
+
+```tsx
+<Calendar
+  month={activeMonth}
+  year={activeYear}
+  onMonthChange={(nextMonth, nextYear) => {
+    setActiveMonth(nextMonth);
+    setActiveYear(nextYear);
+  }}
+/>
+```
+
+If you pass neither, the calendar manages the active month internally.
+
+## Notes
+
+- `initialDate` only matters when month and year are uncontrolled
+- `options.weekStartsOn` lets you shift the first weekday
+- `options.locale` affects month and weekday labels
+- the component also accepts regular `div` props such as `className`
