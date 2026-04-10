@@ -29,9 +29,14 @@ function DemoMonthContent({
       <span>
         {new Date(year, month).toLocaleDateString(options?.locale, {
           month: "short",
+          calendar: "gregory",
         })}
       </span>
-      <strong>{year}</strong>
+      <strong>
+        {new Intl.NumberFormat(options?.locale, {
+          useGrouping: false,
+        }).format(year)}
+      </strong>
     </div>
   );
 }

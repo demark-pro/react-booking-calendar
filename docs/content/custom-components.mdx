@@ -44,6 +44,9 @@ replace internal parts with your own React components.
 Define replacement components outside the render path. Recreating them inline on
 every render can cause remounts and state loss.
 
+If your override formats built-in calendar dates, keep the output on the
+Gregorian calendar so it stays aligned with the rendered grid.
+
 ## Using `innerProps`
 
 Every replacement component receives the functional props it needs through

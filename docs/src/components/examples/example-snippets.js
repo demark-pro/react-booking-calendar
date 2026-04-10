@@ -114,8 +114,13 @@ const MonthContent = ({
     >
       {new Date(year, month).toLocaleDateString(options?.locale, {
         month: "short",
+        calendar: "gregory",
       })}
-      <strong>{year}</strong>
+      <strong>
+        {new Intl.NumberFormat(options?.locale, {
+          useGrouping: false,
+        }).format(year)}
+      </strong>
     </div>
   );
 };
