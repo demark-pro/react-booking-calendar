@@ -1,20 +1,29 @@
 import React, { ComponentPropsWithoutRef } from "react";
 import { CommonProps } from "../types";
+import { formatMonthYear } from "../utils/date.utils";
 
 export type MonthArrowNextProps = CommonProps & {
+  month?: number;
+  year?: number;
   innerProps?: Omit<ComponentPropsWithoutRef<"button">, "children" | "onClick"> & {
     onClick: () => void;
   };
 };
 
 export const MonthArrowNext = (props: MonthArrowNextProps) => {
-  const { innerProps, getClassNames } = props;
-  const { className = "", ...restInner } = innerProps ?? {};
+  const { innerProps, getClassNames, month, year, options } = props;
+  const { className = "", "aria-label": ariaLabel, ...restInner } =
+    innerProps ?? {};
+  const label =
+    ariaLabel ??
+    (typeof month === "number" && typeof year === "number"
+      ? formatMonthYear(new Date(year, month + 1), options)
+      : "Next month");
 
   return (
     <button
       type="button"
-      aria-label="Next Month"
+      aria-label={label}
       className={getClassNames("MonthArrowNext", className)}
       {...restInner}
     >

@@ -36,7 +36,7 @@ import {
 
 import AutoSizer from "react-virtualized-auto-sizer";
 import { memo, useEffect } from "react";
-import { formatDate, isSameDay } from "./utils/date.utils";
+import { formatDay, isSameDay } from "./utils/date.utils";
 import { getProtectedInterval } from "utils/get-protected-interval";
 
 export type ScrollableCalendarInitialScroll = CalendarDate | null;
@@ -69,7 +69,7 @@ const Cell = memo(
     onChange?: CalendarChangeHandler;
   }>) => {
     const { days, components, commonProps, onChange, onOverbook } = data;
-    const { selected, reserved, disabled } = commonProps;
+    const { selected, reserved, disabled, options } = commonProps;
 
     const {
       MonthContainer,
@@ -139,7 +139,7 @@ const Cell = memo(
         {state.isSameMonth && (
           <>
             <DayContent {...dayProps} {...commonProps}>
-              {formatDate(day.date, { day: "numeric" })}
+              {formatDay(day.date, options)}
             </DayContent>
             <DayToday {...dayProps} state={state} {...commonProps} />
             <DaySelection {...dayProps} state={state} {...commonProps} />

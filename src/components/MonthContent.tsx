@@ -1,7 +1,12 @@
 import React, { ComponentPropsWithoutRef } from "react";
 import { getAttributes } from "../helpers";
 import { CommonProps } from "../types";
-import { formatDate, isSameMonth, isSameYear } from "../utils/date.utils";
+import {
+  formatDate,
+  formatNumber,
+  isSameMonth,
+  isSameYear,
+} from "../utils/date.utils";
 
 export type MonthContentProps = CommonProps & {
   month: number;
@@ -15,6 +20,7 @@ export const MonthContent = (props: MonthContentProps) => {
 
   const date = new Date(year, month);
   const monthContent = formatDate(date, { month: "long" }, options);
+  const yearContent = formatNumber(year, options);
 
   const attributes = getAttributes({
     "data-some-month": isSameMonth(date, new Date()),
@@ -28,7 +34,7 @@ export const MonthContent = (props: MonthContentProps) => {
       {...restInner}
     >
       <span>{monthContent}</span>
-      <span>{year}</span>
+      <span>{yearContent}</span>
     </div>
   );
 };

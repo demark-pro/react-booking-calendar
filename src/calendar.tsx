@@ -30,6 +30,7 @@ import {
   selectedInit,
 } from "./constants";
 import { getProtectedInterval } from "utils/get-protected-interval";
+import { formatDay } from "./utils/date.utils";
 
 export type CalendarProps = CalendarPropsBase & {
   initialDate?: Date | number | null;
@@ -188,6 +189,8 @@ export function Calendar(props: CalendarProps): JSX.Element {
       <MonthContainer {...commonProps}>
         <MonthArrowBack
           {...commonProps}
+          month={currentMonth}
+          year={currentYear}
           innerProps={{
             onClick: () =>
               handleChangeMonth((currentMonth - 1) as CalendarMonth),
@@ -202,6 +205,8 @@ export function Calendar(props: CalendarProps): JSX.Element {
 
         <MonthArrowNext
           {...commonProps}
+          month={currentMonth}
+          year={currentYear}
           innerProps={{
             onClick: () =>
               handleChangeMonth((currentMonth + 1) as CalendarMonth),
@@ -233,7 +238,7 @@ export function Calendar(props: CalendarProps): JSX.Element {
               {...commonProps}
             >
               <DayContent {...dayProps} {...commonProps}>
-                {day.date.getDate()}
+                {formatDay(day.date, options)}
               </DayContent>
               <DayToday {...dayProps} {...commonProps} />
               <DaySelection {...dayProps} {...commonProps} />

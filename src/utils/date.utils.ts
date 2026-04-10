@@ -1,6 +1,13 @@
 import { CalendarDate, CalendarOptions } from "../types";
 
 const toDate = (value: CalendarDate) => new Date(value);
+const getGregorianFormat = (
+  format: Intl.DateTimeFormatOptions
+): Intl.DateTimeFormatOptions =>
+  ({
+    ...format,
+    calendar: "gregory",
+  }) as Intl.DateTimeFormatOptions;
 
 export function formatDate(
   date: CalendarDate,
@@ -8,7 +15,23 @@ export function formatDate(
   options?: CalendarOptions
 ) {
   const _date = toDate(date);
-  return _date.toLocaleDateString(options?.locale, format);
+  return _date.toLocaleDateString(options?.locale, getGregorianFormat(format));
+}
+
+export function formatNumber(value: number, options?: CalendarOptions) {
+  const locale = options?.locale as string | string[] | undefined;
+
+  return new Intl.NumberFormat(locale, {
+    useGrouping: false,
+  }).format(value);
+}
+
+export function formatDay(date: CalendarDate, options?: CalendarOptions) {
+  return formatNumber(toDate(date).getDate(), options);
+}
+
+export function formatMonthYear(date: CalendarDate, options?: CalendarOptions) {
+  return formatDate(date, { month: "long", year: "numeric" }, options);
 }
 
 export function addDays(date: CalendarDate, amount: number): Date {
