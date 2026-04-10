@@ -2,23 +2,7 @@ name: Docs Pages
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - "docs/**"
-      - "src/**"
-      - "dist/**"
-      - "package.json"
-      - "package-lock.json"
-      - ".github/workflows/docs-pages.yml"
   pull_request:
-    paths:
-      - "docs/**"
-      - "src/**"
-      - "dist/**"
-      - "package.json"
-      - "package-lock.json"
-      - ".github/workflows/docs-pages.yml"
   workflow_dispatch:
 
 permissions:
