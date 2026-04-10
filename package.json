@@ -18,8 +18,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/demark-pro/react-booking-calendar.git"
+    "url": "git+https://github.com/demark-pro/react-booking-calendar.git"
   },
+  "homepage": "https://demark-pro.github.io/react-booking-calendar/",
   "keywords": [
     "react",
     "calendar",
