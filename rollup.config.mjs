@@ -79,7 +79,10 @@ const config = {
       mainFields: ["module"],
       extensions: [".js", ".jsx", ".ts", ".tsx"],
     }),
-    babel(),
+    babel({
+      babelHelpers: "bundled",
+      extensions: [".js", ".jsx", ".ts", ".tsx"],
+    }),
     commonjs(),
     typescript({
       tsconfig: "./tsconfig.json",
